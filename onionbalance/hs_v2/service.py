@@ -6,11 +6,16 @@ import base64
 import Crypto.PublicKey.RSA
 import stem
 
-from onionbalance import descriptor
-from onionbalance import util
-from onionbalance import log
-from onionbalance import config
-from onionbalance import consensus
+from onionbalance.hs_v2 import descriptor
+from onionbalance.hs_v2 import util
+from onionbalance.hs_v2 import consensus
+
+import onionbalance.common.descriptor
+import onionbalance.common.util
+
+from onionbalance.common import log
+from onionbalance.hs_v2 import config
+from onionbalance.common import intro_point_set
 
 logger = log.get_logger()
 
@@ -63,7 +68,7 @@ class Service(object):
         Check if the introduction point set has changed since last
         publish.
         """
-        return any(instance.changed_since_published
+        return any(instance.intro_set_changed_since_published
                    for instance in self.instances)
 
     def _descriptor_not_uploaded_recently(self):
@@ -97,7 +102,7 @@ class Service(object):
         """
         Choose set of introduction points from all fresh descriptors
 
-        Returns a descriptor.IntroductionPointSet() which can be used to
+        Returns an intro_point_set.IntroductionPointSet() which can be used to
         choose introduction points.
         """
         available_intro_points = []
@@ -137,10 +142,10 @@ class Service(object):
                 continue
             else:
                 # Include this instance's introduction points
-                instance.changed_since_published = False
+                instance.intro_set_changed_since_published = False
                 available_intro_points.append(instance.introduction_points)
 
-        return descriptor.IntroductionPointSet(available_intro_points)
+        return intro_point_set.IntroductionPointSet(available_intro_points)
 
     def _publish_descriptor(self, deviation=0):
         """
@@ -237,7 +242,7 @@ class Service(object):
 
         while True:
             try:
-                descriptor.upload_descriptor(self.controller,
+                onionbalance.common.descriptor.upload_descriptor(self.controller,
                                              signed_descriptor,
                                              hsdirs=hsdirs)
                 break
@@ -245,7 +250,7 @@ class Service(object):
                 logger.error("Error uploading descriptor for service "
                              "%s.onion, Socket is closed.",
                              self.onion_address)
-                util.reauthenticate(self.controller, logger)
+                onionbalance.common.util.reauthenticate(self.controller, logger)
             except stem.ControllerError:
                 logger.exception("Error uploading descriptor for service "
                                  "%s.onion.", self.onion_address)

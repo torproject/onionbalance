@@ -8,13 +8,16 @@ import sys
 import pexpect
 import Crypto.PublicKey.RSA
 
-import onionbalance.util
+import onionbalance.hs_v2.util
 
 
 def onionbalance_config_interact(cli, cli_input):
     """
     Send each input line to the onionbalance-config CLI interface
     """
+    cli.expect(u"Enter HS version")
+    cli.send("v2\n")
+
     cli.expect(u"store generated config")
     cli.send("{}\n".format(cli_input.get('config_dir', u'')))
 
@@ -93,6 +96,7 @@ def test_onionbalance_config_automatic(tmpdir):
     # Start onionbalance-config in automatic mode
     cli = pexpect.spawnu("onionbalance-config", logfile=sys.stdout,
                          args=[
+                             '--hs-version', 'v2',
                              '--output', str(tmpdir.join(u"configdir")),
                          ])
     cli.expect(u"Done! Successfully generated")
@@ -106,6 +110,7 @@ def test_onionbalance_config_automatic_custom_ports(tmpdir):
     """
     cli = pexpect.spawnu("onionbalance-config", logfile=sys.stdout,
                          args=[
+                             '--hs-version', 'v2',
                              '--output', str(tmpdir.join(u"configdir")),
                              '--service-virtual-port', u'443',
                              '--service-target', u'127.0.0.1:8443',
@@ -139,6 +144,7 @@ def test_onionbalance_config_automatic_key_with_password(tmpdir, mocker):
     # Start onionbalance-config in automatic mode
     cli = pexpect.spawnu("onionbalance-config", logfile=sys.stdout,
                          args=[
+                             '--hs-version', 'v2',
                              '--output', str(tmpdir.join(u"configdir")),
                              '--key', str(key_path),
                              '--password', 'testpassword',
@@ -153,5 +159,5 @@ def test_onionbalance_config_automatic_key_with_password(tmpdir, mocker):
 
     # Check key decrypts and is valid
     mocker.patch('getpass.getpass', lambda *_: 'testpassword')
-    output_key = onionbalance.util.key_decrypt_prompt(str(output_key_path))
+    output_key = onionbalance.hs_v2.util.key_decrypt_prompt(str(output_key_path))
     assert isinstance(output_key, Crypto.PublicKey.RSA._RSAobj)

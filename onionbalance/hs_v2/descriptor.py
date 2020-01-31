@@ -1,86 +1,18 @@
 # -*- coding: utf-8 -*-
-from future.moves.itertools import zip_longest
 import hashlib
 import base64
 import textwrap
 import datetime
-import random
-import itertools
 
 import Crypto.Util.number
-import stem
+import stem.descriptor.hidden_service_descriptor
 
-from onionbalance import util
-from onionbalance import log
-from onionbalance import config
+from onionbalance.hs_v2 import util
+
+from onionbalance.common import log
+from onionbalance.hs_v2 import config
 
 logger = log.get_logger()
-
-
-class IntroductionPointSet(object):
-    """
-    Select a set of introduction points to included in a HS descriptor.
-
-    Provided with a list of available introduction points for each
-    backend instance for an onionbalance service. This object will store
-    the set of available introduction points and allow IPs to be selected
-    from the available set.
-
-    This class tracks which introduction points have already been provided
-    and tries to provide the most diverse set of IPs.
-    """
-
-    def __init__(self, available_introduction_points):
-        # Shuffle the introduction point order before selecting IPs.
-        # Randomizing now allows later calls to .choose() to be
-        # deterministic.
-        for instance_intro_points in available_introduction_points:
-            random.shuffle(instance_intro_points)
-        random.shuffle(available_introduction_points)
-
-        self.available_intro_points = available_introduction_points
-        self.intro_point_generator = self.get_intro_point()
-
-    def __len__(self):
-        """Provide the total number of available introduction points"""
-        return sum(len(ips) for ips in self.available_intro_points)
-
-    def get_intro_point(self):
-        """
-        Generator function which yields an introduction point
-
-        Iterates through all available introduction points and try
-        to pick IPs breath first across all backend instances. The
-        intro point set is wrapped in `itertools.cycle` and will provided
-        an infinite series of introduction points.
-        """
-
-        # Combine intro points from across the backend instances and flatten
-        intro_points = zip_longest(*self.available_intro_points)
-        flat_intro_points = itertools.chain.from_iterable(intro_points)
-        for intro_point in itertools.cycle(flat_intro_points):
-            if intro_point:
-                yield intro_point
-
-    def choose(self, count=10, shuffle=True):
-        """
-        Retrieve N introduction points from the set of IPs
-
-        Where more than `count` IPs are available, introduction points are
-        selected to try and achieve the greatest distribution of introduction
-        points across all of the available backend instances.
-
-        Return a list of IntroductionPoints.
-        """
-
-        # Limit `count` to the available number of IPs to avoid repeats.
-        count = min(len(self), count)
-        choosen_ips = list(itertools.islice(self.intro_point_generator, count))
-
-        if shuffle:
-            random.shuffle(choosen_ips)
-        return choosen_ips
-
 
 def generate_service_descriptor(permanent_key, introduction_point_list=None,
                                 replica=0, timestamp=None, deviation=0):
@@ -275,32 +207,3 @@ def descriptor_received(descriptor_content):
 
     return None
 
-
-def upload_descriptor(controller, signed_descriptor, hsdirs=None):
-    """
-    Upload descriptor via the Tor control port
-
-    If no HSDirs are specified, Tor will upload to what it thinks are the
-    responsible directories
-    """
-    logger.debug("Beginning service descriptor upload.")
-
-    # Provide server fingerprints to control command if HSDirs are specified.
-    if hsdirs:
-        server_args = ' '.join([("SERVER={}".format(hsdir))
-                                for hsdir in hsdirs])
-    else:
-        server_args = ""
-
-    # Stem will insert the leading + and trailing '\r\n.\r\n'
-    response = controller.msg("HSPOST %s\n%s" %
-                              (server_args, signed_descriptor))
-
-    (response_code, divider, response_content) = response.content()[0]
-    if not response.is_ok():
-        if response_code == "552":
-            raise stem.InvalidRequest(response_code, response_content)
-        else:
-            raise stem.ProtocolError("HSPOST returned unexpected response "
-                                     "code: %s\n%s" % (response_code,
-                                                       response_content))

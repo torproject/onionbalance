@@ -9,8 +9,8 @@ import binascii
 import stem
 import stem.descriptor
 
-import onionbalance.log as log
-import onionbalance.config as config
+import onionbalance.common.log as log
+import onionbalance.hs_v2.config as config
 
 logger = log.get_logger()
 

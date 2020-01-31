@@ -10,7 +10,7 @@ import yaml
 import pexpect
 import stem.control
 
-import onionbalance.util
+import onionbalance.hs_v2.util
 
 # Skip functional tests if Chutney environment is not running.
 pytestmark = pytest.mark.skipif(
@@ -91,7 +91,7 @@ def test_master_descriptor_publication(tmpdir):
 
     chutney_config = parse_chutney_enviroment()
     private_key = Crypto.PublicKey.RSA.generate(1024)
-    master_onion_address = onionbalance.util.calc_onion_address(private_key)
+    master_onion_address = onionbalance.hs_v2.util.calc_onion_address(private_key)
 
     config_file_path = create_test_config_file(
         tmppath=tmpdir,

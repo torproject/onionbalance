@@ -5,3 +5,7 @@ __author__ = "Donncha O'Cearbhaill"
 __contact__ = "donncha@donncha.is"
 __url__ = "https://github.com/DonnchaC/onionbalance"
 __license__ = "GPL"
+
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions

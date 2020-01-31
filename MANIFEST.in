@@ -4,3 +4,5 @@ include requirements.txt
 include tox.ini
 recursive-include docs *.rst
 recursive-include onionbalance/data *
+include versioneer.py
+include onionbalance/_version.py

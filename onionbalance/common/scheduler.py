@@ -5,7 +5,7 @@ Simple scheduler for running jobs at regular intervals
 import functools
 import time
 
-from onionbalance import log
+from onionbalance.common import log
 
 logger = log.get_logger()
 
@@ -42,7 +42,6 @@ class Job(object):
         """
         Run job then reschedule it in the job list
         """
-        logger.debug("Running {}".format(self))
         ret = self.job_func()
 
         # Pretend the job was scheduled now, if we ran it early with run_all()

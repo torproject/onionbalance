@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 import pytest
 
-from onionbalance import consensus
-from onionbalance import config
+from onionbalance.hs_v2 import consensus
+from onionbalance.hs_v2 import config
 
 # Mock hex-encoded HSDir fingerprint list
 MOCK_HSDIR_LIST = [

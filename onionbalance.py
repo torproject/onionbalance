@@ -3,7 +3,8 @@
 
 """Convenience wrapper for running OnionBalance directly from source tree."""
 
-from onionbalance.manager import main
+import onionbalance.hs_v2.manager
+import onionbalance.hs_v3.manager
 
 if __name__ == '__main__':
-    main()
+    onionbalance.hs_v3.manager.main()

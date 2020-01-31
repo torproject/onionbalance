@@ -3,6 +3,7 @@
 """setup.py: setuptools control."""
 
 import io
+import versioneer
 import os
 
 from setuptools import setup
@@ -23,17 +24,18 @@ def read(*names, **kwargs):
 
 setup(
     name="OnionBalance",
-    packages=["onionbalance"],
+    packages=["onionbalance",
+              "onionbalance.hs_v2", "onionbalance.hs_v3", "onionbalance.common",
+              "onionbalance.config_generator"],
     entry_points={
         "console_scripts": [
-            'onionbalance = onionbalance.manager:main',
-            'onionbalance-config = onionbalance.settings:generate_config',
+            'onionbalance = onionbalance.hs_v2.manager:main', # XXX
+            'onionbalance-config = onionbalance.config_generator.config_generator:main',
         ]},
     description="OnionBalance provides load-balancing and redundancy for Tor "
                 "hidden services by distributing requests to multiple backend "
                 "Tor instances.",
     long_description=read('README.rst'),
-    version=module_info.get('__version__'),
     author=module_info.get('__author__'),
     author_email=module_info.get('__contact__'),
     url=module_info.get('__url__'),
@@ -48,7 +50,7 @@ setup(
         'setproctitle',
         ],
     tests_require=['tox', 'pytest-mock', 'pytest', 'mock', 'pexpect'],
-    package_data={'onionbalance': ['data/*']},
+    package_data={'onionbalance.config_generator': ['data/*']},
     include_package_data=True,
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -57,5 +59,7 @@ setup(
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
-    ]
+    ],
+    version=versioneer.get_version(),
+    cmdclass=versioneer.get_cmdclass(),
 )

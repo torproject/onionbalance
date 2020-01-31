@@ -9,8 +9,8 @@ import threading
 import socket
 from socketserver import BaseRequestHandler, ThreadingMixIn, UnixStreamServer
 
-from onionbalance import log
-from onionbalance import config
+from onionbalance.common import log
+from onionbalance.hs_v2 import config
 
 logger = log.get_logger()
 

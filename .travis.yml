@@ -9,7 +9,7 @@ env:
 before_install:
   # Install tor and chutney if doing functional tests
   - if [[ $TEST == 'functional' ]]; then ./test/scripts/install-tor.sh; fi
-  - if [[ $TEST == 'functional' ]]; then source test/scripts/install-chutney.sh; fi
+  - if [[ $TEST == 'functional' ]]; then source test/scripts/install-chutney-v2.sh; fi
 install:
   - pip install tox coveralls
 script:

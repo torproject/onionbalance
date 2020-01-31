@@ -10,7 +10,7 @@ import Crypto.PublicKey.RSA
 import pytest
 from .util import builtin
 
-from onionbalance.util import *
+from onionbalance.hs_v2.util import *
 
 
 PEM_PRIVATE_KEY = u'\n'.join([

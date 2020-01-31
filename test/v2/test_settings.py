@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-from onionbalance import settings
+from onionbalance.hs_v2 import settings
 from .util import builtin
 
 CONFIG_FILE_VALID = u'\n'.join([

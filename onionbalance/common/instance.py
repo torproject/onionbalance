@@ -1,17 +1,13 @@
-# -*- coding: utf-8 -*-
-import datetime
 import time
 
 import stem.control
 
-from onionbalance import log
-from onionbalance import config
-from onionbalance import util
+from onionbalance.common import log
+import onionbalance.common.util
 
 logger = log.get_logger()
 
-
-def fetch_instance_descriptors(controller):
+def helper_fetch_all_instance_descriptors(controller, instances, control_password=None):
     """
     Try fetch fresh descriptors for all HS instances
     """
@@ -25,14 +21,14 @@ def fetch_instance_descriptors(controller):
             # the NEWNYM singal
             controller.signal(stem.control.Signal.NEWNYM)
             time.sleep(5)  # Sleep to allow Tor time to build new circuits
+            pass
         except stem.SocketClosed:
             logger.error("Failed to send NEWNYM signal, socket is closed.")
-            util.reauthenticate(controller, logger)
+            onionbalance.common.util.reauthenticate(controller, logger, control_password)
         else:
             break
 
-    unique_instances = set(instance for service in config.services
-                           for instance in service.instances)
+    unique_instances = set(instances)
 
     # Only try to retrieve the descriptor once for each unique instance
     # address. An instance may be configured under multiple master
@@ -45,12 +41,10 @@ def fetch_instance_descriptors(controller):
             try:
                 instance.fetch_descriptor()
             except stem.SocketClosed:
-                logger.error("Failed to fecth descriptor, socket "
-                             "is closed")
-                util.reauthenticate(controller, logger)
+                logger.error("Failed to fetch descriptor, socket is closed")
+                onionbalance.common.util.reauthenticate(controller, logger, control_password)
             else:
                 break
-
 
 class Instance(object):
     """
@@ -67,21 +61,11 @@ class Instance(object):
         if onion_address:
             onion_address = onion_address.replace('.onion', '')
         self.onion_address = onion_address
-        self.authentication_cookie = authentication_cookie
-
-        # Store the latest set of introduction points for this instance
-        self.introduction_points = []
-
-        # Timestamp when last received a descriptor for this instance
-        self.received = None
-
-        # Timestamp of the currently loaded descriptor
-        self.timestamp = None
 
         # Flag this instance with its introduction points change. A new
         # master descriptor will then be published as the introduction
         # points have changed.
-        self.changed_since_published = False
+        self.intro_set_changed_since_published = False
 
     def fetch_descriptor(self):
         """
@@ -100,53 +84,6 @@ class Instance(object):
             self.received = None
             logger.warning("No descriptor received for instance %s.onion, "
                            "the instance may be offline.", self.onion_address)
-
-    def update_descriptor(self, parsed_descriptor):
-        """
-        Update introduction points when a new HS descriptor is received
-
-        Parse the descriptor content and update the set of introduction
-        points for this HS instance. Returns True if the introduction
-        point set has changed, False otherwise.`
-        """
-
-        self.received = datetime.datetime.utcnow()
-
-        logger.debug("Received a descriptor for instance %s.onion.",
-                     self.onion_address)
-
-        # Reject descriptor if its timestamp is older than the current
-        # descriptor. Prevents HSDirs from replaying old, expired
-        # descriptors.
-        if self.timestamp and parsed_descriptor.published < self.timestamp:
-            logger.error("Received descriptor for instance %s.onion with "
-                         "publication timestamp (%s) older than the latest "
-                         "descriptor (%s). Ignoring the descriptor.",
-                         self.onion_address,
-                         parsed_descriptor.published,
-                         self.timestamp)
-            return False
-        else:
-            self.timestamp = parsed_descriptor.published
-
-        # Parse the introduction point list, decrypting if necessary
-        introduction_points = parsed_descriptor.introduction_points(
-            authentication_cookie=self.authentication_cookie
-        )
-
-        # If the new introduction points are different, flag this instance
-        # as modified. Compare the set of introduction point identifiers
-        # (fingerprint of the per IP circuit service key).
-        if (set(ip.identifier for ip in introduction_points) !=
-                set(ip.identifier for ip in self.introduction_points)):
-            self.changed_since_published = True
-            self.introduction_points = introduction_points
-            return True
-
-        else:
-            logger.debug("Introduction points for instance %s.onion matched "
-                         "the cached set.", self.onion_address)
-            return False
 
     def __eq__(self, other):
         """
