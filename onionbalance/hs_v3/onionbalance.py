@@ -1,5 +1,6 @@
 import os, sys
 
+import stem
 from stem.descriptor.hidden_service import HiddenServiceDescriptorV3
 
 import onionbalance.common.instance
@@ -50,7 +51,8 @@ class Onionbalance(object):
         # Catch interesting events (like receiving descriptors etc.)
         self.controller.add_event_listeners()
 
-        logger.warning("Onionbalance initialized!")
+        logger.warning("Onionbalance initialized (stem version: %s) (tor version: %s)!",
+                       stem.__version__, self.controller.controller.get_version())
         logger.warning("="*80)
 
     def initialize_services_from_config_data(self):
@@ -92,7 +94,8 @@ class Onionbalance(object):
                 try:
                     _ = HiddenServiceDescriptorV3.identity_key_from_address(instance["address"])
                 except ValueError:
-                    logger.error("Cannot load instance with bad address: '%s'", instance["address"])
+                    logger.error("Cannot load instance with address: '%s'.", instance["address"])
+                    logger.error("If you are trying to run onionbalance for v2 onions, please use the --hs-version=v2 switch")
                     sys.exit(1)
 
         return config_data

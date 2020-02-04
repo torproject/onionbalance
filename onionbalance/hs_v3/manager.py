@@ -1,12 +1,9 @@
-from setproctitle import setproctitle  # pylint: disable=no-name-in-module
-
 import logging
 
 from onionbalance import __version__
 
 from onionbalance.common import scheduler
 from onionbalance.common import log
-from onionbalance.common import argparser
 from onionbalance.common import signalhandler
 
 from onionbalance.hs_v3 import params
@@ -14,17 +11,7 @@ from onionbalance.hs_v3 import onionbalance
 
 logger = log.get_logger()
 
-def main():
-    logger.warning("Initializing onionbalance (version: %s)...", __version__)
-
-    setproctitle('onionbalance')
-    parser = argparser.get_common_argparser()
-
-    parser.add_argument("--is-testnet", action='store_true',
-                        help="Is this onionbalance on a test net? (Default: no)")
-
-    args = parser.parse_args()
-
+def main(args):
     # Override the log level if specified on the command line.
     if args.verbosity:
         params.DEFAULT_LOG_LEVEL = args.verbosity.upper()
@@ -51,7 +38,4 @@ def main():
     scheduler.run_forever()
 
     return 0
-
-if __name__ == '__main__':
-    main()
 

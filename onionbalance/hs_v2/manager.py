@@ -17,7 +17,6 @@ import onionbalance.common.util
 
 from onionbalance.common import scheduler
 from onionbalance.common import log
-from onionbalance.common import argparser
 from onionbalance.common import signalhandler
 
 from onionbalance.hs_v2 import config
@@ -30,12 +29,10 @@ from onionbalance.hs_v2.instance import fetch_instance_descriptors
 
 logger = log.get_logger()
 
-def main():
+def main(args):
     """
     Entry point when invoked over the command line.
     """
-    setproctitle('onionbalance')
-    args = argparser.get_common_argparser().parse_args()
     config_file_options = settings.parse_config_file(args.config)
 
     # Update global configuration with options specified in the config file
@@ -53,6 +50,9 @@ def main():
 
     logger.setLevel(logging.__dict__[config.LOG_LEVEL.upper()])
 
+    tor_socket = (args.socket or config.TOR_CONTROL_SOCKET)
+    tor_address = (args.ip or config.TOR_ADDRESS)
+    tor_port = (args.port or config.TOR_PORT)
     controller = onionbalance.common.util.connect_to_control_port(tor_socket, tor_address, tor_port,
                                                                   config.TOR_CONTROL_PASSWORD)
 

@@ -29,7 +29,7 @@ setup(
               "onionbalance.config_generator"],
     entry_points={
         "console_scripts": [
-            'onionbalance = onionbalance.hs_v2.manager:main', # XXX
+            'onionbalance = onionbalance.manager:main',
             'onionbalance-config = onionbalance.config_generator.config_generator:main',
         ]},
     description="OnionBalance provides load-balancing and redundancy for Tor "

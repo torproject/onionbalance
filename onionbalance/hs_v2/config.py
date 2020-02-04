@@ -21,6 +21,7 @@ LOG_LEVEL = os.environ.get('ONIONBALANCE_LOG_LEVEL', 'info')
 
 STATUS_SOCKET_LOCATION = os.environ.get('ONIONBALANCE_STATUS_SOCKET_LOCATION',
                                         '/var/run/onionbalance/control')
+TOR_CONTROL_PASSWORD = None
 
 # Upload multiple distinct descriptors containing different subsets of
 # the available introduction points
