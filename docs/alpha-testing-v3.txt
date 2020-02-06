@@ -1,0 +1,297 @@
+== Call for alpha testing ==
+
+We've been developing Onionbalance v3 for the past months, and I'm
+pretty hyped to say that the project has reached a stability point that
+could benefit from some initial testing by curious and adventurous
+developers and users.
+
+The project is not yet ready for proper use in actual production environments
+(more on this later), but my hope is that this testing will reveal bugs that I
+can't catch in my test environment and receive user feedback that will speed up
+the overall process and allow a faster and more stable initial release.
+
+This email features a pretty complicated pseudo-guide that if it gets followed
+to completion it will hopefully result in a functional onionbalance setup.
+
+As I said the guide is complicated and in ugly text format, so I suggest you
+put on some calming music (perhaps some Bill Evans or some Com Truise or some
+Tor) and go slowly. Trying to speed run this will result in disappointment and
+perhaps even partial or total loss of faith in humanity.
+
+== So what's the current status of Onionbalance v3? ==
+
+The project lives as a fork of Donncha's original Onionbalance project in this
+repository: https://github.com/asn-d6/onionbalance
+
+The current status is that during my testing I have onionbalanced a real v3
+service with two backend instances successfully for a few days with no obvious
+reachability issues. It also works on a private tor network (using Chutney) for
+hours with no issues. All the above happened on Debian stable and testing.
+
+Also, here are some features that are currently missing but will be
+included in the initial launch:
+- This new onionbalance will support both v2 and v3 onion services, altho
+  currently v2 support is botched and only v3 will work for the purposes of
+  this testing. If you can quickly revive v2 support patches are welcome!
+- Any sort of documentation about v3 mode (this post is all the documentation there is for now!)
+- Missing streamlined setup process (installation scripts, packages or dependency tracking)
+- Code documentation and unittests missing
+- There is no daemon mode. You will have to run this in screen for now
+- Fun bugs included!
+
+Furthermore, v2 and v3 support will not have feature parity at the time of the
+initial launch, and we will have to incrementally build these features:
+- Cool v2 features like DISTINCT_DESCRIPTORS are not yet implemented so v3
+  cannot load balance as deeply as v3 yet (patches welcome!)
+- There is no way to transfer your existing v3 onion service to onionbalance (patches welcome!)
+- There is no torrc generation for instances as in v2 (patches welcome!)
+- It will be possible for clients and HSDirs to figure out whether a descriptor
+  comes from an onionservice vs a regular v3 onion. Making them
+  indistinguishable is possible but requires more engineering and will be left
+  as a TODO for now (see #31857)
+
+Finally, there is no guarantee that configs generated with this pre-alpha
+version of Onionbalance will be forward compatible when we actually launch the
+project. This means that if you setup onionbalance v3 right now, you might need
+to re-set it up in a month or so when the actual release happens.
+
+tl;dr This is a call for experimental testing and it's meant to help the
+developers and accelerate development and not to be used in anything remotely
+serious or close to production. The actual release for operators and users is
+coming in a month or so.
+
+== Before we get started... ==
+
+OK so let's assume that you still want to help out!
+
+Given that this is a pre-alpha test I'm gonna assume that you fill the
+following prerequisites otherwise you are gonna have an adventure:
+
+[ ] Comfortable with git
+[ ] Familiar with v2 onionbalance (at least in terms of terminology and how it works)
+[ ] Familiar with setting up and configuring (v3) onion services
+[ ] Familiar with Linux (or in the mood to find weird bugs in other platforms)
+[ ] Familiar with compiling C projects and chasing their dependencies
+[ ] Familiar with running Python projects and chasing their dependencies
+[ ] Patience to push through various import error messages that might appear
+
+The above are not mandatory but if you don't check out all the boxes you might
+encounter various errors and roadblocks that will frustrate. Actually... even
+if you check out all these boxes you might encounter various errors that might
+frustrate you.
+
+== Some theory ==
+
+In any case, if you want to learn more about the architecture of Onionbalance, see:
+   https://blog.torproject.org/cooking-onions-finding-onionbalance
+
+As part of this guide, you might hear me say the term "frontend" which is what
+we call master onionbalance onion service instance (whose address clients type
+on their browser), or the term "backend" which is the load balancing instances
+that do the actual introduction/rendezvous work for the frontend. So for
+example, in the visual below, Alice fetches the frontend's descriptor but does
+the introduction/rendezvous with the backends:
+
+================================================================================
++                                                                              +
++                Alice fetches frontend     +^^^^^^^^^^^^^^^^^^^^^^^^^^^^+     +
++     +~~~~~~~~~~+    descriptor     +~~~~~~+      HSDir hash ring       )     +
++     | Alice    +~~~~~~~~~~~~~~~~~~~+      +vvvvvvvvvvvv+vvvvvvvvvvvvvvv+     +
++     |          |                                       |                     +
++     |the client|      +-----------+                    |                     +
++     +~~~+~~~~~~+      |backend    |                    | Upload frontend     +
++         |             |instance 1 +-------+            |    descriptor       +
++         |             +-----------+       |            |                     +
++         |                                 |    +-------+-----------+         +
++         |             +-----------+       +----+                   |         +
++         +~~~~~~~~~~~~~+backend    |            |     frontend      |         +
++   Alice does          |instance 2 +------------+     onionbalance  |         +
++   introduction        +-----------+       +----+     service       |         +
++   with backend                            |    +-------------------+         +
++                       +-----------+       |                                  +
++                       |backend    +-------+                                  +
++                       |instance 3 |                                          +
++                       +-----------+                                          +
++                                                                              +
+================================================================================
+
+OK enough with theory. Let's jump to practice:
+
+== Installation instructions ==
+
+For the purposes of this guide I will assume you have a frontend service and
+a bunch of backend instances that you want to load balance.
+
+==== Setup frontend service ====
+
+Our first goal is to get onionbalance and Tor running on your frontend
+service.
+
+- Installing Tor
+
+Let's start: SSH to your frontend service, and get yourself a Tor binary to use
+as the control port for onionbalance. You will want a recent version of Tor
+(above 0.4.2) but other than that there is no strict requirement. Feel free to
+get it off your package manager or git.
+
+Setup a minimal torrc with a control port enabled. As an example:
+"""
+SocksPort 0
+ControlPort 127.0.0.1:6666
+DataDirectory /home/user/frontend_data/
+"""
+
+Feel free to tweak your torrc as you feel (also enable logging), but for the
+purposes of this guide I assume that your control port is at 127.0.0.1:6666.
+
+- Running onionbalance for the first time
+
+Now we need to run onionbalance and generate keys and a config file for
+it. Here the fun starts:
+
+Let's start by git cloning 'https://github.com/asn-d6/onionbalance'.
+
+To run onionbalance v3 you are gonna need a bunch of fun Python dependencies
+including (but perhaps not limited to):
+- Python3 above 3.7
+- Python3 packages for: pyyaml, pycrypto, setproctitle, future
+- stem version 1.8 or up (so that it includes v3 support)
+
+Please collect all the above whichever way you prefer: if you don't have them,
+things are gonna crash at some point. There is no dependency tracking for v3
+onionbalance right now (i.e. requirements.txt) so I don't enforce the above in
+an elegant way.
+
+Now that you are good to go with dependencies, feel free to install
+onionbalance using the setup.py script, or you can run it from the source
+directory if you prefer that.
+
+Now is the time to create keys and a config file for your frontend
+service. Let's do that by running the configuration wizard:
+
+         $ python3 onionbalance-config.py
+
+It should ask you if you want v3 or v2 (say v3!), and a bunch of other
+questions and by the end you should have a config file somewhere (by default at
+./config/master/config.yaml) and the corresponding frontend key file (again at
+./config/master/*key). The onion address of your frontend service can be found
+in the bottom of your config file. So if it says:
+     key: wrxdvcaqpuzakbfww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key
+your onion address is "wrxdvcaqpuzakbfww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion"
+For now, note down the onion address of the frontend service and let's move on
+to the next step! Make sure you got a v3 onion address out of this process,
+otherwise something went wrong.
+
+If you got to this stage without any major turbulance, you will end up with a
+functional onionbalance in no time. If you had lots of problems so far, brew up
+some green tea, because there is more fun coming!
+
+==== Setup backend instances ====
+
+OK now with the frontend onion address noted down, let's move to setting up
+your backend instances:
+
+SSH to one of your backend instances and let's setup Tor in there! The catch is
+that onionbalance v3 backend instances need a very recent version of Tor
+because of some issues in the v3 protocol (#32709).
+
+As a matter of fact, the patch required has not yet been merged to upstream Tor
+(it will be merged in mid February because we are currently at a code freeze)
+so you will need to use my personal repository for now (as indicated by the
+last comment in #32709).
+
+So let's git clone 'https://github.com/asn-d6/tor.git' and checkout branch
+'ticket32709_044_02'. Build that branch (using the classic './autogen.sh &&
+./configure && make' combo) and you should have a Tor binary at ./src/app/tor.
+If this doesn't happen, you are gonna need to install various C dependencies
+like libssl-dev, libevent-dev, etc.
+
+Now you will need a torrc file for your backend instance. As in onionbalance
+v2, the torrc file needs to setup an onion service (and in this case a v3
+one). So far so good but here comes the twist:
+
+1) In the end of your torrc file, inside the HiddenService block please add the
+   following line: 'HiddenServiceOnionBalanceInstance 1'.
+
+2) Now go in your hidden service directory where the hostname and
+   hs_ed25519_public_key files are living (you will need to startup Tor once
+   with the onion service enabled for the directory to get created) you need to
+   create a new file with the name 'ob_config' that has the following line
+   inside:
+      'MasterOnionAddress wrxdvcaqpuzakbfww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion'
+    but substitute the onion address with your frontend's onion address.
+
+The points (1) and (2) above are extremely important and if you didn't do them
+correctly, nothing is gonna work. If you want to ensure that you did things
+correctly, start up Tor, and check that your *info* log file includes the
+following line:
+     [info] ob_option_parse(): OnionBalance: MasterOnionAddress wrxdvcaqpuzakbfww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
+
+If you don't see that, then something went wrong. Please try again from the
+beginning of this section till you make it! This is the hardest part of the
+guide too, so if you can do that you can do anything (fwiw, we are at 75% of
+the whole procedure right now).
+
+After you get that, also make sure that your instances are directly reachable
+(e.g. using Tor browser). If they are not reachable, then onionbalance won't be
+able to see them either and things are not gonna work.
+
+OK, you are done! Now do the same for the other backend instances and note down
+the onion addresses of your backend instances because we are gonna need them
+for the next and final step.
+
+==== Get it running! ====
+
+OK now let's login back to the frontend server! Go to your onionbalance config
+and add your instance addresses in the right fields. In the end it should look
+like this (for a setup with 4 backend instances):
+
+"""
+services:
+- instances:
+  - address: 4a2zwxetkje5lwvahfv75arzrctn6bznkwmosvfyobmyv2fc3idbpwyd.onion
+    name: node1
+  - address: i5aqar7fgqcsqwalwjltrb3w3xyj23ppgsnuzhhkzlhbt5337aw2joad.onion
+    name: node2
+  - address: uutpxl2cfkk5qa7z4xtgdxssnhutmoo2y2rw6igh5ez4hpxaz4dap7ad.onion
+    name: node3
+  - address: 5xeigil3hjxltcs3ti4skerhpc252ci7ejynrtm73v3bcbxlfuulsjqd.onion
+    name: node4
+  key: wrxdvcaqpuzakbfww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key
+"""
+
+Now let's fire up onionbalance by running the following command:
+
+   $ python3 onionbalance.py -v info -c config/master/config.yaml -p 6666
+
+If everything went right, onionbalance should start running and after a bit
+your frontend service should be reachable!!! You are an onionbalance expert!
+
+If something did not go right, that's OK too, don't get sad because this was
+quite complicated. Please check all your logs and make sure you did everything
+right according to this guide. Keep on hammering at it and you are gonna get
+it. If nothing seems to work, please get in touch with some details and I can
+try to help you.
+
+== Now what? ==
+
+Now that you managed to make it work, please monitor your frontend service and
+make sure that it's reachable all the time. Check your logs for any errors or
+bugs and let me know if you see any. If you want you can make onionbalance
+logging calmer by using the '-v warning' switch.
+
+(Also if you see this log message in your frontend Tor logs: "Bug: Unrecognized
+signal 132..." that's normal and it will be fixed with #33104).
+
+If you are in the mood for coding feel free to start hacking on onionbalance,
+but I would suggest you first get in touch over Github because I'm also working
+at it at the same time and it would be a shame if we do duplicate work.
+
+If you find bugs or do any quick bugfixes, please submit them over Github!
+
+If you do code review, please let me know through Github of any issues you find.
+
+Also, if you are gonna be at FOSDEM this upcoming weekend feel free to get in
+touch if you have any questions or you want to live test it.
+
+If you have any other feedback, I'd be glad to hear it!
