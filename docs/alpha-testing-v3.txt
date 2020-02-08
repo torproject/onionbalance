@@ -130,9 +130,9 @@ service.
 - Installing Tor
 
 Let's start: SSH to your frontend service, and get yourself a Tor binary to use
-as the control port for onionbalance. You will want a recent version of Tor
-(above 0.4.2) but other than that there is no strict requirement. Feel free to
-get it off your package manager or git.
+as the control port for onionbalance. You will want a very recent version of
+Tor (so that that it includes #31684), and hence I suggest you use the latest
+master from https://gitweb.torproject.org/tor.git .
 
 Setup a minimal torrc with a control port enabled. As an example:
 """
