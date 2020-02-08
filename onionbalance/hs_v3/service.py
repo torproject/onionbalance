@@ -91,7 +91,7 @@ class OnionBalanceService(object):
             return True
 
         for instance in self.instances:
-            if instance.intro_set_modified_timestamp:
+            if not instance.intro_set_modified_timestamp:
                 logger.info("\t Still dont have a descriptor for this instance")
                 continue
 
