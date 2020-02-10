@@ -154,7 +154,7 @@ Let's start by git cloning 'https://github.com/asn-d6/onionbalance'.
 To run onionbalance v3 you are gonna need a bunch of fun Python dependencies
 including (but perhaps not limited to):
 - Python3 above 3.7
-- Python3 packages for: pyyaml, pycrypto, setproctitle, future
+- Python3 packages for: pyyaml, pycrypto, setproctitle, future, cryptography
 - stem version 1.8 or up (so that it includes v3 support)
 
 Please collect all the above whichever way you prefer: if you don't have them,
