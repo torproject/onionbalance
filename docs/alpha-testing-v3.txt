@@ -28,16 +28,15 @@ service with two backend instances successfully for a few days with no obvious
 reachability issues. It also works on a private tor network (using Chutney) for
 hours with no issues. All the above happened on Debian stable and testing.
 
+This onionbalance is compatible both with v3 and v2 services. The current
+default mode is v3, but if you want to use it in v2 mode, please use the
+--hs-version=v2 switch.
+
 Also, here are some features that are currently missing but will be
 included in the initial launch:
-- This new onionbalance will support both v2 and v3 onion services, altho
-  currently v2 support is botched and only v3 will work for the purposes of
-  this testing. If you can quickly revive v2 support patches are welcome!
 - Any sort of documentation about v3 mode (this post is all the documentation there is for now!)
-- Missing streamlined setup process (installation scripts, packages or dependency tracking)
-- Code documentation and unittests missing
 - There is no daemon mode. You will have to run this in screen for now
-- Fun bugs included!
+- There are no pypi or Linux distro packages for onionbalance v3.
 
 Furthermore, v2 and v3 support will not have feature parity at the time of the
 initial launch, and we will have to incrementally build these features:

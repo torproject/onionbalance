@@ -18,7 +18,10 @@ logger = log.get_logger()
 
 class Onionbalance(object):
     """
-    Onionbalance singleton that represents this onionbalance runtime
+    Onionbalance singleton that represents this onionbalance runtime.
+
+    Contains various objects that are useful to other onionbalance modules so
+    this is imported from all over the codebase.
     """
     def __init__(self):
         # This is kept minimal so that it's quick (it's executed at program

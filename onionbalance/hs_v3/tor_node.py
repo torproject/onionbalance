@@ -22,10 +22,11 @@ class Node(object):
     def __init__(self, microdescriptor, routerstatus):
         assert(microdescriptor and routerstatus)
 
-#        logger.debug("Initializing node with fpr %s", routerstatus.fingerprint)
+        logger.debug("Initializing node with fpr %s", routerstatus.fingerprint)
 
-        # if they are immutable why not also slap the consensus in here?
+        # The microdescriptor of this node
         self.microdescriptor = microdescriptor
+        # The consensus routerstatus for this node
         self.routerstatus = routerstatus
 
     def get_hex_fingerprint(self):
@@ -33,10 +34,14 @@ class Node(object):
 
     def get_hsdir_index(self, srv, period_num):
         """
+        Get the HSDir index for this node:
+
            hsdir_index(node) = H("node-idx" | node_identity |
                                  shared_random_value |
                                  INT_8(period_num) |
                                  INT_8(period_length) )
+
+        Raises NoHSDir or NoEd25519Identity in case of errors.
         """
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
@@ -54,6 +59,7 @@ class Node(object):
         # In stem the ed25519 identity is a base64 string and we need to add
         # the missing padding so that the python base64 module can successfuly
         # decode it.
+        # TODO: Abstract this into its own function...
         ed25519_node_identity_b64 = self.microdescriptor.identifiers['ed25519']
         missing_padding = len(ed25519_node_identity_b64) % 4
         ed25519_node_identity_b64 += '=' * missing_padding

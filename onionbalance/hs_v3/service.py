@@ -78,8 +78,7 @@ class OnionBalanceService(object):
 
     def _intro_set_modified(self, is_first_desc):
         """
-        Check if the introduction point set has changed since last
-        publish.
+        Check if the introduction point set has changed since last publish.
         """
         if is_first_desc:
             last_upload_ts = self.first_descriptor.last_upload_ts
@@ -209,6 +208,9 @@ class OnionBalanceService(object):
         self._publish_descriptor(is_first_desc=False)
 
     def _get_intros_for_desc(self):
+        """
+        Get the intros that should be included in a descriptor for this service.
+        """
         all_intros = self.get_all_intros_for_publish()
 
         # Get number of instances that contributed to final intro point list

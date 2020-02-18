@@ -25,7 +25,9 @@ class Consensus(object):
     refresh() method to get the latest consensus.
     """
     def __init__(self, do_refresh_consensus=True):
+        # A list of tor_node:Node objects contained in the current consensus
         self.nodes = None
+        # A stem NetworkStatusDocumentV3 object representing the current consensus
         self.consensus = None
 
         if not do_refresh_consensus:
@@ -36,6 +38,9 @@ class Consensus(object):
         self.refresh()
 
     def refresh(self):
+        """
+        Attempt to refresh the consensus with the latest one available.
+        """
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
         # Fetch the current md consensus from the control port
@@ -73,6 +78,9 @@ class Consensus(object):
         return self.consensus.valid_after <= now and now <= self.consensus.valid_until
 
     def _initialize_nodes(self):
+        """
+        Initialize self.nodes with the list of current nodes.
+        """
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
         nodes = []

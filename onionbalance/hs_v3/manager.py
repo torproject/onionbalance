@@ -12,6 +12,12 @@ from onionbalance.hs_v3 import onionbalance
 logger = log.get_logger()
 
 def main(args):
+    """
+    This is the entry point of v3 functionality.
+
+    Initialize onionbalance, schedule future jobs and let the scheduler do its thing.
+    """
+
     # Override the log level if specified on the command line.
     if args.verbosity:
         params.DEFAULT_LOG_LEVEL = args.verbosity.upper()
