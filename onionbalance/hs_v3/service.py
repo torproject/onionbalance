@@ -140,7 +140,7 @@ class OnionBalanceService(object):
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
         # Derive blinding parameter
-        _, time_period_number = my_onionbalance.hash_ring._get_srv_and_time_period(is_first_desc)
+        _, time_period_number = hashring.get_srv_and_time_period(is_first_desc)
         blinded_param = my_onionbalance.consensus.get_blinding_param(self._get_identity_pubkey_bytes(),
                                                                              time_period_number)
 
@@ -151,7 +151,7 @@ class OnionBalanceService(object):
 
         # Calculate current responsible HSDirs
         try:
-            responsible_hsdirs = my_onionbalance.hash_ring.get_responsible_hsdirs(blinded_key, is_first_desc)
+            responsible_hsdirs = hashring.get_responsible_hsdirs(blinded_key, is_first_desc)
         except hashring.EmptyHashRing:
             return False
 
@@ -248,7 +248,7 @@ class OnionBalanceService(object):
             return
 
         # Derive blinding parameter
-        _, time_period_number = my_onionbalance.hash_ring._get_srv_and_time_period(is_first_desc)
+        _, time_period_number = hashring.get_srv_and_time_period(is_first_desc)
         blinding_param = my_onionbalance.consensus.get_blinding_param(self._get_identity_pubkey_bytes(),
                                                                              time_period_number)
 
@@ -270,7 +270,7 @@ class OnionBalanceService(object):
 
         # Calculate responsible HSDirs for our service
         try:
-            responsible_hsdirs = my_onionbalance.hash_ring.get_responsible_hsdirs(blinded_key, is_first_desc)
+            responsible_hsdirs = hashring.get_responsible_hsdirs(blinded_key, is_first_desc)
         except hashring.EmptyHashRing:
             logger.warning("Can't publish desc with no hash ring. Delaying...")
             return

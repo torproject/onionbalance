@@ -43,7 +43,6 @@ class Onionbalance(object):
         # Create stem controller and connect to the Tor network
         self.controller = stem_controller.StemController(args.ip, args.port)
         self.consensus = ob_consensus.Consensus()
-        self.hash_ring = hashring.HSV3HashRing()
 
         # Initialize our service
         self.services = self.initialize_services_from_config_data()
