@@ -269,8 +269,30 @@ class ReceivedDescriptor(V3Descriptor):
             logger.warning("Descriptor is corrupted (%s).", err)
             raise BadDescriptor
 
+        self.received_ts = datetime.datetime.utcnow()
+
         logger.debug("Successfuly decrypted descriptor for %s!", onion_address)
 
         super().__init__(onion_address, v3_desc)
+
+    def is_old(self):
+        """
+        Return True if this received descriptor is old and we should consider the
+        instance as offline.
+        """
+        from onionbalance.hs_v3.onionbalance import my_onionbalance
+
+        received_age = datetime.datetime.utcnow() - self.received_ts
+        received_age = received_age.total_seconds()
+
+        if my_onionbalance.is_testnet:
+            too_old_threshold = params.INSTANCE_DESCRIPTOR_TOO_OLD_TESTNET
+        else:
+            too_old_threshold = params.INSTANCE_DESCRIPTOR_TOO_OLD
+
+        if received_age > too_old_threshold:
+            return True
+
+        return False
 
 class BadDescriptor(Exception): pass

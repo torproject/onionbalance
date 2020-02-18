@@ -195,8 +195,12 @@ class OnionBalanceService(object):
             try:
                 instance_intros = instance.get_intros_for_publish()
             except onionbalance.hs_v3.instance.InstanceHasNoDescriptor:
-                logger.warning("Entirely missing a descriptor for instance %s. Continuing anyway if possible",
-                               instance.onion_address)
+                logger.info("Entirely missing a descriptor for instance %s. Continuing anyway if possible",
+                            instance.onion_address)
+                continue
+            except onionbalance.hs_v3.instance.InstanceIsOffline:
+                logger.info("Instance %s is offline. Ignoring its intro points...",
+                            instance.onion_address)
                 continue
 
             all_intros.append(instance_intros)

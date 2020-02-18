@@ -71,10 +71,15 @@ class InstanceV3(onionbalance.common.instance.Instance):
         Get a list of stem.descriptor.IntroductionPointV3 objects for this descriptor
 
         Raise :InstanceHasNoDescriptor: if there is no descriptor for this instance
+        Raise :InstanceIsOffline: if the instance is offline.
         """
         if not self.descriptor:
             raise InstanceHasNoDescriptor
 
+        if self.descriptor.is_old():
+            raise InstanceIsOffline
+
         return self.descriptor.get_intro_points()
 
 class InstanceHasNoDescriptor(Exception): pass
+class InstanceIsOffline(Exception): pass

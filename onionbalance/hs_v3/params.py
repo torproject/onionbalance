@@ -28,6 +28,11 @@ FRONTEND_DESCRIPTOR_LIFETIME_TESTNET = 20
 # should be smarter and sneakier here.]
 N_INTROS_PER_INSTANCE = 2
 
+# If we last received a descriptor for this instance more than
+# INSTANCE_DESCRIPTOR_TOO_OLD seconds ago, consider the instance to be down.
+INSTANCE_DESCRIPTOR_TOO_OLD = 60 * 60
+INSTANCE_DESCRIPTOR_TOO_OLD_TESTNET = 20
+
 #### Parameters defined by HSv3 spec and little-t-tor implementation
 
 # Number of replicas per descriptor
