@@ -48,10 +48,7 @@ The core functionality of the OnionBalance service is the collation of
 introduction point data from multiple onion service instances by the
 management server.
 
-Basic Mode
-~~~~~~~~~~
-
-In the 'Basic mode` of operation, the introduction point information is
+In its basic mode of operation, the introduction point information is
 transferred from the onion service instances to the management server
 via the HSDir system. Each instance runs an onion service with an
 instance specific permanent key. The instance publishes a descriptor to
@@ -110,65 +107,19 @@ Limitations
    introduction points.
 
 -  It is trivial for a HSDir to determine that a onion service is using
-   OnionBalance when in Basic mode. OnionBalance will try poll for
-   instance descriptors on a regular basis. A HSDir which connects to
-   onion services published to it would find that a backend instance is
-   serving the same content as the master service. This allows a HSDir
-   to trivially determine the onion addresses for a service's backend
-   instances.
+   OnionBalance. OnionBalance will try poll for instance descriptors on a
+   regular basis. A HSDir which connects to onion services published to it
+   would find that a backend instance is serving the same content as the master
+   service. This allows a HSDir to trivially determine the onion addresses for
+   a service's backend instances.
 
 
-Basic mode allows for scaling across multiple onion service
-instances with no additional software or Tor modifications necessary
-on the onion service instance. Basic mode does not hide that a
-service is using OnionBalance. It also does not significantly
-protect a service from introduction point denial of service or
-actively malicious HSDirs.
+Onionbalance allows for scaling across multiple onion service instances with no
+additional software or Tor modifications necessary on the onion service
+instance. Onionbalance does not hide that a service is using OnionBalance. It
+also does not significantly protect a service from introduction point denial of
+service or actively malicious HSDirs.
 
-Complex Mode
-~~~~~~~~~~~~
-
-In Complex mode, introduction point information is uploaded directly from
-each instance to the management server via an onion service. The onion
-service instance does not publishing its onion service descriptor to the
-HSDir system.
-
-A descriptor is uploaded from an instance to its management servers
-each time Tor generates a new onion service descriptor. A simple daemon
-running on the onion service instance listens for the event emitted on
-the Tor control port when a onion service descriptor is generated. The
-daemon should retrieve the descriptor from the service's local
-descriptor cache and upload it to one or more management servers
-configured for that onion service. The protocol for the metadata channel
-is not yet defined.
-
-The metadata channel should authorize connecting instance clients using
-``basic`` or ``stealth`` authorization.
-
-Multiple management servers for the same onion service may communicate
-with each other via a hidden service channel. This extra channel can be
-used to signal when any of the management servers becomes unavailable. A
-slave management server may begin publishing service descriptors if its
-master management server is no longer available.
-
-Complex mode requires additional software to be run on the service
-instances. It also requires more complicated communication via a
-metadata channel. In practice, this metadata channel may be less
-reliable than the HSDir system.
-
-.. note ::
-    The management server communication channel is not implemented yet. The
-    Complex Mode design may be revised significantly before implementation.
-
-Complex mode minimizes the information transmitted via the HSDir
-system and may make it more difficult for a HSDir to determine that
-a service is using OnionBalance. It also makes it more difficult for
-an active malicious HSDir to carry out descriptor replay attacks or
-otherwise interfere with the transfer of introduction point
-information. The management server is notified about new
-introduction points shortly after they are created which will result
-in more recent descriptor data during very high load or
-denial-of-service situations.
 
 Choice of Introduction Points
 -----------------------------
@@ -228,38 +179,3 @@ random from the introduction point list. After successful introduction
 the client will have created an onion service circuit to one of the
 available onion services instances and can then begin communicating as
 normally along that circuit.
-
-Next-Generation Onion Services (Prop 224) Compatibility
--------------------------------------------------------
-
-In the next-generation onion service proposal (Prop224), introduction
-point keys will no longer be independent of the instance/descriptor
-permanent key. The proposal specifies that each introduction point
-authentication key cross-certifies the descriptor's blinded public key.
-Each instance must know the master descriptor blinded public key during
-descriptor generation.
-
-One solution is to operate in the Complex mode described previously.
-Each instance is provided with the descriptor signing key derived from
-the same master identity key. Each introduction point authentication key
-will then cross-certify the same blinded public key. The generated
-service descriptors are not uploaded to the HSDir system. Instead the
-descriptors are passed to the management server where introduction
-points are selected and a master descriptor is published.
-
-Alternatively a Tor control port command could be implemented to allow a
-controller to request a onion service descriptor which has each
-introduction point authentication key cross-certify a blinded public key
-provided in the control port command. This would remove the need to
-provide any master service private keys to backend instances.
-
-The descriptor signing keys specified in Prop224 are valid for a limited
-period of time. As a result the compromise of a descriptor signing key
-does not lead to permanent compromise of the onion service
-
-.. TODO: Tidy up this section
-
-Implementation
--------------------------------------------------------
-
-**TODO**

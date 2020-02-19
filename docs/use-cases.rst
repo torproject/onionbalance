@@ -1,5 +1,5 @@
-Use Cases
-=========
+Onionbalance Use Cases
+==========================
 
 There a many ways to use OnionBalance to increase the scalability, reliability and security of your onion service. The following are some examples of what is
 possible.

@@ -1,3 +1,8 @@
+0.1.9
+-----
+
+- Initial support for v3 onions!
+
 0.1.8
 -----
 

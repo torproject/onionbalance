@@ -18,11 +18,11 @@ from onionbalance import __version__
 logger = log.get_logger()
 
 def main():
-    logger.warning("Initializing onionbalance (version: %s)...", __version__)
-
     setproctitle('onionbalance')
     parser = argparser.get_common_argparser()
     args = parser.parse_args()
+
+    logger.warning("Initializing onionbalance (version: %s)...", __version__)
 
     if args.hs_version == 'v2':
         onionbalance.hs_v2.manager.main(args)

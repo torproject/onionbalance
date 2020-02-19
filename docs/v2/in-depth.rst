@@ -1,13 +1,20 @@
-.. _tutorial:
+.. _in_depth_v2:
 
-Tutorial
-========
+OnionBalance In-depth Tutorial (v2)
+===================================
 
-This is a step-by-step tutorial to help you configure OnionBalance.
+This is a step-by-step tutorial to help you configure OnionBalance for v2 onions.
 
 OnionBalance implements `round-robin` like load balancing on top of Tor
 onion services. A typical OnionBalance deployment will incorporate one management
 servers and multiple backend application servers.
+
+.. note ::
+    Note that this guide uses Linux distro packages which are currently only
+    available for onionbalance-0.1.8 which does not support v3 onions. This
+    means that if you setup onionbalance using this guide, you won't be able to
+    use it for setting up v3 onions. It will only be useful for v2 onions.
+
 
 Assumptions
 -----------

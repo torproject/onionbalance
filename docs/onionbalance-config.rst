@@ -24,7 +24,7 @@ backend servers.
 Command-Line Options
 --------------------
 
-.. autoprogram:: onionbalance.manager:parse_cmd_args()
+.. autoprogram:: onionbalance.config_generator.config_generator:parse_cmd_args()
    :prog: onionbalance-config
 
 

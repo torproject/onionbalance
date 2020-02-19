@@ -7,6 +7,10 @@ Thank you to the following contributors and others for their invaluble help
 and advice in developing OnionBalance. Contributions of any kind (code,
 documentation, testing) are very welcome.
 
+* `Donncha Ó Cearbhaill <https://github.com/DonnchaC/>`_
+
+  - Original author and maintainer of OnionBalance!!!
+
 * `Federico Ceratto <https://github.com/FedericoCeratto>`_
 
   - Tireless assistance with Debian packaging and OnionBalance improvements.

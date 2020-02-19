@@ -1,5 +1,7 @@
-Installation
-============
+.. _installing_ob:
+
+Installing Onionbalance
+===========================
 
 OnionBalance requires at least one system that is running the OnionBalance
 management server.
@@ -19,7 +21,7 @@ or
 
 .. code-block:: console
 
-    $ git clone https://github.com/DonnchaC/onionbalance.git
+    $ git clone https://github.com/asn-d6/onionbalance.git
     $ cd onionbalance
     # python setup.py install
 
@@ -53,3 +55,5 @@ All tagged releases on Github or PyPi are signed with my GPG key:
     sub   3072R/0xD60D64E73458F285 2013-06-27 [expires: 2016-07-11]
     sub   3072R/0x7D49FC2C759AA659 2013-06-27 [expires: 2016-07-11]
     sub   3072R/0x2C9C6F4ABBFCF7DD 2013-06-27 [expires: 2016-07-11]
+
+Now that OnionBalance is installed, please move to :ref:`installing_tor`.

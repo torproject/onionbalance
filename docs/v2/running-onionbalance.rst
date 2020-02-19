@@ -1,5 +1,12 @@
+.. _running_onionbalance:
+
 Running OnionBalance
 ====================
+
+.. toctree::
+   :hidden:
+
+   onionbalance-config  <../onionbalance-config>
 
 Description
 -----------
@@ -21,18 +28,21 @@ or
 
     $ sudo service onionbalance start
 
-The management server must be left running to publish new descriptors for
-your onion service.
+The management server must be left running to publish new descriptors for your
+onion service: in about 10 minutes you should have a fully functional
+onionbalance setup.
 
 .. note::
 
     Multiple OnionBalance management servers can be run simultaneously with
     the same master private key and configuration file to provide redundancy.
 
+.. _onionbalance_cli:
+
 Command-Line Options
 --------------------
 
-.. autoprogram:: onionbalance.manager:parse_cmd_args()
+.. autoprogram:: onionbalance.common.argparser:get_common_argparser()
    :prog: onionbalance
 
 
@@ -44,7 +54,7 @@ Configuration File Format
 The OnionBalance management server is primarily configured using a YAML
 configuration file.
 
-.. literalinclude:: ../onionbalance/data/config.example.yaml
+.. literalinclude:: ../../onionbalance/config_generator/data/config.example.yaml
    :name: example-config.yaml
    :language: yaml
 
@@ -196,6 +206,11 @@ Files
 config.yaml
   Fallback location for torrc, if /etc/onionbalance/config.yaml is
   not found.
+
+CLI Documentation
+~~~~~~~~~~~~~~~~~
+
+* :ref:`onionbalance <onionbalance_cli>`
 
 See Also
 --------

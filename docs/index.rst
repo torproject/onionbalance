@@ -6,82 +6,36 @@
 Overview
 ========
 
-The OnionBalance software allows for Tor hidden service requests to be
-distributed across multiple backend Tor instances. OnionBalance provides
-load-balancing while also making onion services more resilient and reliable
-by eliminating single points-of-failure.
+OnionBalance is the best way to horizontally load balance onion services across
+multiple backend Tor instances. This way the load of introduction and
+rendezvous requests get distributed across multiple hosts. OnionBalance
+provides load-balancing while also making onion services more resilient and
+reliable by eliminating single points-of-failure.
 
 - Latest release: |version| (:ref:`changelog`)
-- GitHub: https://github.com/DonnchaC/onionbalance/
-- Issue tracker: https://github.com/DonnchaC/onionbalance/issues
-- PyPI: https://pypi.python.org/pypi/OnionBalance
-- IRC: #onionbalance @ OFTC
-
-Features
-========
-
-OnionBalance is under active development and new features are being added
-regularly:
-
-- Load balancing between up to 60 backend hidden services
-- Storage of the hidden service private key separate to the hidden service
-  hosts
-
+- GitHub: https://github.com/asn-d6/onionbalance/
+- Issue tracker: https://github.com/asn-d6/onionbalance/issues
+- PyPI: **Not yet available**
+- IRC: #tor-dev @ OFTC
 
 Quickstart
-==========
+============
 
-The OnionBalance ::ref::`tutorial` describes the deployment of an onion service with
-multiple backed Tor instances and web servers. The following is a minimal
-quickstart guide for a new installation.
+Onionbalance supports both v2 and v3 onions but because of the different setup
+procedure, we have separate guides for them.
 
-Assuming there is no previous configuration in ``/etc/onionbalance``:
+See the :ref:`tutorial_v3` page for setting up a v3 onionbalance, or the
+:ref:`tutorial_v2` page for setting up a v2 onionbalance.
 
-.. code-block:: console
-
-   $ sudo apt-get install onionbalance
-   $ onionbalance-config
-   $ sudo cp ./config/master/*.key /etc/onionbalance/
-   $ sudo cp ./config/master/config.yaml /etc/onionbalance/
-   $ sudo chown onionbalance:onionbalance /etc/onionbalance/*.key
-
-Restart OnionBalance to reload the configuration files.
-
-.. code-block:: console
-
-   $ sudo service onionbalance restart
-
-Check the logs. The following warnings are expected:
-"Error generating descriptor: No introduction points for service ..."
-
-.. code-block:: console
-
-   $ sudo tail -f /var/log/onionbalance/log
-
-Copy the ``instance_torrc`` and ``private_key`` files from each of the directories named ``./config/``, ``srv1``, ``srv2``, ... to each of the Tor servers providing the Onion Services.
-
-Configure and start the instance services. The onion service managed by OnionBalance should be ready within 10 minutes.
-
-User Guide
-==========
-
-OnionBalance consists of a long-running daemon and a command-line
-configuration tool. Please see the :ref:`getting_started` page for usage
-instructions.
-
+Table Of Contents
+====================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
+   :titlesonly:
 
-   installation
-   getting-started
-   running-onionbalance
+   v3/tutorial-v3
+   v2/tutorial-v2
    use-cases
-   tutorial
-
-.. toctree::
-   :maxdepth: 2
-
-   design
    contributors
    changelog
