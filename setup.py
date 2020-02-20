@@ -41,6 +41,7 @@ setup(
     url=module_info.get('__url__'),
     license=module_info.get('__license__'),
     keywords='tor',
+    python_requires='>=3.6',
     install_requires=[
         'setuptools',
         'stem>=1.8',

@@ -9,9 +9,6 @@ distributed across multiple backend Tor instances. OnionBalance provides
 load-balancing while also making onion services more resilient and reliable by
 eliminating single points-of-failure.
 
-**This release supports both v2 and v3 onion services and supersedes the
-original onionbalance repository**
-
 |build-status| |docs|
 
 Getting Started
@@ -33,13 +30,15 @@ documentation.
     uid           [ultimate] George Kadianakis <desnacked@riseup.net>
     sub   rsa4096 2012-02-22 [E]
 
+The Onionbalance software was originally authored and maintained by Donncha Ó
+Cearbhaill. Thanks for all the code!!!
 
-.. |build-status| image:: https://img.shields.io/travis/DonnchaC/onionbalance.svg?style=flat
+.. |build-status| image:: https://img.shields.io/travis/asn-d6/onionbalance.svg?style=flat
     :alt: build status
     :scale: 100%
     :target: https://travis-ci.org/asn-d6/onionbalance
 
-.. |coverage| image:: https://coveralls.io/repos/github/DonnchaC/onionbalance/badge.svg?branch=master
+.. |coverage| image:: https://coveralls.io/repos/github/asn-d6/onionbalance/badge.svg?branch=master
     :alt: Code coverage
     :target: https://coveralls.io/github/asn-d6/onionbalance?branch=master
 

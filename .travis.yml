@@ -2,7 +2,6 @@ language: python
 sudo: required
 dist: trusty
 env:
-  - TOXENV=py27 TEST=functional
   - TOXENV=py35 TEST=functional
   - TOXENV=style
   - TOXENV=docs
