@@ -1,7 +1,7 @@
 import time
 import traceback
 
-from stem.control import EventType, Signal
+from stem.control import EventType
 from stem import Signal
 
 import onionbalance.common.util

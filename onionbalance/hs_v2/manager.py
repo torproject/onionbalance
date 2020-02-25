@@ -50,10 +50,7 @@ def main(args):
 
     logger.setLevel(logging.__dict__[config.LOG_LEVEL.upper()])
 
-    tor_socket = (args.socket or config.TOR_CONTROL_SOCKET)
-    tor_address = (args.ip or config.TOR_ADDRESS)
-    tor_port = (args.port or config.TOR_PORT)
-    controller = onionbalance.common.util.connect_to_control_port(tor_socket, tor_address, tor_port,
+    controller = onionbalance.common.util.connect_to_control_port(args.socket, args.ip, args.port,
                                                                   config.TOR_CONTROL_PASSWORD)
 
     status_socket = status.StatusSocket(config.STATUS_SOCKET_LOCATION)
