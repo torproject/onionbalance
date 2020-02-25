@@ -196,6 +196,7 @@ class OBDescriptor(V3Descriptor):
 
         Return the new certificate.
         """
+        # pylint: disable=no-member
         extensions = [Ed25519Extension(ExtensionType.HAS_SIGNING_KEY, None, stem.util._pubkey_bytes(descriptor_signing_key))]
         new_cert = Ed25519CertificateV1(cert_type = ed_cert.type,
                                         expiration = ed_cert.expiration,

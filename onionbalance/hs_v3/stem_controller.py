@@ -48,12 +48,15 @@ class StemController(object):
         """
         Send the ACTIVE signal to the control port so that Tor does not become dormant.
         """
+        # pylint: disable=no-member
         self.controller.signal(Signal.ACTIVE)
 
     def get_md_consensus(self):
         return self.controller.get_info("dir/status-vote/current/consensus-microdesc")
 
     def add_event_listeners(self):
+        # pylint: disable=no-member
+
         from onionbalance.hs_v3.onionbalance import my_onionbalance
         self.controller.add_event_listener(handle_new_status_event_wrapper, EventType.STATUS_CLIENT)
         self.controller.add_event_listener(handle_new_desc_event_wrapper, EventType.HS_DESC)
