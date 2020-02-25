@@ -14,7 +14,7 @@ eliminating single points-of-failure.
 Getting Started
 ---------------
 
-Installation and usage documentation is available at https://onionbalance.readthedocs.org.
+Installation and usage documentation is available at https://onionbalance-v3.readthedocs.org.
 
 Contact
 -------
@@ -24,6 +24,7 @@ open bug reports on Github if you discover any issues with the software or
 documentation.
 
 ::
+
     pub   rsa4096 2012-02-22 [SC]
           13C81580203AE18BB7C0424E09CC7F5315F271D9
     uid           [ultimate] George Kadianakis <asn@torproject.org>
@@ -42,7 +43,7 @@ Cearbhaill. Thanks for all the code!!!
     :alt: Code coverage
     :target: https://coveralls.io/github/asn-d6/onionbalance?branch=master
 
-.. |docs| image:: https://readthedocs.org/projects/onionbalance/badge/?version=latest
+.. |docs| image:: https://readthedocs.org/projects/onionbalance-v3/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
     :target: https://onionbalance.readthedocs.org/en/latest/
