@@ -1,8 +1,5 @@
-import base64
 import datetime
-import hashlib
 import os
-import logging
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
@@ -15,8 +12,8 @@ import onionbalance.common.descriptor
 from onionbalance.common import log
 import onionbalance.common.util
 
+import onionbalance.hs_v3.instance
 from onionbalance.hs_v3 import params
-from onionbalance.hs_v3 import instance
 from onionbalance.hs_v3 import hashring
 from onionbalance.hs_v3 import descriptor
 
@@ -51,7 +48,7 @@ class OnionBalanceService(object):
         instances = []
 
         for config_instance in service_config_data['instances']:
-            new_instance = instance.InstanceV3(config_instance['address'])
+            new_instance = onionbalance.hs_v3.instance.InstanceV3(config_instance['address'])
             instances.append(new_instance)
 
         return instances

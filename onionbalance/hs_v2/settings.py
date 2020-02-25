@@ -3,17 +3,11 @@
 """
 Implements the generation and loading of configuration files.
 """
-from builtins import input, range
 import os
 import sys
 import errno
-import argparse
-import logging
-
-import yaml
 
 from onionbalance.hs_v2 import config
-from onionbalance.common import util
 from onionbalance.common import log
 
 import onionbalance.hs_v2.util

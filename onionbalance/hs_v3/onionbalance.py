@@ -11,7 +11,6 @@ from onionbalance.common import log
 from onionbalance.common import util
 
 from onionbalance.hs_v3 import stem_controller
-from onionbalance.hs_v3 import hashring
 from onionbalance.hs_v3 import service as ob_service
 from onionbalance.hs_v3 import consensus as ob_consensus
 
@@ -76,17 +75,17 @@ class Onionbalance(object):
         logger.debug("Onionbalance config data: %s", config_data)
 
         # Do some basic validation
-        if not "services" in config_data:
+        if "services" not in config_data:
             logger.error("Config file is bad. 'services' is missing. Did you make it with onionbalance-config?")
             sys.exit(1)
 
         # More validation
         for service in config_data["services"]:
-            if not "key" in service:
+            if "key" not in service:
                 logger.error("Config file is bad. 'key' is missing. Did you make it with onionbalance-config?")
                 sys.exit(1)
 
-            if not "instances" in service:
+            if "instances" not in service:
                 logger.error("Config file is bad. 'instances' is missing. Did you make it with onionbalance-config?")
                 sys.exit(1)
 

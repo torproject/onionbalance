@@ -1,4 +1,3 @@
-import time
 import traceback
 
 from stem.control import EventType
@@ -62,7 +61,6 @@ class StemController(object):
     def add_event_listeners(self):
         # pylint: disable=no-member
 
-        from onionbalance.hs_v3.onionbalance import my_onionbalance
         self.controller.add_event_listener(handle_new_status_event_wrapper, EventType.STATUS_CLIENT)
         self.controller.add_event_listener(handle_new_desc_event_wrapper, EventType.HS_DESC)
         self.controller.add_event_listener(handle_new_desc_content_event_wrapper, EventType.HS_DESC_CONTENT)

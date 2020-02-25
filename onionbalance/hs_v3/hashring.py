@@ -1,10 +1,6 @@
-import logging
-import datetime
 import base64
 import bisect
 import hashlib
-
-from cryptography.hazmat.primitives import serialization
 
 import stem.util
 
@@ -104,7 +100,7 @@ def _get_hash_ring_for_descriptor(is_first_descriptor):
         try:
             hsdir_index = node.get_hsdir_index(srv, time_period_num)
         except (tor_node.NoEd25519Identity, tor_node.NoHSDir) as e:
-            logger.debug("Could not find ed25519 for node %s", node.routerstatus.fingerprint)
+            logger.debug("Could not find ed25519 for node %s (%s)", node.routerstatus.fingerprint, e)
             continue
 
         logger.debug("%s: Node: %s,  index: %s", is_first_descriptor, node.get_hex_fingerprint(), hsdir_index.hex())

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 from builtins import str, object
 
-import stem
-
 from onionbalance.common import log
 
 from onionbalance.hs_v2 import descriptor

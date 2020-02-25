@@ -1,15 +1,10 @@
 import datetime
-import os
 import base64
 import hashlib
-import logging
 
 import stem
 import stem.util
 import stem.descriptor.remote
-from stem.descriptor import DocumentHandler
-from stem.descriptor import parse_file
-from stem.descriptor.remote import DescriptorDownloader
 from stem.descriptor.networkstatus import NetworkStatusDocumentV3
 
 from onionbalance.common import log
@@ -123,7 +118,6 @@ class Consensus(object):
         """
         Return disaster SRV for 'time_period_num'.
         """
-        from onionbalance.hs_v3.onionbalance import my_onionbalance
         time_period_length = self.get_time_period_length()
 
         disaster_body = b"shared-random-disaster" + time_period_length.to_bytes(8, 'big') + time_period_num.to_bytes(8, 'big')

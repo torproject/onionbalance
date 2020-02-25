@@ -1,17 +1,13 @@
-import logging
 import datetime
 import hashlib
 import itertools
-import binascii
 
 import stem.util
-from stem.descriptor.hidden_service import HiddenServiceDescriptorV3, IntroductionPointV3, InnerLayer
+from stem.descriptor.hidden_service import HiddenServiceDescriptorV3, InnerLayer
 from stem.descriptor.certificate import Ed25519CertificateV1, Ed25519Extension, ExtensionType
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from cryptography.hazmat.primitives.asymmetric.x25519 import X25519PrivateKey, X25519PublicKey
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives.ciphers.algorithms import AES
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 

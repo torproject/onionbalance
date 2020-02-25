@@ -1,7 +1,5 @@
 import logging
 
-from onionbalance import __version__
-
 from onionbalance.common import scheduler
 from onionbalance.common import log
 from onionbalance.common import signalhandler

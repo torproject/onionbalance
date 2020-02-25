@@ -4,14 +4,12 @@ Load balance a hidden service across multiple (remote) Tor instances by
 create a hidden service descriptor containing introduction points from
 each instance.
 """
-import os
 import sys
 import logging
 
 # import Crypto.PublicKey
 import stem
-from stem.control import Controller, EventType
-from setproctitle import setproctitle  # pylint: disable=no-name-in-module
+from stem.control import EventType
 
 import onionbalance.common.util
 

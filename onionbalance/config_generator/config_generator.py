@@ -414,8 +414,7 @@ def main():
     # Crude check to see if any options beside --verbosity are set.
     verbose = True if '-v' in sys.argv else False
 
-    if ((len(sys.argv) > 1 and not verbose) or len(sys.argv) > 3 or
-            args.no_interactive):
+    if ((len(sys.argv) > 1 and not verbose) or len(sys.argv) > 3 or args.no_interactive):
         interactive = False
         logger.info("Entering non-interactive mode.")
     else:

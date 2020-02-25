@@ -6,12 +6,9 @@ import getpass
 import base64
 import binascii
 import os
-import time
 
 # import Crypto.Util
 import Crypto.PublicKey
-
-from onionbalance.hs_v2 import config
 
 
 def add_pkcs1_padding(message):
