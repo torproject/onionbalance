@@ -14,6 +14,7 @@ from onionbalance.hs_v2 import config
 
 logger = log.get_logger()
 
+
 def generate_service_descriptor(permanent_key, introduction_point_list=None,
                                 replica=0, timestamp=None, deviation=0):
     """
@@ -206,4 +207,3 @@ def descriptor_received(descriptor_content):
                        descriptor_onion_address)
 
     return None
-

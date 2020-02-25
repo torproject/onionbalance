@@ -17,6 +17,7 @@ from onionbalance import __version__
 
 logger = log.get_logger()
 
+
 def main():
     setproctitle('onionbalance')
     parser = argparser.get_common_argparser()

@@ -163,5 +163,3 @@ def is_directory_empty(path):
         return False
     else:
         return True
-
-

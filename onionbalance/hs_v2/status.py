@@ -19,6 +19,7 @@ class StatusSocketHandler(BaseRequestHandler):
     """
     Handler for new domain socket connections
     """
+
     def handle(self):
         """
         Prepare and output the status summary when a connection is received

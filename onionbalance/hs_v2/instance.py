@@ -10,16 +10,19 @@ from onionbalance.hs_v2 import util
 
 logger = log.get_logger()
 
+
 def fetch_instance_descriptors(controller):
     all_instances = [instance for service in config.services for instance in service.instances]
 
     onionbalance.common.instance.helper_fetch_all_instance_descriptors(controller, all_instances,
                                                                        control_password=config.TOR_CONTROL_PASSWORD)
 
+
 class InstanceV2(onionbalance.common.instance.Instance):
     """
     This is a V2 onionbalance instance
     """
+
     def __init__(self, controller, onion_address, authentication_cookie):
         """
         Constructor for V2 instance
@@ -84,4 +87,3 @@ class InstanceV2(onionbalance.common.instance.Instance):
             logger.debug("Introduction points for instance %s.onion matched "
                          "the cached set.", self.onion_address)
             return False
-

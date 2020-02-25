@@ -2,6 +2,7 @@ from future.moves.itertools import zip_longest
 import random
 import itertools
 
+
 class IntroductionPointSet(object):
     """
     A set of introduction points to included in a HS descriptor.
@@ -14,6 +15,7 @@ class IntroductionPointSet(object):
     This class tracks which introduction points have already been provided
     and tries to provide the most diverse set of IPs.
     """
+
     def __init__(self, intro_points):
         """
         'intro_points' is a list of lists that looks like this:
@@ -77,4 +79,3 @@ class IntroductionPointSet(object):
         if shuffle:
             random.shuffle(choosen_ips)
         return choosen_ips
-

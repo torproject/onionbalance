@@ -23,6 +23,7 @@ from onionbalance.hs_v3 import params
 logger = log.get_logger()
 backend = default_backend()
 
+
 class IntroductionPointSetV3(intro_point_set.IntroductionPointSet):
     """
     This class represents a set of introduction points (which are actually
@@ -35,6 +36,7 @@ class IntroductionPointSetV3(intro_point_set.IntroductionPointSet):
     onionbalance.common.intro_point_set.IntroductionPointSet which allows you to
     sample introduction points out of the set.
     """
+
     def __init__(self, introduction_points):
         """
         'introduction_points' is a list of lists where each internal list contains
@@ -67,6 +69,7 @@ class IntroductionPointSetV3(intro_point_set.IntroductionPointSet):
         # TODO: unittests
         return intro_set_1 == intro_set_2
 
+
 class V3Descriptor(object):
     """
     A generic v3 descriptor.
@@ -74,6 +77,7 @@ class V3Descriptor(object):
     Serves as the base class for OBDescriptor and ReceivedDescriptor which
     implement more specific functionalities.
     """
+
     def __init__(self, onion_address, v3_desc):
         self.onion_address = onion_address
 
@@ -103,6 +107,7 @@ class V3Descriptor(object):
         """
         return len(str(self.v3_desc))
 
+
 class OBDescriptor(V3Descriptor):
     """
     A v3 descriptor created by Onionbalance and meant to be published to the
@@ -112,6 +117,7 @@ class OBDescriptor(V3Descriptor):
 
     Can raise BadDescriptor if we can't or should not generate a valid descriptor.
     """
+
     def __init__(self, onion_address, identity_priv_key,
                  blinding_param, intro_points, is_first_desc):
         # Timestamp we last uploaded this descriptor
@@ -129,13 +135,13 @@ class OBDescriptor(V3Descriptor):
 
         rev_counter = self._get_revision_counter(identity_priv_key, is_first_desc)
 
-        v3_desc_inner_layer = InnerLayer.create(introduction_points = recertified_intro_points)
+        v3_desc_inner_layer = InnerLayer.create(introduction_points=recertified_intro_points)
         v3_desc = HiddenServiceDescriptorV3.create(
-            blinding_nonce = blinding_param,
-            identity_key = identity_priv_key,
-            signing_key = desc_signing_key,
-            inner_layer = v3_desc_inner_layer,
-            revision_counter = int(rev_counter),
+            blinding_nonce=blinding_param,
+            identity_key=identity_priv_key,
+            signing_key=desc_signing_key,
+            inner_layer=v3_desc_inner_layer,
+            revision_counter=int(rev_counter),
         )
 
         # TODO stem should probably initialize it itself so that it has balance
@@ -145,8 +151,8 @@ class OBDescriptor(V3Descriptor):
 
         # Check max size is within range
         if len(str(v3_desc)) > params.MAX_DESCRIPTOR_SIZE:
-            logger.error("Created descriptor is too big (%d intros). Consider "\
-                         "relaxing number of instances or intro points per instance "\
+            logger.error("Created descriptor is too big (%d intros). Consider "
+                         "relaxing number of instances or intro points per instance "
                          "(see N_INTROS_PER_INSTANCE)")
             raise BadDescriptor
 
@@ -166,7 +172,7 @@ class OBDescriptor(V3Descriptor):
         Return the recertified intro point.
         """
         original_auth_key_cert = intro_point.auth_key_cert
-        original_enc_key_cert =  intro_point.enc_key_cert
+        original_enc_key_cert = intro_point.enc_key_cert
 
         # We have already removed all the intros with legacy keys. Make sure that
         # no legacy intros sneaks up on us, becausey they would result in
@@ -178,11 +184,10 @@ class OBDescriptor(V3Descriptor):
         # setter for those attributes due to the way stem sets those fields. If we
         # attempt to normally replace the attributes we get the following
         # exception: AttributeError: can't set attribute]
-        recertified_intro_point = intro_point._replace(auth_key_cert = self._recertify_ed_certificate(original_auth_key_cert,
-                                                                                                      descriptor_signing_key),
-                                                       enc_key_cert = self._recertify_ed_certificate(original_enc_key_cert,
-                                                                                                     descriptor_signing_key))
-
+        recertified_intro_point = intro_point._replace(auth_key_cert=self._recertify_ed_certificate(original_auth_key_cert,
+                                                                                                    descriptor_signing_key),
+                                                       enc_key_cert=self._recertify_ed_certificate(original_enc_key_cert,
+                                                                                                   descriptor_signing_key))
 
         return recertified_intro_point
 
@@ -198,15 +203,14 @@ class OBDescriptor(V3Descriptor):
         """
         # pylint: disable=no-member
         extensions = [Ed25519Extension(ExtensionType.HAS_SIGNING_KEY, None, stem.util._pubkey_bytes(descriptor_signing_key))]
-        new_cert = Ed25519CertificateV1(cert_type = ed_cert.type,
-                                        expiration = ed_cert.expiration,
-                                        key_type = ed_cert.key_type,
-                                        key = ed_cert.key,
-                                        extensions = extensions,
+        new_cert = Ed25519CertificateV1(cert_type=ed_cert.type,
+                                        expiration=ed_cert.expiration,
+                                        key_type=ed_cert.key_type,
+                                        key=ed_cert.key,
+                                        extensions=extensions,
                                         signing_key=descriptor_signing_key)
 
         return new_cert
-
 
     def _get_revision_counter(self, identity_priv_key, is_first_desc):
         """
@@ -251,12 +255,14 @@ class OBDescriptor(V3Descriptor):
             v = e.update(b'\x00\x00')
             yield v[0] + 256 * v[1] + 1
 
+
 class ReceivedDescriptor(V3Descriptor):
     """
     An instance v3 descriptor received from the network.
 
     This class supports parsing descriptors.
     """
+
     def __init__(self, desc_text, onion_address):
         """
         Parse a descriptor in 'desc_text' and return an ReceivedDescriptor object.
@@ -296,4 +302,6 @@ class ReceivedDescriptor(V3Descriptor):
 
         return False
 
-class BadDescriptor(Exception): pass
+
+class BadDescriptor(Exception):
+    pass

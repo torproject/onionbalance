@@ -1,4 +1,5 @@
-import os, sys
+import os
+import sys
 
 import stem
 from stem.descriptor.hidden_service import HiddenServiceDescriptorV3
@@ -16,6 +17,7 @@ from onionbalance.hs_v3 import consensus as ob_consensus
 
 logger = log.get_logger()
 
+
 class Onionbalance(object):
     """
     Onionbalance singleton that represents this onionbalance runtime.
@@ -23,6 +25,7 @@ class Onionbalance(object):
     Contains various objects that are useful to other onionbalance modules so
     this is imported from all over the codebase.
     """
+
     def __init__(self):
         # This is kept minimal so that it's quick (it's executed at program
         # launch because of the onionbalance singleton). The actual init work
@@ -55,7 +58,7 @@ class Onionbalance(object):
 
         logger.warning("Onionbalance initialized (stem version: %s) (tor version: %s)!",
                        stem.__version__, self.controller.controller.get_version())
-        logger.warning("="*80)
+        logger.warning("=" * 80)
 
     def initialize_services_from_config_data(self):
         services = []
@@ -74,8 +77,8 @@ class Onionbalance(object):
 
         # Do some basic validation
         if not "services" in config_data:
-           logger.error("Config file is bad. 'services' is missing. Did you make it with onionbalance-config?")
-           sys.exit(1)
+            logger.error("Config file is bad. 'services' is missing. Did you make it with onionbalance-config?")
+            sys.exit(1)
 
         # More validation
         for service in config_data["services"]:
@@ -197,7 +200,7 @@ class Onionbalance(object):
         action = desc_event.action
 
         if action == "RECEIVED":
-            pass # We already log in HS_DESC_CONTENT so no need to do it here too
+            pass  # We already log in HS_DESC_CONTENT so no need to do it here too
         elif action == "UPLOADED":
             logger.debug("Successfully uploaded descriptor for %s to %s", desc_event.address, desc_event.directory)
         elif action == "FAILED":

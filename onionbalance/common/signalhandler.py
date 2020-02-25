@@ -6,6 +6,7 @@ from onionbalance.common import log
 
 logger = log.get_logger()
 
+
 class SignalHandler(object):
     """
     Handle signals sent to the OnionBalance daemon process

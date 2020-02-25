@@ -11,6 +11,7 @@ from onionbalance.hs_v3 import onionbalance
 
 logger = log.get_logger()
 
+
 def main(args):
     """
     This is the entry point of v3 functionality.
@@ -44,4 +45,3 @@ def main(args):
     scheduler.run_forever()
 
     return 0
-

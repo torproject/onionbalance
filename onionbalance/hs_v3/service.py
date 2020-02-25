@@ -22,11 +22,13 @@ from onionbalance.hs_v3 import descriptor
 
 logger = log.get_logger()
 
+
 class OnionBalanceService(object):
     """
     Service represents a front-facing hidden service which should
     be load-balanced.
     """
+
     def __init__(self, service_config_data, config_path):
         """
         With 'config_data' straight out of the config file, create the service and its instances.
@@ -69,7 +71,7 @@ class OnionBalanceService(object):
         # Get onion address
         identity_pub_key = identity_priv_key.public_key()
         identity_pub_key_bytes = identity_pub_key.public_bytes(encoding=serialization.Encoding.Raw,
-                                                                        format=serialization.PublicFormat.Raw)
+                                                               format=serialization.PublicFormat.Raw)
         onion_address = HiddenServiceDescriptorV3.address_from_identity_key(identity_pub_key_bytes)
 
         logger.warning("Loaded onion %s from %s", onion_address, key_fname)
@@ -141,7 +143,7 @@ class OnionBalanceService(object):
         # Derive blinding parameter
         _, time_period_number = hashring.get_srv_and_time_period(is_first_desc)
         blinded_param = my_onionbalance.consensus.get_blinding_param(self._get_identity_pubkey_bytes(),
-                                                                             time_period_number)
+                                                                     time_period_number)
 
         # Get blinded key
         # TODO: hoho! this is dirty we are poking into internal stem API. We
@@ -161,7 +163,7 @@ class OnionBalanceService(object):
 
         if set(responsible_hsdirs) != set(previous_responsible_hsdirs):
             logger.info("\t HSDir set changed (%s vs %s)",
-                           set(responsible_hsdirs), set(previous_responsible_hsdirs))
+                        set(responsible_hsdirs), set(previous_responsible_hsdirs))
             return True
         else:
             logger.info("\t HSDir set remained the same")
@@ -228,8 +230,8 @@ class OnionBalanceService(object):
             raise NotEnoughIntros
 
         logger.info("We got %d intros from %d instances. We want %d intros ourselves (got: %d)",
-                       len(all_intros.get_intro_points_flat()), n_instances,
-                       n_intros_wanted, len(final_intros))
+                    len(all_intros.get_intro_points_flat()), n_instances,
+                    n_intros_wanted, len(final_intros))
 
         return final_intros
 
@@ -244,8 +246,8 @@ class OnionBalanceService(object):
 
         if not self._should_publish_descriptor_now(is_first_desc):
             logger.info("No reason to publish %s descriptor for %s",
-                           "first" if is_first_desc else "second",
-                           self.onion_address)
+                        "first" if is_first_desc else "second",
+                        self.onion_address)
             return
 
         try:
@@ -256,7 +258,7 @@ class OnionBalanceService(object):
         # Derive blinding parameter
         _, time_period_number = hashring.get_srv_and_time_period(is_first_desc)
         blinding_param = my_onionbalance.consensus.get_blinding_param(self._get_identity_pubkey_bytes(),
-                                                                             time_period_number)
+                                                                      time_period_number)
 
         try:
             desc = descriptor.OBDescriptor(self.onion_address, self.identity_priv_key,
@@ -282,8 +284,8 @@ class OnionBalanceService(object):
             return
 
         logger.info("Uploading %s descriptor for %s to %s",
-                       "first" if is_first_desc else "second",
-                       self.onion_address, responsible_hsdirs)
+                    "first" if is_first_desc else "second",
+                    self.onion_address, responsible_hsdirs)
 
         # Upload descriptor
         self._upload_descriptor(my_onionbalance.controller.controller,
@@ -327,11 +329,11 @@ class OnionBalanceService(object):
                                  "%s.onion.", self.onion_address)
                 break
 
-
-
     def _get_identity_pubkey_bytes(self):
         identity_pub_key = self.identity_priv_key.public_key()
         return identity_pub_key.public_bytes(encoding=serialization.Encoding.Raw,
                                              format=serialization.PublicFormat.Raw)
 
-class NotEnoughIntros(Exception): pass
+
+class NotEnoughIntros(Exception):
+    pass

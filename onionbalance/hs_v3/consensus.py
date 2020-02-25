@@ -17,6 +17,7 @@ from onionbalance.hs_v3 import tor_node
 
 logger = log.get_logger()
 
+
 class Consensus(object):
     """
     This represents a consensus object.
@@ -24,6 +25,7 @@ class Consensus(object):
     It's initialized once in startup and refreshed during the runtime using the
     refresh() method to get the latest consensus.
     """
+
     def __init__(self, do_refresh_consensus=True):
         # A list of tor_node:Node objects contained in the current consensus
         self.nodes = None
@@ -242,15 +244,15 @@ class Consensus(object):
         if my_onionbalance.is_testnet:
             voting_interval_secs = 20
         else:
-            voting_interval_secs = 60*60
+            voting_interval_secs = 60 * 60
 
         # Get current SR protocol round (an SR protocol run has 24 rounds)
         curr_round_slot = (beginning_of_current_round // voting_interval_secs) % 24
         time_elapsed_since_start_of_run = curr_round_slot * voting_interval_secs
 
         logger.debug("Current SRV proto run: Start of current round: %s. "
-                       "Time elapsed: %s (%s)", beginning_of_current_round,
-                       time_elapsed_since_start_of_run, voting_interval_secs)
+                     "Time elapsed: %s (%s)", beginning_of_current_round,
+                     time_elapsed_since_start_of_run, voting_interval_secs)
 
         return int(beginning_of_current_round - time_elapsed_since_start_of_run)
 
@@ -259,9 +261,9 @@ class Consensus(object):
 
         start_time_of_current_run = self.get_start_time_of_current_srv_run()
         if my_onionbalance.is_testnet:
-            return start_time_of_current_run - 24*20
+            return start_time_of_current_run - 24 * 20
         else:
-            return start_time_of_current_run - 24*3600
+            return start_time_of_current_run - 24 * 3600
 
     def get_start_time_of_next_time_period(self, valid_after=None):
         """
@@ -272,11 +274,13 @@ class Consensus(object):
         # Get start time of next time period
         time_period_length = self.get_time_period_length()
         next_time_period_num = self.get_next_time_period_num(valid_after)
-        start_of_next_tp_in_mins = next_time_period_num * time_period_length;
+        start_of_next_tp_in_mins = next_time_period_num * time_period_length
 
         # Apply rotation offset as specified by prop224 section [TIME-PERIODS]
         time_period_rotation_offset = self._get_srv_phase_duration()
 
-        return (start_of_next_tp_in_mins + time_period_rotation_offset)*60
+        return (start_of_next_tp_in_mins + time_period_rotation_offset) * 60
 
-class NoLiveConsensus(Exception): pass
+
+class NoLiveConsensus(Exception):
+    pass

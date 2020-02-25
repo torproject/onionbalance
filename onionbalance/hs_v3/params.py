@@ -1,6 +1,6 @@
 import os
 
-#### Parameters definining Onionbalance behavior
+# Parameters definining Onionbalance behavior
 
 # How long to wait for onionbalance to bootstrap before starting periodic
 # events (in seconds)
@@ -33,7 +33,7 @@ N_INTROS_PER_INSTANCE = 2
 INSTANCE_DESCRIPTOR_TOO_OLD = 60 * 60
 INSTANCE_DESCRIPTOR_TOO_OLD_TESTNET = 20
 
-#### Parameters defined by HSv3 spec and little-t-tor implementation
+# Parameters defined by HSv3 spec and little-t-tor implementation
 
 # Number of replicas per descriptor
 HSDIR_N_REPLICAS = 2
@@ -45,6 +45,6 @@ HSDIR_SPREAD_STORE = 4
 # little-t-tor)
 MAX_DESCRIPTOR_SIZE = 50000
 
-#### Misc parameters
+# Misc parameters
 
 DEFAULT_LOG_LEVEL = os.environ.get('ONIONBALANCE_LOG_LEVEL', 'warning')

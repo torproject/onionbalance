@@ -6,6 +6,7 @@ import onionbalance
 TOR_CONTROL_SOCKET = os.environ.get('ONIONBALANCE_TOR_CONTROL_SOCKET',
                                     '/var/run/tor/control')
 
+
 def get_common_argparser():
     """
     Parses and returns command line arguments.

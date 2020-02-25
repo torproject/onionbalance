@@ -9,6 +9,7 @@ from onionbalance.common import log
 
 logger = log.get_logger()
 
+
 def handle_new_status_event_wrapper(status_event):
     """
     A wrapper for this control port event. We need this so that we print
@@ -18,27 +19,31 @@ def handle_new_status_event_wrapper(status_event):
     from onionbalance.hs_v3.onionbalance import my_onionbalance
     try:
         my_onionbalance.handle_new_status_event(status_event)
-    except:
+    except BaseException:
         print(traceback.format_exc())
+
 
 def handle_new_desc_event_wrapper(desc_event):
     """  A wrapper for this control port event (see above) """
     from onionbalance.hs_v3.onionbalance import my_onionbalance
     try:
         my_onionbalance.handle_new_desc_event(desc_event)
-    except:
+    except BaseException:
         print(traceback.format_exc())
+
 
 def handle_new_desc_content_event_wrapper(desc_content_event):
     """  A wrapper for this control port event (see above) """
     from onionbalance.hs_v3.onionbalance import my_onionbalance
     try:
         my_onionbalance.handle_new_desc_content_event(desc_content_event)
-    except:
+    except BaseException:
         print(traceback.format_exc())
+
 
 class StemController(object):
     """This class is our interface to the control port"""
+
     def __init__(self, address, port):
         self.controller = onionbalance.common.util.connect_to_control_port(tor_address=address,
                                                                            tor_port=port)
@@ -64,4 +69,3 @@ class StemController(object):
 
     def shutdown(self):
         self.controller.close()
-

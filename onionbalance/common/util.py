@@ -10,6 +10,7 @@ from onionbalance.common import log
 
 logger = log.get_logger()
 
+
 def read_config_data_from_file(config_path):
     if os.path.exists(config_path):
         with open(config_path, 'r') as handle:
@@ -22,6 +23,7 @@ def read_config_data_from_file(config_path):
         sys.exit(1)
 
     return config_data
+
 
 def connect_to_control_port(tor_socket=None, tor_address=None, tor_port=0, control_password=None):
     controller = None
@@ -57,6 +59,7 @@ def connect_to_control_port(tor_socket=None, tor_address=None, tor_port=0, contr
                      "connection.")
 
     return controller
+
 
 def reauthenticate(controller, logger, control_password=None):
     """

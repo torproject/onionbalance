@@ -52,7 +52,7 @@ def initialize_services(controller, services_config):
         try:
             service_key = onionbalance.hs_v2.util.key_decrypt_prompt(service.get("key"))
         except ValueError as e:
-            logger.error("Got exception '%s'. Perhaps you are trying to load a v3 onion service "\
+            logger.error("Got exception '%s'. Perhaps you are trying to load a v3 onion service "
                          "but with --hs-version=v2 enabled?", e)
             sys.exit(1)
         except (IOError, OSError) as e:
@@ -107,4 +107,3 @@ def initialize_services(controller, services_config):
 
         # Store a global reference to current controller connection
         config.controller = controller
-

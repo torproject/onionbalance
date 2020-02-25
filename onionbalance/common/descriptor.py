@@ -4,6 +4,7 @@ from onionbalance.common import log
 
 logger = log.get_logger()
 
+
 def upload_descriptor(controller, signed_descriptor, hsdirs=None, v3_onion_address=None):
     """
     Upload descriptor via the Tor control port
@@ -24,7 +25,7 @@ def upload_descriptor(controller, signed_descriptor, hsdirs=None, v3_onion_addre
                                 for hsdir in hsdirs])
 
     if v3_onion_address:
-        server_args += " HSADDRESS=%s" % v3_onion_address.replace(".onion","")
+        server_args += " HSADDRESS=%s" % v3_onion_address.replace(".onion", "")
 
     # Stem will insert the leading + and trailing '\r\n.\r\n'
     response = controller.msg("HSPOST %s\n%s" %

@@ -7,10 +7,12 @@ from onionbalance.hs_v3 import descriptor as ob_descriptor
 
 logger = log.get_logger()
 
+
 class InstanceV3(onionbalance.common.instance.Instance):
     """
     This is a V3 onionbalance instance
     """
+
     def __init__(self, onion_address):
         # Get the controller
         from onionbalance.hs_v3.onionbalance import my_onionbalance
@@ -81,5 +83,10 @@ class InstanceV3(onionbalance.common.instance.Instance):
 
         return self.descriptor.get_intro_points()
 
-class InstanceHasNoDescriptor(Exception): pass
-class InstanceIsOffline(Exception): pass
+
+class InstanceHasNoDescriptor(Exception):
+    pass
+
+
+class InstanceIsOffline(Exception):
+    pass

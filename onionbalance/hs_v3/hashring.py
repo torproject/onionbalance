@@ -15,6 +15,7 @@ from onionbalance.hs_v3 import params
 
 logger = log.get_logger()
 
+
 def _time_between_tp_and_srv(valid_after):
     """
      Return True if we are currently in the time segment between a new time
@@ -45,6 +46,7 @@ def _time_between_tp_and_srv(valid_after):
                  valid_after, srv_start_time, tp_start_time)
     return True
 
+
 def get_srv_and_time_period(is_first_descriptor):
     """
     Return SRV and time period based on current consensus time
@@ -63,26 +65,27 @@ def get_srv_and_time_period(is_first_descriptor):
         if _time_between_tp_and_srv(valid_after):
             srv = my_onionbalance.consensus.get_previous_srv(previous_tp)
             tp = previous_tp
-            _case = 1 # just for debugging
+            _case = 1  # just for debugging
         else:
             srv = my_onionbalance.consensus.get_previous_srv(current_tp)
             tp = current_tp
-            _case = 2 # just for debugging
+            _case = 2  # just for debugging
     else:
         if _time_between_tp_and_srv(valid_after):
             srv = my_onionbalance.consensus.get_current_srv(current_tp)
             tp = current_tp
-            _case = 3 # just for debugging
+            _case = 3  # just for debugging
         else:
             srv = my_onionbalance.consensus.get_current_srv(next_tp)
             tp = next_tp
-            _case = 4 # just for debugging
+            _case = 4  # just for debugging
 
     srv_b64 = base64.b64encode(srv) if srv else None
     logger.debug("For valid_after %s we got SRV %s and TP %s (case: #%d)",
                  valid_after, srv_b64, tp, _case)
 
     return srv, tp
+
 
 def _get_hash_ring_for_descriptor(is_first_descriptor):
     """
@@ -108,6 +111,7 @@ def _get_hash_ring_for_descriptor(is_first_descriptor):
         node_hash_ring[hsdir_index] = node
 
     return node_hash_ring
+
 
 def _get_hidden_service_index(blinded_pubkey, replica_num, is_first_descriptor):
     """
@@ -166,7 +170,7 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
     logger.info("Initialized hash ring of size %d (blinded key: %s)",
                 len(node_hash_ring), base64.b64encode(blinded_pubkey))
 
-    for replica_num in range(1, params.HSDIR_N_REPLICAS+1):
+    for replica_num in range(1, params.HSDIR_N_REPLICAS + 1):
         # The HSDirs that we are gonna store this replica in
         replica_store_hsdirs = []
 
@@ -211,10 +215,12 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
     # Do a sanity check
     if my_onionbalance.is_testnet:
         # If we are on chutney it's normal to not have enough nodes to populate the hashring
-        assert(len(responsible_hsdirs) <= params.HSDIR_N_REPLICAS*params.HSDIR_SPREAD_STORE)
+        assert(len(responsible_hsdirs) <= params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
     else:
-        assert(len(responsible_hsdirs) == params.HSDIR_N_REPLICAS*params.HSDIR_SPREAD_STORE)
+        assert(len(responsible_hsdirs) == params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
 
     return responsible_hsdirs
 
-class EmptyHashRing(Exception): pass
+
+class EmptyHashRing(Exception):
+    pass

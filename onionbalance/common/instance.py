@@ -7,6 +7,7 @@ import onionbalance.common.util
 
 logger = log.get_logger()
 
+
 def helper_fetch_all_instance_descriptors(controller, instances, control_password=None):
     """
     Try fetch fresh descriptors for all HS instances
@@ -45,6 +46,7 @@ def helper_fetch_all_instance_descriptors(controller, instances, control_passwor
                 onionbalance.common.util.reauthenticate(controller, logger, control_password)
             else:
                 break
+
 
 class Instance(object):
     """

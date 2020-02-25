@@ -7,6 +7,7 @@ from onionbalance.common import log
 
 logger = log.get_logger()
 
+
 class Node(object):
     """
     Represents a Tor node.
@@ -19,6 +20,7 @@ class Node(object):
     state of the network at that point, and they stay like that until we get a
     new consensus.
     """
+
     def __init__(self, microdescriptor, routerstatus):
         assert(microdescriptor and routerstatus)
 
@@ -77,5 +79,10 @@ class Node(object):
 
         return hsdir_index
 
-class NoEd25519Identity(Exception): pass
-class NoHSDir(Exception): pass
+
+class NoEd25519Identity(Exception):
+    pass
+
+
+class NoHSDir(Exception):
+    pass

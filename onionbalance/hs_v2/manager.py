@@ -29,6 +29,7 @@ from onionbalance.hs_v2.instance import fetch_instance_descriptors
 
 logger = log.get_logger()
 
+
 def main(args):
     """
     Entry point when invoked over the command line.

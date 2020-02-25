@@ -19,6 +19,7 @@ from onionbalance.hs_v2 import util
 # Simplify the logging output for the command line tool
 logger = log.get_config_generator_logger()
 
+
 class ConfigGenerator(object):
     def __init__(self, args, interactive):
         self.args = args
@@ -42,7 +43,7 @@ class ConfigGenerator(object):
 
     def gather_information(self):
         self.hs_version = self.get_hs_version()
-        assert(self.hs_version in ['v2','v3'])
+        assert(self.hs_version in ['v2', 'v3'])
 
         # Check if output directory exists, if not try create it
         self.output_path = self.get_output_path()
@@ -130,7 +131,7 @@ class ConfigGenerator(object):
         if self.interactive:
             # Read key path from user
             master_key_path = input("Enter path to master service private key "
-                             "(Leave empty to generate a key): ")
+                                    "(Leave empty to generate a key): ")
         master_key_path = self.args.key or master_key_path
 
         # If a key path was specified make sure it exists
@@ -142,7 +143,6 @@ class ConfigGenerator(object):
                 sys.exit(1)
 
         return master_key_path
-
 
     def load_v3_master_key(self, master_key_path):
         if master_key_path:
@@ -289,7 +289,7 @@ class ConfigGenerator(object):
     def write_v2_instance_files(self):
         for i, (instance_address, instance_key) in enumerate(self.instances):
             # Create a numbered directory for instance
-            instance_dir = os.path.join(self.output_path, '{}{}'.format(self.tag, i+1))
+            instance_dir = os.path.join(self.output_path, '{}{}'.format(self.tag, i + 1))
             instance_key_dir = os.path.join(instance_dir, instance_address)
             util.try_make_dir(instance_key_dir)
             os.chmod(instance_key_dir, 1472)  # chmod 2700 in decimal
@@ -318,7 +318,7 @@ class ConfigGenerator(object):
         # Create YAML OnionBalance settings file for these instances
         service_data = {'key': '{}.key'.format(self.master_onion_address)}
         service_data['instances'] = [{'address': address,
-                                      'name': '{}{}'.format(self.tag, i+1)} for
+                                      'name': '{}{}'.format(self.tag, i + 1)} for
                                      i, (address, _) in enumerate(self.instances)]
         settings_data = {'services': [service_data]}
         config_yaml = yaml.safe_dump(settings_data, default_flow_style=False)
@@ -398,6 +398,7 @@ def parse_cmd_args():
                         version='onionbalance %s' % onionbalance.__version__)
 
     return parser
+
 
 def main():
     """
