@@ -71,12 +71,10 @@ class TestHashRing(unittest.TestCase):
         from onionbalance.hs_v3.onionbalance import my_onionbalance
         my_onionbalance.consensus = consensus
 
-        hash_ring = hashring.HSV3HashRing()
-
         previous_blinded_pubkey_hex = "063AEC5E1FD3025098F2DF71EF570B28D94B463FFCCB5EC6A9C061E38F551C6A"
         previous_blinded_pubkey_bytes = base64.b16decode(previous_blinded_pubkey_hex)
 
-        responsible_hsdirs = hash_ring.get_responsible_hsdirs(previous_blinded_pubkey_bytes, True)
+        responsible_hsdirs = hashring.get_responsible_hsdirs(previous_blinded_pubkey_bytes, True)
 
         i = 0
         for responsible_hsdir in responsible_hsdirs:
@@ -89,7 +87,7 @@ class TestHashRing(unittest.TestCase):
         current_blinded_pubkey_hex = "5DB624F2D74F103E6E8C6FBCCD074586EF5A5572F90673C00B77DEF94EC11499"
         current_blinded_pubkey_bytes = base64.b16decode(current_blinded_pubkey_hex)
 
-        responsible_hsdirs = hash_ring.get_responsible_hsdirs(current_blinded_pubkey_bytes, False)
+        responsible_hsdirs = hashring.get_responsible_hsdirs(current_blinded_pubkey_bytes, False)
 
         i = 0
         for responsible_hsdir in responsible_hsdirs:
