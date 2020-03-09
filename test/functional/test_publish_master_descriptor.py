@@ -103,6 +103,7 @@ def test_master_descriptor_publication(tmpdir):
     # Start an OnionBalance server and monitor for correct output with pexpect
     server = pexpect.spawnu("onionbalance",
                             args=[
+                                '--hs-version', 'v2',
                                 '-i', chutney_config.get('client_ip'),
                                 '-p', str(chutney_config.get('control_port')),
                                 '-c', config_file_path,

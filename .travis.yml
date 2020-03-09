@@ -1,6 +1,7 @@
 language: python
 sudo: required
-dist: trusty
+dist: bionic
+python: 3.7
 env:
   - TOXENV=py37 TEST=functional
   - TOXENV=style
