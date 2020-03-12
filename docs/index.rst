@@ -3,14 +3,16 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. image:: ./../obv3_logo.jpg
+
 Overview
 ========
 
-OnionBalance is the best way to horizontally load balance onion services across
-multiple backend Tor instances. This way the load of introduction and
-rendezvous requests get distributed across multiple hosts. OnionBalance
-provides load-balancing while also making onion services more resilient and
-reliable by eliminating single points-of-failure.
+OnionBalance is the best way to load balance onion services across multiple
+backend Tor instances. This way the load of introduction and rendezvous
+requests get distributed across multiple hosts. OnionBalance provides
+load-balancing while also making onion services more resilient and reliable by
+eliminating single points-of-failure.
 
 - Latest release: |version| (:ref:`changelog`)
 - GitHub: https://github.com/asn-d6/onionbalance/

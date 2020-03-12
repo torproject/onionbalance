@@ -140,15 +140,13 @@ more than 10 instances.
 -  **6-10 instances** - 10 IPs (selection from all instances)
 -  **11 or more instances** - 10 IPs (distinct descriptors - selection from all instances)
 
-If running in Complex mode, introduction points can be selected so as to
-obscure that a service is using OnionBalance. Always attempting to
-choose 3 introduction points per descriptor may make it more difficult
-for a passive observer to confirm that a service is running
+Always attempting to choose 3 introduction points per descriptor may make it
+more difficult for a passive observer to confirm that a service is running
 OnionBalance. However behavioral characteristics such as the rate of
-introduction point rotation may still allow a passive observer to
-distinguish an OnionBalance service from a standard Tor onion service.
-Selecting a smaller set of introduction points may impact on performance
-or reliability of the service.
+introduction point rotation may still allow a passive observer to distinguish
+an OnionBalance service from a standard Tor onion service.  Selecting a smaller
+set of introduction points may impact on performance or reliability of the
+service.
 
 -  **1 instance**  - 3 IPs
 -  **2 instances** - 3 IPs (2 IPs from one instance, 1 IP from the other

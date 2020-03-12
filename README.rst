@@ -1,13 +1,15 @@
+.. image:: obv3_logo.jpg
+
 OnionBalance
 ============
 
 Introduction
 ------------
 
-The OnionBalance software allows for Tor onion service requests to be
-distributed across multiple backend Tor instances. OnionBalance provides
-load-balancing while also making onion services more resilient and reliable by
-eliminating single points-of-failure.
+OnionBalance allows Tor onion service requests to be distributed across
+multiple backend Tor instances. OnionBalance provides load-balancing while also
+making onion services more resilient and reliable by eliminating single
+points-of-failure.
 
 |build-status| |docs|
 
@@ -46,4 +48,4 @@ Cearbhaill. Thanks for all the code!!!
 .. |docs| image:: https://readthedocs.org/projects/onionbalance-v3/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
-    :target: https://onionbalance.readthedocs.org/en/latest/
+    :target: https://onionbalance-v3.readthedocs.org/en/latest/
