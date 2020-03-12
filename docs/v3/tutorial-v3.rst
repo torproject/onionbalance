@@ -141,7 +141,7 @@ Debian package for onionbalance v3 and hence we will have to do it using git.
 
 .. code-block:: bash
 
-   $ git clone https://github.com/asn-d6/onionbalance
+   $ git clone https://gitlab.torproject.org/asn/onionbalance.git
    $ cd onionbalance
    $ sudo python3 setup.py install
    # Let's create an onionbalance config file
@@ -263,4 +263,6 @@ make sure that it's reachable all the time. Check your logs for any errors or
 bugs and let me know if you see any. If you want you can make onionbalance
 logging calmer by using the ``-v warning`` switch.
 
-If you find bugs or do any quick bugfixes, please submit them over Github!
+If you find bugs or do any quick bugfixes, please submit them over `Gitlab
+<https://gitlab.torproject.org/asn/onionbalance>`_ or `Github
+<https://github.com/asn-d6/onionbalance>`_!

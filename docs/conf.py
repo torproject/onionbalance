@@ -21,9 +21,9 @@ import sphinx.environment
 from docutils.utils import get_source_line
 
 # Documentation configuration
-__version__ = '0.1.8'
-__author__ = "Donncha O'Cearbhaill"
-__contact__ = "donncha@donncha.is"
+__version__ = '0.1.9'
+__author__ = "George Kadianakis, Donncha O'Cearbhaill"
+__contact__ = "asn@torproject.org"
 
 # Ignore the 'dev' version suffix.
 if __version__.endswith('dev'):
@@ -131,7 +131,7 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     "description": "Load balancing and redundancy for Tor hidden services.",
-    'github_user': 'DonnchaC',
+    'github_user': 'asn-d6',
     'github_repo': 'onionbalance',
     'github_button': False,
     'travis_button': False,
