@@ -144,7 +144,9 @@ Debian package for onionbalance v3 and hence we will have to do it using git.
    $ git clone https://gitlab.torproject.org/asn/onionbalance.git
    $ cd onionbalance
    $ sudo python3 setup.py install
-   # Let's create an onionbalance config file
+   # Let's create an onionbalance config file.
+   # -n indicates how many empty backend address slots will be created.
+   # These can be easily modified with a text editor at any time.
    $ onionbalance-config --hs-version v3 -n 2
 
 After the final command you should have a ``./config/config.yaml`` file
@@ -184,12 +186,16 @@ know <https://community.torproject.org/onion-services/setup/>`_ how to do
 that. So far so good but here comes the twist:
 
 1) Inside the HiddenService block of your torrc file, you need to add the
-   following line: ``HiddenServiceOnionBalanceInstance 1``.
+   following line: ``HiddenServiceOnionBalanceInstance 1``. Note that if you
+   do not have an existing v3 onion service and you are trying to create one
+   from scratch, you must first start Tor once without this torrc line, otherwise
+   it will fail to start. After the onion service was created, add this line to
+   your torrc file.
 
 2) In your hidden service directory where the ``hostname`` and
-   ``hs_ed25519_public_key`` files are living (you will need to startup Tor
-   once with the onion service enabled for the directory to get created) you
-   need to create a new file with the name 'ob_config' that has the following
+   ``hs_ed25519_public_key`` files are living (assuming you either moved them
+   previously, either started Tor as described at previous step to generate
+   them) you need to create a new file with the name 'ob_config' that has the following
    line inside:
 
    .. code-block:: console
@@ -197,15 +203,17 @@ that. So far so good but here comes the twist:
       MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion
 
    but substitute the onion address above with your frontend's onion address.
+   
+  3) Start (or restart if currently running) the Tor process to apply the changes.
 
 The points (1) and (2) above are **extremely important** and if you didn't do
 them correctly, nothing is gonna work. If you want to ensure that you did
-things correctly, start up Tor, and check that your *info* log file includes
+things correctly, start up Tor, and check that your *notice* log file includes
 the following line:
 
    .. code-block:: console
 
-     [info] ob_option_parse(): OnionBalance: MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
+     [notice] ob_option_parse(): OnionBalance: MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
 
 If you don't see that, then something went wrong. Please try again from the
 beginning of this section till you make it! This is the hardest part of the
@@ -239,11 +247,33 @@ look like this (for a setup with 3 backend instances):
           name: node3
         key: dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key
 
-Now let's fire up onionbalance by running the following command:
+Backend instances can be added, removed or edited at any time siimply by following
+the above format - address: <address> new line name: <name>. Onionbalance must be
+restarted after any change of the config file.
+Now let's fire up onionbalance by running the following command (assuming your
+`ControlPort` torrc setting is 6666, substitute if different):
 
    .. code-block:: console
 
       $ onionbalance -v info -c config/config.yaml -p 6666
+
+In order for this to work, the user you are trying to run onionbalance from 
+should have permissions to reach Tor's controlsocket. Othwerise, you will see
+an error like this:
+
+   .. code-block:: console
+
+      [ERROR]: Unable to authenticate on the Tor control connection: Authentication failed: unable to read '/run/tor/control.authcookie' ([Errno 13] Permission denied: '/run/tor/control.authcookie')
+
+As always, we do not recommend running anything as root, when you don't really 
+have to. In Debian, Tor is run by its dedicated user ``debian-tor``, but it's
+not the same for other Linux distributions, so you need to check. In Debian you
+can add the user you are running onionbalance from to the same sudoers group in
+order to gain permission:
+
+   .. code-block:: console
+
+      $ sudo adduser $USER debian-tor
 
 If everything went right, onionbalance should start running and after about 10
 minutes your frontend service should be reachable via the
