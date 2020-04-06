@@ -16,7 +16,7 @@ points-of-failure.
 Getting Started
 ---------------
 
-Installation and usage documentation is available at https://onionbalance-v3.readthedocs.org.
+Installation and usage documentation is available at https://onionbalance.readthedocs.org.
 
 Contact
 -------
@@ -48,4 +48,4 @@ Cearbhaill. Thanks for all the code!!!
 .. |docs| image:: https://readthedocs.org/projects/onionbalance-v3/badge/?version=latest
     :alt: Documentation Status
     :scale: 100%
-    :target: https://onionbalance-v3.readthedocs.org/en/latest/
+    :target: https://onionbalance.readthedocs.org/en/latest/
