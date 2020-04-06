@@ -37,15 +37,6 @@ onionbalance setup.
     Multiple OnionBalance management servers can be run simultaneously with
     the same master private key and configuration file to provide redundancy.
 
-.. _onionbalance_cli:
-
-Command-Line Options
---------------------
-
-.. autoprogram:: onionbalance.common.argparser:get_common_argparser()
-   :prog: onionbalance
-
-
 .. _configuration_file_format:
 
 Configuration File Format
@@ -206,11 +197,6 @@ Files
 config.yaml
   Fallback location for torrc, if /etc/onionbalance/config.yaml is
   not found.
-
-CLI Documentation
-~~~~~~~~~~~~~~~~~
-
-* :ref:`onionbalance <onionbalance_cli>`
 
 See Also
 --------

@@ -21,13 +21,6 @@ the other ``instance`` directories should be transferred to the respective
 backend servers.
 
 
-Command-Line Options
---------------------
-
-.. autoprogram:: onionbalance.config_generator.config_generator:parse_cmd_args()
-   :prog: onionbalance-config
-
-
 Files
 -----
 
