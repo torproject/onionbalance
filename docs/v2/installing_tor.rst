@@ -43,7 +43,7 @@ Backend Instances
 Each backend instance should be run a standard onion service which serves your
 website or other content. More information about configuring onion services is
 available in the Tor Project's
-`hidden service configuration guide <https://www.torproject.org/docs/tor-hidden-service.html.en>`_.
+`onion service configuration guide <https://www.torproject.org/docs/tor-hidden-service.html.en>`_.
 
 If you have used the ``onionbalance-config`` tool you should transfer the
 generated instance config files and keys to the Tor configuration directory

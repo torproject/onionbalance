@@ -130,7 +130,7 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {
-    "description": "Load balancing and redundancy for Tor hidden services.",
+    "description": "Load balancing and redundancy for Tor onion services.",
     'github_user': 'asn-d6',
     'github_repo': 'onionbalance',
     'github_button': False,
@@ -188,7 +188,7 @@ htmlhelp_basename = 'onionbalancedoc'
 # (source start file, name, description, authors, manual section).
 man_pages = [
     ('running-onionbalance', 'onionbalance',
-      'a Tor hidden service load balancer',
+      'a Tor onion service load balancer',
      ['%s <%s>' % (__author__, __contact__)], 1),
     ('onionbalance-config', 'onionbalance-config',
       'tool for generating onionbalance config files and keys',

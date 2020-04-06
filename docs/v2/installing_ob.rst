@@ -7,7 +7,7 @@ OnionBalance requires at least one system that is running the OnionBalance
 management server.
 
 The OnionBalance software does not need to be installed on the
-backend servers which provide the hidden service content (i.e. web site,
+backend servers which provide the onion service content (i.e. web site,
 IRC server etc.).
 
 OnionBalance is not yet packaged for most Linux and BSD. The tool can be

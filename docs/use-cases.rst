@@ -9,9 +9,9 @@ Current Deployments
 -------------------
 
 **SKS Keyserver Pool**
-  Kristian Fiskerstrand has set up a hidden service
+  Kristian Fiskerstrand has set up a onion service
   `keyserver pool <https://sks-keyservers.net/overview-of-pools.php#pool_tor>`_
-  which connects users to one of the available hidden service key servers.
+  which connects users to one of the available onion service key servers.
 
 
 
@@ -43,6 +43,6 @@ Research
 --------
 
 `Ceysun Sucu <https://github.com/csucu>`_ has analysed OnionBalance and other
-approaches to hidden service scaling in his masters thesis
-`Tor\: Hidden Service Scaling <https://www.benthamsgaze.org/wp-content/uploads/2015/11/sucu-torscaling.pdf>`_. The thesis provides a good overview of current approaches. It is a recommended read for those
-interested in higher performance hidden services.
+approaches to onion service scaling in his masters thesis
+`Tor\: Onion Service Scaling <https://www.benthamsgaze.org/wp-content/uploads/2015/11/sucu-torscaling.pdf>`_. The thesis provides a good overview of current approaches. It is a recommended read for those
+interested in higher performance onion services.

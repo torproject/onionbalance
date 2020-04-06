@@ -60,7 +60,7 @@ published master descriptor from the DHT if it exists. The master
 descriptor is used to prepopulate the introduction point set. The
 management server regularly polls the HSDir system for a descriptor for
 each of its instances. Currently polling occurs every 10 minutes. This
-polling period can be tuned for hidden services with shorter or longer
+polling period can be tuned for onion services with shorter or longer
 lasting introduction points.
 
 When the management server receives a new descriptor from the HSDir
@@ -69,7 +69,7 @@ system, it should before a number of checks to ensure that it is valid:
 -  Confirm that the descriptor has a valid signature and that the public
    key matches the instance that was requested.
 -  Confirm that the descriptor timestamp is equal or newer than the
-   previously received descriptor for that hidden service instance. This
+   previously received descriptor for that onion service instance. This
    reduces the ability of a HSDir to replay older descriptors for an
    instance which may contain expired introduction points.
 -  Confirm that the descriptor timestamp is not more than 4 hours in the

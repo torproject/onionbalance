@@ -37,7 +37,7 @@ master/config.yaml
 
 master/<ONION_ADDRESS>.key
   The private key which will become the public address and identity for your
-  hidden service. It is essential that you keep this key secure.
+  onion service. It is essential that you keep this key secure.
 
 master/torrc-server
   A sample Tor configuration file which can be used with the Tor instance
@@ -48,7 +48,7 @@ srv/torrc-instance
   needed for your backend Tor instance.
 
 srv/<ONION_ADDRESS>/private_key
-  Directory containing the private key for you backend hidden service instance.
+  Directory containing the private key for you backend onion service instance.
   This key is less critical as it can be rotated if lost or compromised.
 
 
