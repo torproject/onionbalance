@@ -147,7 +147,7 @@ Debian package for onionbalance v3 and hence we will have to do it using git.
    # Let's create an onionbalance config file
    $ onionbalance-config --hs-version v3 -n 2
 
-After the final command you should have a ``./config/master/config.yaml`` file
+After the final command you should have a ``./config/config.yaml`` file
 with a basic onionbalance configuration. The onion address of your frontend
 service can be found in the bottom of your config file. So if it says
 
@@ -243,7 +243,7 @@ Now let's fire up onionbalance by running the following command:
 
    .. code-block:: console
 
-      $ onionbalance -v info -c config/master/config.yaml -p 6666
+      $ onionbalance -v info -c config/config.yaml -p 6666
 
 If everything went right, onionbalance should start running and after about 10
 minutes your frontend service should be reachable via the

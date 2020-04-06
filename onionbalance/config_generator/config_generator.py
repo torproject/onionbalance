@@ -34,6 +34,7 @@ class ConfigGenerator(object):
         self.torrc_port_line = None
         self.instances = None
         self.master_dir = None
+        self.config_file_path = None
 
         # Gather information required to create config file!
         self.gather_information()
@@ -47,7 +48,11 @@ class ConfigGenerator(object):
 
         # Check if output directory exists, if not try create it
         self.output_path = self.get_output_path()
-        self.master_dir = os.path.join(self.output_path, 'master')
+
+        if self.hs_version == "v2":
+            self.master_dir = os.path.join(self.output_path, 'master')
+        else:
+            self.master_dir = self.output_path
 
         # Load the master key
         self.master_key, self.master_onion_address = self.load_master_key()
@@ -66,11 +71,23 @@ class ConfigGenerator(object):
         self.write_master_key_to_disk()
 
         assert(self.instances)
+
+        # Create the onionbalance config file
         self.create_yaml_config_file()
 
-        # Generate config files for each service instance
         if self.hs_version == 'v2':
+            # Generate config files for each service instance
             self.write_v2_instance_files()
+
+            logger.info("Done! Successfully generated an OnionBalance config and %d "
+                        "instance keys for service %s.onion.",
+                        self.num_instances, self.master_onion_address)
+
+        if self.hs_version == "v3":
+            logger.info("Done! Successfully generated an OnionBalance config for service %s.onion.",
+                        self.master_onion_address)
+            logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
+                        self.config_file_path)
 
     def get_output_path(self):
         """
@@ -93,9 +110,9 @@ class ConfigGenerator(object):
         # The output directory should be empty to avoid having conflict keys
         # or config files.
         if not util.is_directory_empty(output_path):
-            logger.error("The specified output directory is not empty. Please "
+            logger.error("The specified output directory '%s' is not empty. Please "
                          "delete any files and folders or specify another output "
-                         "directory.")
+                         "directory.", output_path)
             sys.exit(1)
 
         return output_path
@@ -323,19 +340,20 @@ class ConfigGenerator(object):
         settings_data = {'services': [service_data]}
         config_yaml = yaml.safe_dump(settings_data, default_flow_style=False)
 
-        config_file_path = os.path.join(self.master_dir, 'config.yaml')
-        with open(config_file_path, "w") as config_file:
+        self.config_file_path = os.path.join(self.master_dir, 'config.yaml')
+        with open(self.config_file_path, "w") as config_file:
             config_file.write(u"# OnionBalance Config File\n")
             config_file.write(config_yaml)
             logger.info("Wrote master service config file '%s'.",
-                        os.path.abspath(config_file_path))
+                        os.path.abspath(self.config_file_path))
 
-        # Write master service torrc
-        master_torrc_path = os.path.join(self.master_dir, 'torrc-server')
-        master_torrc_template = pkg_resources.resource_string(__name__,
+        if self.hs_version == 'v2':
+            # Write frontend service torrc
+            master_torrc_path = os.path.join(self.master_dir, 'torrc-server')
+            master_torrc_template = pkg_resources.resource_string(__name__,
                                                               'data/torrc-server')
-        with open(master_torrc_path, "w") as master_torrc_file:
-            master_torrc_file.write(master_torrc_template.decode('utf-8'))
+            with open(master_torrc_path, "w") as master_torrc_file:
+                master_torrc_file.write(master_torrc_template.decode('utf-8'))
 
 
 def parse_cmd_args():
@@ -426,9 +444,5 @@ def main():
 
     # Start the config generator!
     config_generator = ConfigGenerator(args, interactive)
-
-    logger.info("Done! Successfully generated an OnionBalance config and %d "
-                "instance keys for service %s.onion.",
-                config_generator.num_instances, config_generator.master_onion_address)
 
     sys.exit(0)

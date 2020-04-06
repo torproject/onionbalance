@@ -1,3 +1,9 @@
+0.2.0
+-----
+
+- Improve `onionbalance-config` for v3 onions. Simplify the output directory
+  (and change docs to reflect so) and the wizard suggestions.
+
 0.1.9
 -----
 
