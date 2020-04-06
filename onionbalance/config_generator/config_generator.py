@@ -351,7 +351,7 @@ class ConfigGenerator(object):
             # Write frontend service torrc
             master_torrc_path = os.path.join(self.master_dir, 'torrc-server')
             master_torrc_template = pkg_resources.resource_string(__name__,
-                                                              'data/torrc-server')
+                                                                  'data/torrc-server')
             with open(master_torrc_path, "w") as master_torrc_file:
                 master_torrc_file.write(master_torrc_template.decode('utf-8'))
 
@@ -443,6 +443,6 @@ def main():
     logger.setLevel(logging.__dict__[args.verbosity.upper()])
 
     # Start the config generator!
-    config_generator = ConfigGenerator(args, interactive)
+    ConfigGenerator(args, interactive)
 
     sys.exit(0)

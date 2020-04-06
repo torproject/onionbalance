@@ -3,7 +3,7 @@ sudo: required
 dist: bionic
 python: 3.7
 env:
-  - TOXENV=py37 TEST=functional
+  - TOXENV=py37
   - TOXENV=style
   - TOXENV=docs
 before_install:
