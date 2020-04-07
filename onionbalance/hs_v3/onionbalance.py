@@ -61,8 +61,11 @@ class Onionbalance(object):
 
     def initialize_services_from_config_data(self):
         services = []
-        for service in self.config_data['services']:
-            services.append(ob_service.OnionBalanceService(service, self.config_path))
+        try:
+            for service in self.config_data['services']:
+                services.append(ob_service.OnionBalanceService(service, self.config_path))
+        except ob_service.BadServiceInit:
+            sys.exit(1)
 
         if len(services) > 1:
             # We don't know how to handle more than a single service right now

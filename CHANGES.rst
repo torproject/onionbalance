@@ -1,6 +1,8 @@
 0.2.0
 -----
 
+- Allow migration from Tor to Onionbalance by reading tor private keys directly
+  using the 'key' directive in the YAML config file.
 - Improve `onionbalance-config` for v3 onions. Simplify the output directory
   (and change docs to reflect so) and the wizard suggestions.
 

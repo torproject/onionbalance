@@ -16,6 +16,7 @@ import onionbalance.hs_v3.instance
 from onionbalance.hs_v3 import params
 from onionbalance.hs_v3 import hashring
 from onionbalance.hs_v3 import descriptor
+from onionbalance.hs_v3 import tor_ed25519
 
 logger = log.get_logger()
 
@@ -33,8 +34,20 @@ class OnionBalanceService(object):
 
         Raise ValueError if the config file is not well formatted
         """
+        # Is our private key in Tor's extended key format?
+        self.is_priv_key_in_tor_format = False
+
         # Load private key from config
         self.identity_priv_key, self.onion_address = self._load_service_keys(service_config_data, config_path)
+
+        # This is an epic hack! If we are using keys in tor's extended format,
+        # we basically override stem's function for signing with blinded keys
+        # because it assumes that its keys are in standard non-extended
+        # format. To avoid a double key extension we use our own function...
+        # This will prove to be a problem if we ever move to multiple services
+        # per onionbalance, or if stem changes its code behind our backs.
+        if self.is_priv_key_in_tor_format:
+            stem.descriptor.hidden_service._blinded_sign = tor_ed25519._blinded_sign_with_tor_key
 
         # Now load up the instances
         self.instances = self._load_instances(service_config_data)
@@ -60,10 +73,25 @@ class OnionBalanceService(object):
         if not os.path.isabs(key_fname):
             key_fname = os.path.join(config_directory, key_fname)
 
-        with open(key_fname, 'rb') as handle:
-            pem_key_bytes = handle.read()
+        try:
+            with open(key_fname, 'rb') as handle:
+                pem_key_bytes = handle.read()
+        except EnvironmentError as e:
+            logger.critical("Unable to read service private key file ('%s')", e)
+            raise BadServiceInit
 
-        identity_priv_key = serialization.load_pem_private_key(pem_key_bytes, password=None, backend=default_backend())
+        # service private key
+        try:
+            identity_priv_key = serialization.load_pem_private_key(pem_key_bytes, password=None, backend=default_backend())
+        except ValueError as e:
+            logger.warning("Service private key not in OBv3 format ('%s'). Trying tor's format...", e)
+
+        try:
+            identity_priv_key = tor_ed25519.load_tor_key_from_disk(pem_key_bytes)
+            self.is_priv_key_in_tor_format = True
+        except ValueError as e:
+            logger.warning("Service private key not in Tor format either ('%s'). Aborting.", e)
+            raise BadServiceInit
 
         # Get onion address
         identity_pub_key = identity_priv_key.public_key()
@@ -333,4 +361,7 @@ class OnionBalanceService(object):
 
 
 class NotEnoughIntros(Exception):
+    pass
+
+class BadServiceInit(Exception):
     pass
