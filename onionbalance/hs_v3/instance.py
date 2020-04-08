@@ -28,6 +28,18 @@ class InstanceV3(onionbalance.common.instance.Instance):
         # When was the intro set of this instance last modified?
         self.intro_set_modified_timestamp = None
 
+    def has_onion_address(self, onion_address):
+        """
+        Return True if this instance has this onion address
+        """
+        # Strip the ".onion" part of the address if it exists since some
+        # subsystems don't use it (e.g. Tor sometimes omits it from control
+        # port responses)
+        my_onion_address = self.onion_address.replace(".onion", "")
+        their_onion_address = onion_address.replace(".onion", "")
+
+        return my_onion_address == their_onion_address
+
     def register_descriptor(self, descriptor_text, onion_address):
         """
         We received a descriptor (with 'descriptor_text') for 'onion_address'.

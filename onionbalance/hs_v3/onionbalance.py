@@ -185,15 +185,20 @@ class Onionbalance(object):
             my_onionbalance.fetch_instance_descriptors()
 
     def _address_is_instance(self, onion_address):
+        """
+        Return True if 'onion_address' is one of our instances.
+        """
         for service in self.services:
             for instance in service.instances:
-                if instance.onion_address == onion_address:
+                if instance.has_onion_address(onion_address):
                     return True
+        return False
 
     def _address_is_frontend(self, onion_address):
         for service in self.services:
-            if service.onion_address == onion_address:
+            if service.has_onion_address(onion_address):
                 return True
+        return False
 
     def handle_new_desc_event(self, desc_event):
         """
@@ -207,7 +212,7 @@ class Onionbalance(object):
             logger.debug("Successfully uploaded descriptor for %s to %s", desc_event.address, desc_event.directory)
         elif action == "FAILED":
             if self._address_is_instance(desc_event.address):
-                logger.info("Description fetch failed for instance %s to %s", desc_event.address, desc_event.directory)
+                logger.info("Description fetch failed for instance %s from %s", desc_event.address, desc_event.directory)
             elif self._address_is_frontend(desc_event.address):
                 logger.warning("Descriptor upload failed for frontend %s to %s", desc_event.address, desc_event.directory)
             else:
