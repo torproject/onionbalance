@@ -318,7 +318,7 @@ class OnionBalanceService(object):
                 break
             except stem.SocketClosed:
                 logger.error("Error uploading descriptor for service "
-                             "%s.onion, Socket is closed.",
+                             "%s.onion. Control port socket is closed.",
                              self.onion_address)
                 onionbalance.common.util.reauthenticate(controller, logger)
             except stem.ControllerError:

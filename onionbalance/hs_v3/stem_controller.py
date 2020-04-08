@@ -53,7 +53,10 @@ class StemController(object):
         Send the ACTIVE signal to the control port so that Tor does not become dormant.
         """
         # pylint: disable=no-member
-        self.controller.signal(Signal.ACTIVE)
+        try:
+            self.controller.signal(Signal.ACTIVE)
+        except stem.SocketClosed:
+            logger.warning("Can't connect to the control port to send ACTIVE signal. Moving on...")
 
     def get_md_consensus(self):
         return self.controller.get_info("dir/status-vote/current/consensus-microdesc")
