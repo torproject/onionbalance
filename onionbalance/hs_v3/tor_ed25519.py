@@ -1,13 +1,6 @@
-import base64
-import hashlib
-import struct
-import os
-
 from stem.util import ed25519
 
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey, Ed25519PrivateKey
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 
 from onionbalance.hs_v3.ext import ed25519_exts_ref
@@ -77,6 +70,8 @@ Since you can't go from the "extended" format to the "standard" format, we
 created these wrappers that act exactly like hazmat keys when it comes to their
 interface.
 """
+
+
 class TorEd25519PrivateKey(object):
     """
     Represents the private part of a blinded ed25519 key of an onion service
