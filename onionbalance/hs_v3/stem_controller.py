@@ -1,5 +1,6 @@
 import traceback
 
+import stem
 from stem.control import EventType
 from stem import Signal
 
