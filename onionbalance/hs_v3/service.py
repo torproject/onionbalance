@@ -33,7 +33,8 @@ class OnionBalanceService(object):
 
         Raise ValueError if the config file is not well formatted
         """
-        # Load private key from config
+        # Load private key and onion address from config
+        # (the onion_address also includes the ".onion")
         self.identity_priv_key, self.onion_address = self._load_service_keys(service_config_data, config_path)
 
         # Now load up the instances
@@ -43,6 +44,18 @@ class OnionBalanceService(object):
         self.first_descriptor = None
         # Second descriptor for this service (the one we uploaded last)
         self.second_descriptor = None
+
+    def has_onion_address(self, onion_address):
+        """
+        Return True if this service has this onion address
+        """
+        # Strip the ".onion" part of the address if it exists since some
+        # subsystems don't use it (e.g. Tor sometimes omits it from control
+        # port responses)
+        my_onion_address = self.onion_address.replace(".onion", "")
+        their_onion_address = onion_address.replace(".onion", "")
+
+        return my_onion_address == their_onion_address
 
     def _load_instances(self, service_config_data):
         instances = []
