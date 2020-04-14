@@ -61,8 +61,11 @@ class Onionbalance(object):
 
     def initialize_services_from_config_data(self):
         services = []
-        for service in self.config_data['services']:
-            services.append(ob_service.OnionBalanceService(service, self.config_path))
+        try:
+            for service in self.config_data['services']:
+                services.append(ob_service.OnionBalanceService(service, self.config_path))
+        except ob_service.BadServiceInit:
+            sys.exit(1)
 
         if len(services) > 1:
             # We don't know how to handle more than a single service right now
@@ -209,7 +212,7 @@ class Onionbalance(object):
             logger.debug("Successfully uploaded descriptor for %s to %s", desc_event.address, desc_event.directory)
         elif action == "FAILED":
             if self._address_is_instance(desc_event.address):
-                logger.info("Description fetch failed for instance %s from %s (%s)",
+                logger.info("Descriptor fetch failed for instance %s from %s (%s)",
                             desc_event.address, desc_event.directory, desc_event.reason)
             elif self._address_is_frontend(desc_event.address):
                 logger.warning("Descriptor upload failed for frontend %s to %s (%s)",

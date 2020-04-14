@@ -162,6 +162,20 @@ the frontend's onion address is: ``dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7
 For now, note down the frontend's onion address and let's move on to the next
 step!
 
+.. note::
+
+   If you need to migrate an already existing Tor onion service to
+   Onionbalance, you can use the `key` directive of the Onionbalance YAML
+   config file to point to the onion service's private key
+   (`hs_ed25519_secret_key`). You can then use your existing onion service's
+   address as your frontend's address.
+
+   So for example if you place your private key in
+   `./config/hs_keys/hs_ed25519_secret_key`, your YAML config file might
+   contain a `key` directive that looks like this:
+
+      key: hs_keys/hs_ed25519_secret_key
+
 Step 3: Configuring the backend instances
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
