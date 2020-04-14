@@ -204,8 +204,9 @@ class ConfigGenerator(object):
         """
         num_instances = None
         if self.interactive:
-            num_instances = input("Number of instance services to create "
-                                  "[{}]: ".format(self.args.num_instances))
+            limits = " (min: 1, max: 8)" if self.hs_version == "v3" else ""
+            num_instances = input("Number of instance services to create (default: %d)%s" %
+                                  (self.args.num_instances, limits))
             # Cast to int if a number was specified
             try:
                 num_instances = int(num_instances)
