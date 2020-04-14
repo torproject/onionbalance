@@ -204,7 +204,7 @@ that. So far so good but here comes the twist:
 
    but substitute the onion address above with your frontend's onion address.
 
-  3) Start (or restart if currently running) the Tor process to apply the changes.
+3) Start (or restart if currently running) the Tor process to apply the changes.
 
 The points (1) and (2) above are **extremely important** and if you didn't do
 them correctly, nothing is gonna work. If you want to ensure that you did

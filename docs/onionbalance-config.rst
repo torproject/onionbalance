@@ -34,15 +34,15 @@ master/<ONION_ADDRESS>.key
 
 master/torrc-server
   A sample Tor configuration file which can be used with the Tor instance
-  running on the management server.
+  running on the management server (v2-only).
 
 srv/torrc-instance
   A sample Tor config file which contains the Tor ``HiddenService*`` options
-  needed for your backend Tor instance.
+  needed for your backend Tor instance (v2-only).
 
 srv/<ONION_ADDRESS>/private_key
-  Directory containing the private key for you backend onion service instance.
-  This key is less critical as it can be rotated if lost or compromised.
+  Directory containing the private key for your backend onion service instance.
+  This key is less critical as it can be rotated if lost or compromised (v2-only).
 
 
 See Also
