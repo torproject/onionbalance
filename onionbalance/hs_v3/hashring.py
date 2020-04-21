@@ -213,7 +213,9 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
         # If we are on chutney it's normal to not have enough nodes to populate the hashring
         assert(len(responsible_hsdirs) <= params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
     else:
-        assert(len(responsible_hsdirs) == params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
+        if (len(responsible_hsdirs) != params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE):
+            logger.critical("Got the wrong number of responsible HSDirs: %d. Aborting", len(responsible_hsdirs))
+            raise EmptyHashRing
 
     return responsible_hsdirs
 
