@@ -1,5 +1,6 @@
 import argparse
 import logging
+import shutil
 import os
 import sys
 import getpass
@@ -15,6 +16,7 @@ from stem.descriptor.hidden_service import HiddenServiceDescriptorV3
 import onionbalance
 from onionbalance.common import log
 from onionbalance.hs_v2 import util
+from onionbalance.hs_v3 import tor_ed25519
 
 # Simplify the logging output for the command line tool
 logger = log.get_config_generator_logger()
@@ -35,6 +37,13 @@ class ConfigGenerator(object):
         self.instances = None
         self.master_dir = None
         self.config_file_path = None
+        self.master_key_path = None
+
+        # If this is set, it means that we read our private key from a tor
+        # instance and hence we should just copy the private key over instead
+        # of recreating the file (so that the Tor private key semantics are
+        # maintained (see self.is_priv_key_in_tor_format in service.py)
+        self.v3_loaded_key_from_file = False
 
         # Gather information required to create config file!
         self.gather_information()
@@ -133,22 +142,26 @@ class ConfigGenerator(object):
         return hs_version
 
     def load_master_key(self):
-        master_key_path = self.get_master_key_path()
+        """
+        Return the key and onion address of the frontend service.
+        """
+        self.master_key_path = self.get_master_key_path()
 
         # master_key_path is now either None (if no key path is specified) or
         # set to the actual path
         if self.hs_version == 'v2':
-            return self.load_v2_master_key(master_key_path)
+            return self.load_v2_master_key(self.master_key_path)
         else:
-            return self.load_v3_master_key(master_key_path)
+            return self.load_v3_master_key(self.master_key_path)
 
     def get_master_key_path(self):
         # Load master key if specified
         master_key_path = None
+        helper = " (i.e. path to 'hs_ed25519_secret_key')" if self.hs_version == 'v3' else ""
         if self.interactive:
             # Read key path from user
-            master_key_path = input("Enter path to master service private key "
-                                    "(Leave empty to generate a key): ")
+            master_key_path = input("Enter path to master service private key%s "
+                                    "(Leave empty to generate a key): " % (helper))
         master_key_path = self.args.key or master_key_path
 
         # If a key path was specified make sure it exists
@@ -161,10 +174,39 @@ class ConfigGenerator(object):
 
         return master_key_path
 
+    def _load_v3_master_key_from_file(self, master_key_path):
+        """
+        Load a private key straight from a Tor instance (no OBv3 keys supported)
+        and return the private key and onion address.
+        """
+        try:
+            with open(master_key_path, 'rb') as handle:
+                pem_key_bytes = handle.read()
+        except EnvironmentError as e:
+            logger.error("Unable to read service private key file ('%s')", e)
+            sys.exit(1)
+
+        try:
+            master_private_key = tor_ed25519.load_tor_key_from_disk(pem_key_bytes)
+        except ValueError:
+            logger.error("Please provide path to a valid Tor master key")
+            sys.exit(1)
+        identity_pub_key = master_private_key.public_key()
+        identity_pub_key_bytes = identity_pub_key.public_bytes(encoding=serialization.Encoding.Raw,
+                                                               format=serialization.PublicFormat.Raw)
+        master_onion_address = HiddenServiceDescriptorV3.address_from_identity_key(identity_pub_key_bytes)
+
+        # remove the trailing .onion
+        master_onion_address = master_onion_address.replace(".onion", "")
+
+        self.v3_loaded_key_from_file = True
+
+        return master_private_key, master_onion_address
+
     def load_v3_master_key(self, master_key_path):
-        if master_key_path: # load from v3 key from file
-            pass
-        else: # generate new key
+        if master_key_path: # load key from file
+            return self._load_v3_master_key_from_file(master_key_path)
+        else: # generate new v3 key
             master_private_key = Ed25519PrivateKey.generate()
             master_public_key = master_private_key.public_key()
             master_pub_key_bytes = master_public_key.public_bytes(encoding=serialization.Encoding.Raw,
@@ -173,7 +215,7 @@ class ConfigGenerator(object):
             # cut out the onion since that's what the rest of the code expects
             master_onion_address = master_onion_address.replace(".onion", "")
 
-        return master_private_key, master_onion_address
+            return master_private_key, master_onion_address
 
     def load_v2_master_key(self, master_key_path):
         if master_key_path:
@@ -183,11 +225,10 @@ class ConfigGenerator(object):
                 logger.error("The specified master private key %s could not "
                              "be loaded.", os.path.abspath(master_key))
                 sys.exit(1)
-            else:
-                master_onion_address = util.calc_onion_address(master_key)
-                logger.info("Successfully loaded a master key for service "
-                            "%s.onion.", master_onion_address)
 
+            master_onion_address = util.calc_onion_address(master_key)
+            logger.info("Successfully loaded a master key for service "
+                        "%s.onion.", master_onion_address)
         else:
             # No key specified, begin generating a new one.
             master_key = Crypto.PublicKey.RSA.generate(1024)
@@ -294,7 +335,16 @@ class ConfigGenerator(object):
             if self.hs_version == 'v2':
                 master_passphrase = self.get_master_key_passphrase()
                 key_file.write(self.master_key.exportKey(passphrase=master_passphrase))
+            elif self.hs_version == 'v3' and self.v3_loaded_key_from_file:
+                # If we loaded a v3 key from a file, copy the file directly
+                # (see loaded_key_from_file comments).
+                shutil.copyfile(self.master_key_path, master_key_file)
+                logger.info("Copied v3 master key from %s to %s.",
+                            self.master_key_path, master_key_file)
             else:
+                # If we generated our own v3 master key, write it to file. If
+                # 'master_key' does not exist, it means that we are loading it
+                # from a file, so we dont need to write it to disk.
                 master_key_formatted = self.master_key.private_bytes(encoding=serialization.Encoding.PEM,
                                                                      format=serialization.PrivateFormat.PKCS8,
                                                                      encryption_algorithm=serialization.NoEncryption())
