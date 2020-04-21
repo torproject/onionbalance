@@ -94,18 +94,22 @@ class OnionBalanceService(object):
             logger.critical("Unable to read service private key file ('%s')", e)
             raise BadServiceInit
 
-        # service private key
+        # Get the service private key
+        # First try with the OBv3 PEM format
+        identity_priv_key = None
         try:
             identity_priv_key = serialization.load_pem_private_key(pem_key_bytes, password=None, backend=default_backend())
         except ValueError as e:
             logger.warning("Service private key not in OBv3 format ('%s'). Trying tor's format...", e)
 
-        try:
-            identity_priv_key = tor_ed25519.load_tor_key_from_disk(pem_key_bytes)
-            self.is_priv_key_in_tor_format = True
-        except ValueError as e:
-            logger.warning("Service private key not in Tor format either ('%s'). Aborting.", e)
-            raise BadServiceInit
+        # If the key was not in OBv3 PEM format, try the Tor binary format
+        if not identity_priv_key:
+            try:
+                identity_priv_key = tor_ed25519.load_tor_key_from_disk(pem_key_bytes)
+                self.is_priv_key_in_tor_format = True
+            except ValueError as e:
+                logger.warning("Service private key not in Tor format either ('%s'). Aborting.", e)
+                raise BadServiceInit
 
         # Get onion address
         identity_pub_key = identity_priv_key.public_key()

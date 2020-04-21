@@ -162,10 +162,9 @@ class ConfigGenerator(object):
         return master_key_path
 
     def load_v3_master_key(self, master_key_path):
-        if master_key_path:
-            # load key
-            raise NotImplementedError
-        else:
+        if master_key_path: # load from v3 key from file
+            pass
+        else: # generate new key
             master_private_key = Ed25519PrivateKey.generate()
             master_public_key = master_private_key.public_key()
             master_pub_key_bytes = master_public_key.public_bytes(encoding=serialization.Encoding.Raw,
