@@ -92,6 +92,10 @@ class Onionbalance(object):
                 logger.error("Config file is bad. 'instances' is missing. Did you make it with onionbalance-config?")
                 sys.exit(1)
 
+            if not service["instances"]:
+                logger.error("Config file is bad. No backend instances are set. Onionbalance needs at least 1.")
+                sys.exit(1)
+
             for instance in service["instances"]:
                 if "address" not in instance:
                     logger.error("Config file is wrong. 'address' missing from instance.")
