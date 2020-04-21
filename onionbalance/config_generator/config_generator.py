@@ -116,13 +116,21 @@ class ConfigGenerator(object):
             logger.debug("Created the output directory '%s'.",
                          os.path.abspath(output_path))
 
-        # The output directory should be empty to avoid having conflict keys
-        # or config files.
-        if not util.is_directory_empty(output_path):
+        # Do some directory validation
+        if self.hs_version == 'v2' and not util.is_directory_empty(output_path):
+            # The output directory should be empty to avoid having conflict keys
+            # or config files.
             logger.error("The specified output directory '%s' is not empty. Please "
                          "delete any files and folders or specify another output "
                          "directory.", output_path)
             sys.exit(1)
+        elif self.hs_version == 'v3':
+            config_path = os.path.join(output_path, 'config.yaml')
+            if os.path.isfile(config_path):
+                logger.error("The specified output directory '%s' already contains a 'config.yaml' "
+                             "file. Please clean the directory before starting config_generator.",
+                             output_path)
+                sys.exit(1)
 
         return output_path
 
@@ -493,6 +501,9 @@ def main():
     logger.setLevel(logging.__dict__[args.verbosity.upper()])
 
     # Start the config generator!
-    ConfigGenerator(args, interactive)
+    try:
+        ConfigGenerator(args, interactive)
+    except KeyboardInterrupt:
+        logger.warning("\nConfig generator got interrupted! There might be temporary configuration files left over... Bye!")
 
     sys.exit(0)
