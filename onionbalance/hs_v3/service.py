@@ -1,4 +1,5 @@
 import datetime
+import sys
 import os
 
 from cryptography.hazmat.primitives import serialization
@@ -77,6 +78,13 @@ class OnionBalanceService(object):
         for config_instance in service_config_data['instances']:
             new_instance = onionbalance.hs_v3.instance.InstanceV3(config_instance['address'])
             instances.append(new_instance)
+
+        # Some basic validation
+        for instance in instances:
+            if self.has_onion_address(instance.onion_address):
+                logger.error("Config file error. Did you configure your frontend (%s) as an instance?",
+                             self.onion_address)
+                raise BadServiceInit
 
         return instances
 

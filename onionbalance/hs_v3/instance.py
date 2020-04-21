@@ -21,6 +21,7 @@ class InstanceV3(onionbalance.common.instance.Instance):
         # Initialize the common Instance class.
         super().__init__(controller, onion_address)
 
+        # Onion address does not contain the '.onion'.
         logger.warning("Loaded instance %s", onion_address)
 
         self.descriptor = None
