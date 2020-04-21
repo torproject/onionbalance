@@ -101,6 +101,10 @@ class Onionbalance(object):
                     logger.error("Config file is wrong. 'address' missing from instance.")
                     sys.exit(1)
 
+                if not instance["address"]:
+                    logger.error("Config file is bad. Address field is not set.")
+                    sys.exit(1)
+
                 # Validate that the onion address is legit
                 try:
                     _ = HiddenServiceDescriptorV3.identity_key_from_address(instance["address"])

@@ -112,6 +112,7 @@ class ConfigGenerator(object):
         except OSError:
             logger.exception("Problem encountered when trying to create the "
                              "output directory %s.", os.path.abspath(output_path))
+            sys.exit(1)
         else:
             logger.debug("Created the output directory '%s'.",
                          os.path.abspath(output_path))
@@ -253,7 +254,7 @@ class ConfigGenerator(object):
         num_instances = None
         if self.interactive:
             limits = " (min: 1, max: 8)" if self.hs_version == "v3" else ""
-            num_instances = input("Number of instance services to create (default: %d)%s" %
+            num_instances = input("Number of instance services to create (default: %d)%s: " %
                                   (self.args.num_instances, limits))
             # Cast to int if a number was specified
             try:
