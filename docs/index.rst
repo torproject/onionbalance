@@ -18,7 +18,7 @@ eliminating single points-of-failure.
 - Repository: https://gitlab.torproject.org/asn/onionbalance
 - GitHub mirror: https://github.com/asn-d6/onionbalance/
 - Issue tracker: https://github.com/asn-d6/onionbalance/issues
-- PyPI: **Not yet available**
+- PyPI: https://pypi.org/project/OnionBalance/
 - IRC: #tor-dev @ OFTC
 
 Quickstart
