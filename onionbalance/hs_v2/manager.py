@@ -53,7 +53,7 @@ def main(args):
                                                                   config.TOR_CONTROL_PASSWORD)
 
     status_socket = status.StatusSocket(config.STATUS_SOCKET_LOCATION)
-    signalhandler.SignalHandler(controller, status_socket)
+    signalhandler.SignalHandler('v2', controller, status_socket)
 
     # Disable no-member due to bug with "Instance of 'Enum' has no * member"
     # pylint: disable=no-member
