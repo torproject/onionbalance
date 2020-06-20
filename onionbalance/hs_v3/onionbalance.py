@@ -9,6 +9,7 @@ import onionbalance.common.instance
 from onionbalance.common import log
 
 from onionbalance.common import util
+from onionbalance.hs_v3 import manager
 
 from onionbalance.hs_v3 import stem_controller
 from onionbalance.hs_v3 import service as ob_service
@@ -79,39 +80,34 @@ class Onionbalance(object):
 
         # Do some basic validation
         if "services" not in config_data:
-            logger.error("Config file is bad. 'services' is missing. Did you make it with onionbalance-config?")
-            sys.exit(1)
+            raise ConfigError("Config file is bad. 'services' is missing. Did you make it with onionbalance-config?")
 
         # More validation
         for service in config_data["services"]:
             if "key" not in service:
-                logger.error("Config file is bad. 'key' is missing. Did you make it with onionbalance-config?")
-                sys.exit(1)
+                raise ConfigError("Config file is bad. 'key' is missing. Did you make it with onionbalance-config?")
 
             if "instances" not in service:
-                logger.error("Config file is bad. 'instances' is missing. Did you make it with onionbalance-config?")
-                sys.exit(1)
+                raise ConfigError("Config file is bad. 'instances' is missing. Did you make it with "
+                                  "onionbalance-config?")
 
             if not service["instances"]:
-                logger.error("Config file is bad. No backend instances are set. Onionbalance needs at least 1.")
-                sys.exit(1)
+                raise ConfigError("Config file is bad. No backend instances are set. Onionbalance needs at least 1.")
 
             for instance in service["instances"]:
                 if "address" not in instance:
-                    logger.error("Config file is wrong. 'address' missing from instance.")
-                    sys.exit(1)
+                    raise ConfigError("Config file is wrong. 'address' missing from instance.")
 
                 if not instance["address"]:
-                    logger.error("Config file is bad. Address field is not set.")
-                    sys.exit(1)
+                    raise ConfigError("Config file is bad. Address field is not set.")
 
                 # Validate that the onion address is legit
                 try:
                     _ = HiddenServiceDescriptorV3.identity_key_from_address(instance["address"])
                 except ValueError:
-                    logger.error("Cannot load instance with address: '%s'.", instance["address"])
-                    logger.error("If you are trying to run onionbalance for v2 onions, please use the --hs-version=v2 switch")
-                    sys.exit(1)
+                    raise ConfigError("Cannot load instance with address: '{}'. ".format(instance["address"]) +
+                                      "If you are trying to run onionbalance for v2 onions, please use the "
+                                      "--hs-version=v2 switch")
 
         return config_data
 
@@ -232,6 +228,22 @@ class Onionbalance(object):
             logger.debug("Requested descriptor for %s from %s...", desc_event.address, desc_event.directory)
         else:
             pass
+
+    def reload_config(self):
+        """
+        Reload configuration and reset job scheduler
+        """
+
+        try:
+            self.init_subsystems(self.args)
+            manager.init_scheduler(my_onionbalance)
+        except ConfigError as err:
+            logger.error("%s", err)
+            return
+
+
+class ConfigError(Exception):
+    pass
 
 
 my_onionbalance = Onionbalance()
