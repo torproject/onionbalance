@@ -333,6 +333,8 @@ class OnionBalanceService(object):
             logger.warning("Can't publish desc with no hash ring. Delaying...")
             return
 
+        desc.set_last_publish_attempt_ts(datetime.datetime.utcnow())
+
         logger.info("Uploading %s descriptor for %s to %s",
                     "first" if is_first_desc else "second",
                     self.onion_address, responsible_hsdirs)
