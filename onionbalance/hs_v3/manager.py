@@ -1,13 +1,21 @@
 import logging
+import os
 
 from onionbalance.common import scheduler
 from onionbalance.common import log
 from onionbalance.common import signalhandler
 
-from onionbalance.hs_v3 import params
+from onionbalance.hs_v3 import params, status
 from onionbalance.hs_v3 import onionbalance
 
 logger = log.get_logger()
+
+
+def status_socket_location(config_data):
+    location = os.environ.get('ONIONBALANCE_STATUS_SOCKET_LOCATION', '')
+    if location == '':
+        location = config_data.get('status-socket-location')
+    return location
 
 
 def main(args):
@@ -26,7 +34,9 @@ def main(args):
     my_onionbalance = onionbalance.my_onionbalance
     my_onionbalance.init_subsystems(args)
 
-    signalhandler.SignalHandler(my_onionbalance.controller.controller)
+    if status_socket_location(my_onionbalance.config_data) is not None:
+        status_socket = status.StatusSocket(status_socket_location(my_onionbalance.config_data), my_onionbalance)
+        signalhandler.SignalHandler(my_onionbalance.controller.controller, status_socket)
 
     # Schedule descriptor fetch and upload events
     if my_onionbalance.is_testnet:
