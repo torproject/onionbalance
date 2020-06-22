@@ -238,7 +238,7 @@ class Onionbalance(object):
             manager.init_scheduler(my_onionbalance)
         except ConfigError as err:
             logger.error("%s", err)
-            return
+            sys.exit(1)
 
 
 class ConfigError(Exception):
