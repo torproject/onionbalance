@@ -17,6 +17,8 @@ class BaseStatusSocket(object):
     For creating a Unix domain socket which emits a summary of the OnionBalance
     status when a client connects.
     """
+    def __init__(self, unix_socket_filename):
+        self.unix_socket_filename = unix_socket_filename
 
     def cleanup_socket_file(self):
         """

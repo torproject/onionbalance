@@ -38,8 +38,7 @@ optional, `uploaded*` and `publishAttempt*` for a service may be `null`.
 Meaning of non-self-explanatory fields:
 
 * `introSetModified` is the intro set last modified timestamp.
-* `                   "introPointsNum" : 3,
-` is the intro set size for a descriptor.
+* `introPointsNum` is the number of introduction points on the descriptor.
 * `publishAttemptFirstDescriptor` and `publishAttemptSecondDescriptor` are the last
   publish attempt timestamps for first and second descriptors.
 * `descriptorReceived` is the received descriptor timestamp.

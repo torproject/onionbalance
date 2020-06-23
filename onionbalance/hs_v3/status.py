@@ -101,7 +101,8 @@ class StatusSocket(BaseStatusSocket):
 
             {"services": [{"instances": [{"introModified": "2020-06-16 19:35:17", "ipsNum": 3, "onionAddress": "vkmiy6biqcyphtx5exswxl5sjus2vn2b6pzir7lz5akudhwbqk5muead.onion"}], "onionAddress": "bvy46sg2b5dokczabwv2pabqlrps3lppweyrebhat6gjieo2avojdvad.onion.onion", "timestamp": "2020-06-16 19:36:01"}]}
         """
-        self.unix_socket_filename = status_socket_location
+        super().__init__(status_socket_location)
+
         self.cleanup_socket_file()
 
         logger.debug("Creating status socket at %s", self.unix_socket_filename)

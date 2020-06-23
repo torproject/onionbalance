@@ -70,7 +70,8 @@ class StatusSocket(BaseStatusSocket):
               r523s7jx65ckitf4.onion [offline]
               v2q7ujuleky7odph.onion 2016-05-01 11:00:00 3 IPs
         """
-        self.unix_socket_filename = status_socket_location
+        super().__init__(status_socket_location)
+
         self.cleanup_socket_file()
 
         logger.debug("Creating status socket at %s", self.unix_socket_filename)
