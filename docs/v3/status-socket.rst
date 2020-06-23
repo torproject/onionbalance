@@ -1,3 +1,5 @@
+.. _status_socket:
+
 Status Socket
 =============
 

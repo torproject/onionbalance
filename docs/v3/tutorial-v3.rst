@@ -290,6 +290,8 @@ make sure that it's reachable all the time. Check your logs for any errors or
 bugs and let me know if you see any. If you want you can make onionbalance
 logging calmer by using the ``-v warning`` switch.
 
+You can also setup a :ref:`status_socket` to monitor Onionbalance.
+
 If you find bugs or do any quick bugfixes, please submit them over `Gitlab
 <https://gitlab.torproject.org/asn/onionbalance>`_ or `Github
 <https://github.com/asn-d6/onionbalance>`_!
