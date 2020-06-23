@@ -3,6 +3,11 @@
 Onionbalance v3 Installation Guide
 ======================================
 
+.. toctree::
+   :hidden:
+
+   status-socket
+
 .. contents:: Table of Contents
 
 
