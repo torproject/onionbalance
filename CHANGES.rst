@@ -1,3 +1,8 @@
+0.2.1
+-----
+
+- Introduce status socket support for v3 onions. Patch by vporton.
+
 0.2.0
 -----
 

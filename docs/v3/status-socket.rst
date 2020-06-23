@@ -26,8 +26,6 @@ Example:
              "onionAddress" : "bvy46sg2b5dokczabwv2pabqlrps3lppweyrebhat6gjieo2avojdvad.onion.onion",
              "publishAttemptFirstDescriptor" : "2020-06-16 20:00:12",
              "publishAttemptSecondDescriptor" : "2020-06-16 20:00:12"
-             "uploadedFirst" : "2020-06-16 20:00:12",
-             "uploadedSecond" : "2020-06-16 20:00:12"
           }
        ]
     }
@@ -44,8 +42,6 @@ Meaning of non-self-explanatory fields:
 ` is the intro set size for a descriptor.
 * `publishAttemptFirstDescriptor` and `publishAttemptSecondDescriptor` are the last
   publish attempt timestamps for first and second descriptors.
-* `uploadedFirst` and `uploadedSecond` are the last uploaded timestamps
-  for first and second descriptors.
 * `descriptorReceived` is the received descriptor timestamp.
 
 Configuration
@@ -56,7 +52,7 @@ Status socket filesystem location can be configured either by
 or by `ONIONBALANCE_STATUS_SOCKET_LOCATION` environment variable
 (environment takes precedence).
 
-If neither is given, teh socket file is not opened.
+If neither is given, the socket file is not opened.
 
 Example config file:
 
