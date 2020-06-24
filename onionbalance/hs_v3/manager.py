@@ -6,7 +6,7 @@ from onionbalance.common import scheduler
 from onionbalance.common import log
 from onionbalance.common import signalhandler
 
-from onionbalance.hs_v3 import params, status
+from onionbalance.hs_v3 import params
 from onionbalance.hs_v3 import onionbalance
 
 logger = log.get_logger()
@@ -40,6 +40,7 @@ def main(args):
         logger.error("%s", err)
         sys.exit(1)
 
+    from onionbalance.hs_v3 import status
     status_socket = None
     if status_socket_location(my_onionbalance.config_data) is not None:
         status_socket = status.StatusSocket(status_socket_location(my_onionbalance.config_data), my_onionbalance)
