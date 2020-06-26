@@ -4,10 +4,10 @@
 git clone https://git.torproject.org/chutney.git
 cd chutney
 # Stop chutney network if it is already running
-./chutney stop networks/hs-ob-v3
-./chutney configure networks/hs-ob-v3
-./chutney start networks/hs-ob-v3
-./chutney status networks/hs-ob-v3
+./chutney stop networks/hs-v3-min
+./chutney configure networks/hs-v3-min
+./chutney start networks/hs-v3-min
+./chutney status networks/hs-v3-min
 
 # Retry verify until hidden service subsystem is working
 n=0
