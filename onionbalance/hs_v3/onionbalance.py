@@ -235,7 +235,7 @@ class Onionbalance(object):
 
         try:
             self.init_subsystems(self.args)
-            manager.init_scheduler(my_onionbalance)
+            manager.init_scheduler(self)
         except ConfigError as err:
             logger.error("%s", err)
             sys.exit(1)
