@@ -2,10 +2,9 @@
 import base64
 import os
 import socket
-from types import SimpleNamespace
 
-import pytest
 import Crypto.PublicKey.RSA
+import pytest
 import yaml
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
@@ -116,7 +115,7 @@ def random_onionv3_address():
     public_key = private_key.public_key()
     public_bytes = public_key.public_bytes(encoding=Encoding.Raw, format=PublicFormat.Raw)
 
-    # checksum = H(".onion checksum" | | pubkey | | version)
+    # checksum = H(".onion checksum" || pubkey || version)
     checksumBytes = b''.join([b'.onion checksum', public_bytes, bytes([0x03])])
     digest = hashes.Hash(hashes.SHA3_256(), backend=default_backend())
     digest.update(checksumBytes)

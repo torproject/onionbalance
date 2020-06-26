@@ -13,10 +13,10 @@ cd chutney
 n=0
 until [ $n -ge 20 ]
 do
-  output=$(./chutney verify networks/hs-v3)
+  output=$(./chutney verify networks/hs-v3-min)
   # Check if chutney output included 'Transmission: Success'.
   if [[ $output == *"Transmission: Success"* ]]; then
-    hs_address=$(echo $output | grep -Po "([a-z2-7]{56}.onion:\d{2,5})")
+    hs_address=$(echo $output | grep -Po -m 1 "([a-z2-7]{56}.onion:\d{2,5})" | head -n1)
     client_address=$(echo $output | grep -Po -m 1 "(localhost:\d{2,5})" | head -n1)
     echo "HS system running with service available at $hs_address"
     export CHUTNEY_ONION_ADDRESS="$hs_address"

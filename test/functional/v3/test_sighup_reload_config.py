@@ -1,19 +1,15 @@
 # -*- coding: utf-8 -*-
-import os
 import signal
 import sys
 import time
 
-import Crypto.PublicKey.RSA
 import pexpect
 
-import onionbalance.hs_v2.util
-from .util import parse_chutney_enviroment, create_test_config_file_v3, update_test_config_file_v3, random_onionv3_address
+from test.functional.util import *
 
 def test_sighup_reload_config(tmpdir):
     """
-    Functional test to run OnionBalance, publish a master descriptor and
-    check that it can be retrieved from the DHT.
+    Functional test to run OnionBalance, send SIGHUP then check if config is reloaded
     """
 
     chutney_config = parse_chutney_enviroment()

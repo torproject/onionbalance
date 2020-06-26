@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-import sys
 import socket
+import sys
 import time
 
 import Crypto.PublicKey.RSA
@@ -8,7 +8,8 @@ import pexpect
 import stem.control
 
 import onionbalance.hs_v2.util
-from .util import parse_chutney_enviroment, create_test_config_file_v2
+from test.functional.util import *
+
 
 def test_master_descriptor_publication(tmpdir):
     """
@@ -17,6 +18,7 @@ def test_master_descriptor_publication(tmpdir):
     """
 
     chutney_config = parse_chutney_enviroment()
+    print(chutney_config)
     private_key = Crypto.PublicKey.RSA.generate(1024)
     master_onion_address = onionbalance.hs_v2.util.calc_onion_address(private_key)
 
@@ -35,12 +37,13 @@ def test_master_descriptor_publication(tmpdir):
                                 '-p', str(chutney_config.get('control_port')),
                                 '-c', config_file_path,
                                 '-v', 'debug',
+                                '--is-testnet'
                             ], logfile=sys.stdout, timeout=15)
 
     # Check for expected output from OnionBalance
     server.expect(u"Loaded the config file")
     server.expect(u"introduction point set has changed")
-    server.expect(u"Published a descriptor", timeout=120)
+    server.expect(u"Published a descriptor", timeout=60)
 
     # Check Tor control port gave an uploaded event.
 
@@ -67,7 +70,7 @@ def test_master_descriptor_publication(tmpdir):
         # Try retrieve a descriptor for each instance
         for instance_address in chutney_config.get('instances'):
             instance_descriptor = controller.get_hidden_service_descriptor(
-                instance_address)
+                instance_address.split(':')[0])
             instance_ips = instance_descriptor.introduction_points()
 
             # Check if all instance IPs were included in the master descriptor
@@ -93,7 +96,7 @@ def test_master_descriptor_publication(tmpdir):
 
     # Check each instance is in the output
     for instance_address in chutney_config.get('instances'):
-        assert instance_address in result_data
+        assert instance_address.split(':')[0] in result_data
 
     # Check all instances were online and all master descriptors uploaded
     assert master_onion_address in result_data
