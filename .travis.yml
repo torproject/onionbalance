@@ -4,8 +4,8 @@ dist: bionic
 python: 3.7
 env:
   - TOXENV=py37 TEST=unit
-  - TOXENV=py37 TEST=functional_v2
-  - TOXENV=py37 TEST=functional_v3
+#  - TOXENV=py37 TEST=functional_v2
+#  - TOXENV=py37 TEST=functional_v3
   - TOXENV=style
   - TOXENV=docs
 before_install:
