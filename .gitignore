@@ -2,6 +2,11 @@
 __pycache__/
 *.py[cod]
 
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+
 # C extensions
 *.so
 

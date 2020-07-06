@@ -48,7 +48,7 @@ class IntroductionPointSet(object):
 
         Iterates through all available introduction points and try
         to pick IPs breath first across all backend instances. The
-        intro point set is wrapped in `itertools.cycle` and will provided
+        intro point set is wrapped in `itertools.cycle` and will provide
         an infinite series of introduction points.
         """
 

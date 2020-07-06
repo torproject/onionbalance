@@ -33,7 +33,7 @@ def helper_fetch_all_instance_descriptors(controller, instances, control_passwor
 
     # Only try to retrieve the descriptor once for each unique instance
     # address. An instance may be configured under multiple master
-    # addressed. We do not want to request the same instance descriptor
+    # addresses. We do not want to request the same instance descriptor
     # multiple times.
     # OnionBalance will update all of the matching instances when a
     # descriptor is received.
@@ -79,7 +79,7 @@ class Instance(object):
             self.controller.get_hidden_service_descriptor(self.onion_address,
                                                           await_result=False)
         except stem.SocketClosed:
-            # Tor maybe restarting.
+            # Tor may be restarting
             raise
         except stem.DescriptorUnavailable:
             # Could not find the descriptor on the HSDir
