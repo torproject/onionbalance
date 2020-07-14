@@ -25,7 +25,7 @@ class IntroductionPointSetV3(intro_point_set.IntroductionPointSet):
     This class represents a set of introduction points (which are actually
     stem.descriptor.hidden_service.IntroductionPointV3 objects)
 
-    It gives us a nice way to compare sets of introduction points between them,
+    It gives us a nice way to compare sets of introduction poinst between them,
     to see if they are different.
 
     It also preserves all the functionality of

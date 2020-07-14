@@ -112,7 +112,7 @@ you use the latest official Tor master:
 
 .. code-block:: bash
 
-   $ git clone https://git.torproject.org/tor.git
+   $ git clone https://gitweb.torproject.org/tor.git
    $ cd tor
    $ ./autogen.sh && ./configure && make
 
