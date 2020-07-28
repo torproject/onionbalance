@@ -116,6 +116,8 @@ class OBDescriptor(V3Descriptor):
 
     def __init__(self, onion_address, identity_priv_key,
                  blinding_param, intro_points, is_first_desc):
+        # Timestamp of the last attempt to assemble this descriptor
+        self.last_publish_attempt_ts = None
         # Timestamp we last uploaded this descriptor
         self.last_upload_ts = None
         # Set of responsible HSDirs for last time we uploaded this descriptor
@@ -153,6 +155,9 @@ class OBDescriptor(V3Descriptor):
             raise BadDescriptor
 
         super().__init__(onion_address, v3_desc)
+
+    def set_last_publish_attempt_ts(self, last_publish_attempt_ts):
+        self.last_publish_attempt_ts = last_publish_attempt_ts
 
     def set_last_upload_ts(self, last_upload_ts):
         self.last_upload_ts = last_upload_ts

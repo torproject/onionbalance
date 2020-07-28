@@ -351,7 +351,6 @@ class OnionBalanceService(object):
                 except descriptor.BadDescriptor:
                     return
                 self._upload_descriptor(my_onionbalance.controller.controller, desc, hsdir)
-
         else:
             if not self._should_publish_descriptor_now(is_first_desc):
                 logger.info("No reason to publish %s descriptor for %s",
@@ -405,7 +404,9 @@ class OnionBalanceService(object):
             # so it can't be used to determine when descriptor upload succeeds
             desc.set_last_upload_ts(datetime.datetime.utcnow())
             desc.set_responsible_hsdirs(responsible_hsdirs)
+            desc.set_last_publish_attempt_ts(datetime.datetime.utcnow())
 
+            logger.info("Uploading %s descriptor for %s to %s", "first" if is_first_desc else "second", self.onion_address, responsible_hsdirs)
             # Set the descriptor
             if is_first_desc:
                 self.first_descriptor = desc

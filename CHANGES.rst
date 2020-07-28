@@ -1,3 +1,9 @@
+0.2.1
+-----
+
+- Introduce status socket support for v3 onions. Patch by vporton.
+- Sending a SIGHUP signal now reloads the v3 config. Patch by Peter Chung.
+
 0.2.0
 -----
 

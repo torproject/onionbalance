@@ -3,13 +3,12 @@
 Provide status over Unix socket
 Default path: /var/run/onionbalance/control
 """
-import os
-import errno
 import threading
 import socket
 from socketserver import BaseRequestHandler, ThreadingMixIn, UnixStreamServer
 
 from onionbalance.common import log
+from onionbalance.common.status import BaseStatusSocket
 from onionbalance.hs_v2 import config
 
 logger = log.get_logger()
@@ -54,7 +53,7 @@ class ThreadingSocketServer(ThreadingMixIn, UnixStreamServer):
     pass
 
 
-class StatusSocket(object):
+class StatusSocket(BaseStatusSocket):
     """
     Create a Unix domain socket which emits a summary of the OnionBalance
     status when a client connects.
@@ -71,7 +70,8 @@ class StatusSocket(object):
               r523s7jx65ckitf4.onion [offline]
               v2q7ujuleky7odph.onion 2016-05-01 11:00:00 3 IPs
         """
-        self.unix_socket_filename = status_socket_location
+        super().__init__(status_socket_location)
+
         self.cleanup_socket_file()
 
         logger.debug("Creating status socket at %s", self.unix_socket_filename)
@@ -88,27 +88,3 @@ class StatusSocket(object):
             logger.error("Could not start status socket at %s. Does the path "
                          "exist? Do you have permission?",
                          status_socket_location)
-
-    def cleanup_socket_file(self):
-        """
-        Try to remove the socket file if it exists already
-        """
-        try:
-            os.unlink(self.unix_socket_filename)
-        except OSError as e:
-            # Reraise if its not a FileNotFound exception
-            if e.errno != errno.ENOENT:
-                raise
-
-    def close(self):
-        """
-        Close the unix domain socket and remove its file
-        """
-        try:
-            self.server.shutdown()
-            self.server.server_close()
-            self.cleanup_socket_file()
-        except AttributeError:
-            pass
-        except OSError:
-            logger.exception("Error when removing the status socket")
