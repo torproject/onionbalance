@@ -111,9 +111,10 @@ Step 1: Configuring the frontend server (setting up Tor)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Let's start by logging into our frontend server and installing Tor. You will
-want a very recent version of Tor (so that that it includes `#31684
-<https://trac.torproject.org/projects/tor/ticket/31684>`_), and hence I suggest
-you use the latest official Tor master:
+want a very recent version of Tor (version 0.4.3.1 or newer is sufficient, as
+long as it includes `#31684
+<https://trac.torproject.org/projects/tor/ticket/31684>`_). If you want to use
+the latest official Tor master, you can do the following:
 
 .. code-block:: bash
 
@@ -141,8 +142,9 @@ purposes of this guide I assume that your control port is at 127.0.0.1:6666.
 Step 2: Configuring the frontend server (setting up onionbalance)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now, still on the frontend host we need to setup OnionBalance. There is no
-Debian package for onionbalance v3 and hence we will have to do it using git.
+Now, still on the frontend host we need to setup OnionBalance. If you wish to
+use the Debian package of onionbalance, you will need version 0.2.0-1 or newer
+to get v3 support, otherwise you can obtain it via git:
 
 .. code-block:: bash
 
