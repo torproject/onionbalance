@@ -44,8 +44,9 @@ def handle_new_desc_content_event_wrapper(desc_content_event):
 class StemController(object):
     """This class is our interface to the control port"""
 
-    def __init__(self, address, port):
-        self.controller = onionbalance.common.util.connect_to_control_port(tor_address=address,
+    def __init__(self, address=None, port=None, socket=None):
+        self.controller = onionbalance.common.util.connect_to_control_port(tor_socket=socket,
+                                                                           tor_address=address,
                                                                            tor_port=port)
         assert(self.controller.is_authenticated())
 

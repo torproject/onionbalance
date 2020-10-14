@@ -47,7 +47,7 @@ class Onionbalance(object):
             logger.warning("Onionbalance configured on a testnet!")
 
         # Create stem controller and connect to the Tor network
-        self.controller = stem_controller.StemController(args.ip, args.port)
+        self.controller = stem_controller.StemController(address=args.ip, port=args.port, socket=args.socket)
         self.consensus = ob_consensus.Consensus()
 
         # Initialize our service
