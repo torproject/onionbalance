@@ -5,7 +5,7 @@ import datetime
 import io
 import sys
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 
 import pytest
 from .util import builtin
@@ -71,7 +71,7 @@ PEM_ENCRYPTED = u'\n'.join([
     "-----END RSA PRIVATE KEY-----",
 ])
 
-PRIVATE_KEY = Crypto.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
+PRIVATE_KEY = Cryptodome.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
 UNIX_TIMESTAMP = 1435229421
 
 
@@ -222,13 +222,13 @@ def test_key_decrypt_prompt(mocker):
     # Valid private PEM key
     mocker.patch(builtin('open'), lambda *_: io.StringIO(PEM_PRIVATE_KEY))
     key = key_decrypt_prompt('private.key')
-    assert isinstance(key, Crypto.PublicKey.RSA._RSAobj)
+    assert isinstance(key, Cryptodome.PublicKey.RSA._RSAobj)
     assert key.has_private()
 
 
 def test_key_decrypt_prompt_public_key(mocker):
     # Valid public PEM key
-    private_key = Crypto.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
+    private_key = Cryptodome.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
     pem_public_key = private_key.publickey().exportKey().decode('utf-8')
     mocker.patch(builtin('open'), lambda *_: io.StringIO(pem_public_key))
 
@@ -244,7 +244,7 @@ def test_key_decrypt_prompt_malformed_key(mocker):
 
 def test_key_decrypt_prompt_incorrect_size(mocker):
     # Key which is not 1024 bits
-    private_key_1280 = Crypto.PublicKey.RSA.generate(1280)
+    private_key_1280 = Cryptodome.PublicKey.RSA.generate(1280)
     pem_key_1280 = private_key_1280.exportKey().decode('utf-8')
     mocker.patch(builtin('open'), lambda *_: io.StringIO(pem_key_1280))
     with pytest.raises(ValueError):
@@ -257,7 +257,7 @@ def test_key_decrypt_prompt_encrypted(mocker):
     # Load with correct password
     mocker.patch('getpass.getpass', lambda *_: u'password')
     key = key_decrypt_prompt('encrypted_private.key')
-    assert isinstance(key, Crypto.PublicKey.RSA._RSAobj)
+    assert isinstance(key, Cryptodome.PublicKey.RSA._RSAobj)
 
     # Load with incorrect password
     mocker.patch('getpass.getpass', lambda *_: u'incorrect password')

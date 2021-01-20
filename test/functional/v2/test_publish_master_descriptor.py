@@ -3,7 +3,7 @@ import socket
 import sys
 import time
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 import pexpect
 import stem.control
 
@@ -19,7 +19,7 @@ def test_master_descriptor_publication(tmpdir):
 
     chutney_config = parse_chutney_enviroment()
     print(chutney_config)
-    private_key = Crypto.PublicKey.RSA.generate(1024)
+    private_key = Cryptodome.PublicKey.RSA.generate(1024)
     master_onion_address = onionbalance.hs_v2.util.calc_onion_address(private_key)
 
     config_file_path = create_test_config_file_v2(

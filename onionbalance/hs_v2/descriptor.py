@@ -4,7 +4,10 @@ import base64
 import textwrap
 import datetime
 
-import Crypto.Util.number
+import Cryptodome.Util.number
+import Cryptodome.Signature.pkcs1_15
+import Cryptodome.Hash.SHA
+
 import stem.descriptor.hidden_service_descriptor
 
 from onionbalance.hs_v2 import util
@@ -162,9 +165,16 @@ def sign_descriptor(descriptor, service_key):
     else:
         descriptor = descriptor.strip() + token_descriptor_signature
 
-    descriptor_digest = hashlib.sha1(descriptor.encode('utf-8')).digest()
-    signature_with_headers = sign_digest(descriptor_digest, service_key)
-    return descriptor + signature_with_headers
+    # OLD:
+    # descriptor_digest = hashlib.sha1(descriptor.encode('utf-8')).digest()
+    # signature_with_headers = sign_digest(descriptor_digest, service_key)
+    # return descriptor + signature_with_headers
+    # NEW:
+    hasher = Cryptodome.Hash.SHA.new(descriptor.encode('utf-8'))
+    k = Cryptodome.Signature.pkcs1_15.new(PRIVATE_KEY)
+    signature_bytes = k.sign(hasher)
+    # TODO: base64 encode? Add headers?
+    # base64.b64encode(signature_bytes).decode("utf-8")
 
 
 def descriptor_received(descriptor_content):

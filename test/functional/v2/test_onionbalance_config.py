@@ -6,7 +6,7 @@ the created output files.
 import sys
 
 import pexpect
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 
 import onionbalance.hs_v2.util
 
@@ -137,7 +137,7 @@ def test_onionbalance_config_automatic_key_with_password(tmpdir, mocker):
     """
 
     # Create input private_key
-    private_key = Crypto.PublicKey.RSA.generate(1024)
+    private_key = Cryptodome.PublicKey.RSA.generate(1024)
     key_path = tmpdir.join('private_key')
     key_path.write(private_key.exportKey())
 
@@ -160,4 +160,4 @@ def test_onionbalance_config_automatic_key_with_password(tmpdir, mocker):
     # Check key decrypts and is valid
     mocker.patch('getpass.getpass', lambda *_: 'testpassword')
     output_key = onionbalance.hs_v2.util.key_decrypt_prompt(str(output_key_path))
-    assert isinstance(output_key, Crypto.PublicKey.RSA._RSAobj)
+    assert isinstance(output_key, Cryptodome.PublicKey.RSA._RSAobj)

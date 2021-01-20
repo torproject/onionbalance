@@ -7,7 +7,7 @@ each instance.
 import sys
 import logging
 
-# import Crypto.PublicKey
+# import Cryptodome.PublicKey
 import stem
 from stem.control import EventType
 
