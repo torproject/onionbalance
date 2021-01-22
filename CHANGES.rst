@@ -1,6 +1,7 @@
 0.2.1
 -----
 
+- v2 codebase now uses Cryptodome instead of the deprecated PyCrypto library.
 - v3 codebase is now more flexible when it comes to requiring a live
   consensus. This should increase the reachability of Onionbalance in scenarios
   where the network is having trouble establishing a new consensus.
