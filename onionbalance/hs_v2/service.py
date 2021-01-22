@@ -3,7 +3,7 @@ import datetime
 import time
 import base64
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 import stem
 
 from onionbalance.hs_v2 import descriptor
@@ -47,7 +47,7 @@ class Service(object):
         self.controller = controller
 
         # Service key must be a valid PyCrypto RSA key object
-        if isinstance(service_key, Crypto.PublicKey.RSA._RSAobj):
+        if isinstance(service_key, Cryptodome.PublicKey.RSA.RsaKey):
             self.service_key = service_key
         else:
             raise ValueError("Service key is not a valid RSA object.")

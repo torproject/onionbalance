@@ -3,7 +3,7 @@ import datetime
 import string
 
 import pytest
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 import stem.descriptor
 import stem.descriptor.hidden_service_descriptor
 import hashlib
@@ -199,7 +199,7 @@ SIGNED_DESCRIPTOR = u'\n'.join([
     '-----END SIGNATURE-----',
 ])
 
-PRIVATE_KEY = Crypto.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
+PRIVATE_KEY = Cryptodome.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
 UNIX_TIMESTAMP = 1435233021
 
 

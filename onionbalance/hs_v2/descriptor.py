@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import hashlib
 import base64
 import textwrap
 import datetime
@@ -181,7 +180,7 @@ def descriptor_received(descriptor_content):
         return None
 
     # Ensure the received descriptor matches the requested descriptor
-    permanent_key = Crypto.PublicKey.RSA.importKey(
+    permanent_key = Cryptodome.PublicKey.RSA.importKey(
         parsed_descriptor.permanent_key)
     descriptor_onion_address = util.calc_onion_address(permanent_key)
 

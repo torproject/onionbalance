@@ -7,7 +7,7 @@ import getpass
 import yaml
 import pkg_resources
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives import serialization
 
@@ -240,7 +240,7 @@ class ConfigGenerator(object):
                         "%s.onion.", master_onion_address)
         else:
             # No key specified, begin generating a new one.
-            master_key = Crypto.PublicKey.RSA.generate(1024)
+            master_key = Cryptodome.PublicKey.RSA.generate(1024)
             master_onion_address = util.calc_onion_address(master_key)
             logger.debug("Created a new master key for service %s.onion.",
                          master_onion_address)
@@ -307,7 +307,7 @@ class ConfigGenerator(object):
         instances = []
 
         for i in range(0, self.num_instances):
-            instance_key = Crypto.PublicKey.RSA.generate(1024)
+            instance_key = Cryptodome.PublicKey.RSA.generate(1024)
             instance_address = util.calc_onion_address(instance_key)
             logger.debug("Created a key for instance %s.onion.",
                          instance_address)
