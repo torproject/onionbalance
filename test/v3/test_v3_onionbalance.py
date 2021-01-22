@@ -1,8 +1,52 @@
+import datetime
 import unittest
 import mock
 from types import SimpleNamespace
 
+from onionbalance.hs_v3 import consensus
+
 from onionbalance.hs_v3.onionbalance import Onionbalance
+
+class DummyConsensus(consensus.Consensus):
+    def __init__(self):
+        self.consensus = None
+
+class OutdatedConsensus(unittest.TestCase):
+    def test_outdated_consensus(self):
+        current_time = datetime.datetime.fromtimestamp(10101010101)
+
+        consensus = DummyConsensus()
+
+        consensus.consensus = mock.Mock()
+        datetime.datetime = mock.Mock()
+
+        consensus.consensus.valid_after = current_time
+        # valid_until is 3 hours in the future
+        consensus.consensus.valid_until = current_time + datetime.timedelta(seconds=3600*3)
+
+        # Test some legitimate cases
+        datetime.datetime.utcnow.return_value = current_time
+        self.assertTrue(consensus.is_live())
+
+        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*11)
+        self.assertTrue(consensus.is_live())
+
+        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*12)
+        self.assertTrue(consensus.is_live())
+
+        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*24)
+        self.assertTrue(consensus.is_live())
+
+        datetime.datetime.utcnow.return_value = current_time - datetime.timedelta(seconds=3600*24)
+        self.assertTrue(consensus.is_live())
+
+        # Now test some bad cases. The is_live() function is lenient up to 24
+        # hours after the valid_until, or 24 hours before the valid_after
+        datetime.datetime.utcnow.return_value = consensus.consensus.valid_until + datetime.timedelta(seconds=3600*24+1)
+        self.assertFalse(consensus.is_live())
+
+        datetime.datetime.utcnow.return_value = consensus.consensus.valid_after - datetime.timedelta(seconds=3600*24+1)
+        self.assertFalse(consensus.is_live())
 
 class TestReloadConfig(unittest.TestCase):
 

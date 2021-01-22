@@ -67,12 +67,18 @@ class Consensus(object):
     def is_live(self):
         """
         Return True if the consensus is live.
+
+        This function replicates the behavior of the little-t-tor
+        networkstatus_get_reasonably_live_consensus() function.
         """
         if not self.consensus:
             return False
 
+        REASONABLY_LIVE_TIME = 24*60*60
         now = datetime.datetime.utcnow()
-        return self.consensus.valid_after <= now and now <= self.consensus.valid_until
+
+        return now >= self.consensus.valid_after - datetime.timedelta(seconds=REASONABLY_LIVE_TIME) and \
+            now <= self.consensus.valid_until + datetime.timedelta(seconds=REASONABLY_LIVE_TIME)
 
     def _initialize_nodes(self):
         """
