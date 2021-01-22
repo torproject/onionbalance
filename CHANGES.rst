@@ -1,6 +1,7 @@
 0.2.1
 -----
 
+- v2 codebase now uses Cryptodome instead of the deprecated PyCrypto library.
 - v3 support for connecting to the control port through a Unix socket. Patch by Peter Tripp.
 - Introduce status socket support for v3 onions. Patch by vporton.
 - Sending a SIGHUP signal now reloads the v3 config. Patch by Peter Chung.
