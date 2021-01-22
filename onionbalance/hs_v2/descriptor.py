@@ -3,7 +3,9 @@ import base64
 import textwrap
 import datetime
 
-import Crypto.Util.number
+import Cryptodome.Signature.pkcs1_15
+import Cryptodome.Hash.SHA
+
 import stem.descriptor.hidden_service_descriptor
 
 from onionbalance.hs_v2 import util
@@ -126,18 +128,35 @@ def make_public_key_block(key):
         '-----END RSA PUBLIC KEY-----'])
     return pub_with_headers
 
+def pad_msg_with_tor_pkcs(msg_hash, emLen, with_hash_parameters=True):
+    """
+    Tor requires PKCS#1 1.5 padding for descriptor signatures but does not
+    include the algorithmIdentifier as specified in RFC3447.
 
-def sign_digest(digest, private_key):
+    Unfortunately, most crypto libraries add that algorithmIdentifier by force
+    and hence we need this function for monkey patching.
+    """
+    digestInfo = msg_hash.digest()
+    PS = b'\xFF' * (emLen - len(digestInfo) - 3)
+    return b'\x00\x01' + PS + b'\x00' + digestInfo
+
+def sign(body, private_key):
     """
     Sign, base64 encode, wrap and add Tor signature headers
 
     The message digest is PKCS1 padded without the optional
     algorithmIdentifier section.
     """
+    # First monkey-patch cryptodome to do the Tor PKCS#1 padding
+    Cryptodome.Signature.pkcs1_15._EMSA_PKCS1_V1_5_ENCODE = pad_msg_with_tor_pkcs
 
-    digest = util.add_pkcs1_padding(digest)
-    (signature_long, ) = private_key.sign(digest, None)
-    signature_bytes = Crypto.Util.number.long_to_bytes(signature_long, 128)
+    # The RSA signing API requires a hasher as input
+    hasher = Cryptodome.Hash.SHA1.new(body)
+    # Now do the signing
+    signer = Cryptodome.Signature.pkcs1_15.new(private_key)
+    signature_bytes = signer.sign(hasher)
+
+    # Convert the signature to the base64 format that our descriptors like
     signature_base64 = base64.b64encode(signature_bytes).decode('utf-8')
     signature_base64 = textwrap.fill(signature_base64, 64)
 
@@ -149,7 +168,7 @@ def sign_digest(digest, private_key):
     return signature_with_headers
 
 
-def sign_descriptor(descriptor, service_key):
+def sign_descriptor(descriptor, service_privkey):
     """
     Sign or resign a provided hidden service descriptor
     """
@@ -161,10 +180,8 @@ def sign_descriptor(descriptor, service_key):
     else:
         descriptor = descriptor.strip() + token_descriptor_signature
 
-    descriptor_digest = hashlib.sha1(descriptor.encode('utf-8')).digest()
-    signature_with_headers = sign_digest(descriptor_digest, service_key)
+    signature_with_headers = sign(descriptor.encode('utf-8'), service_privkey)
     return descriptor + signature_with_headers
-
 
 def descriptor_received(descriptor_content):
     """

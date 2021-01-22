@@ -7,23 +7,12 @@ import base64
 import binascii
 import os
 
-# import Crypto.Util
-import Crypto.PublicKey
-
-
-def add_pkcs1_padding(message):
-    """Add PKCS#1 padding to **message**."""
-    padding = b''
-    typeinfo = b'\x00\x01'
-    separator = b'\x00'
-    padding = b'\xFF' * (125 - len(message))
-    padded_message = typeinfo + padding + separator + message
-    assert len(padded_message) == 128
-    return padded_message
+# import Cryptodome.Util
+import Cryptodome.PublicKey
 
 
 def get_asn1_sequence(rsa_key):
-    seq = Crypto.Util.asn1.DerSequence()
+    seq = Cryptodome.Util.asn1.DerSequence()
     seq.append(rsa_key.n)
     seq.append(rsa_key.e)
     asn1_seq = seq.encode()
