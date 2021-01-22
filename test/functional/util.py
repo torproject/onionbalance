@@ -3,7 +3,7 @@ import base64
 import os
 import socket
 
-import Crypto.PublicKey.RSA
+import Cryptodome.PublicKey.RSA
 import pytest
 import yaml
 from cryptography.hazmat.backends import default_backend
@@ -58,7 +58,7 @@ def create_test_config_file_v2(tmppath, private_key=None, instances=None):
     """
 
     if not private_key:
-        private_key = Crypto.PublicKey.RSA.generate(1024)
+        private_key = Cryptodome.PublicKey.RSA.generate(1024)
 
     # Write private key file
     key_path = tmppath.join('private_key')

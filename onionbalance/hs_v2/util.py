@@ -124,14 +124,14 @@ def key_decrypt_prompt(key_file, retries=3):
                 key_passphrase = getpass.getpass(
                     "Enter the password for the private key (%s): " % key_file)
             try:
-                rsa_key = Crypto.PublicKey.RSA.importKey(
+                rsa_key = Cryptodome.PublicKey.RSA.importKey(
                     pem_key, passphrase=key_passphrase)
             except ValueError:
                 # Key not decrypted correctly, prompt for passphrase again
                 continue
             else:
                 # .. todo:: Check the loaded key size in a more reasonable way.
-                if rsa_key.has_private() and rsa_key.size() in (1023, 1024):
+                if rsa_key.has_private() and rsa_key.size_in_bits() == 1024:
                     return rsa_key
                 else:
                     raise ValueError("The specified key was not a 1024 bit "
