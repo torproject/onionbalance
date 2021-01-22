@@ -11,6 +11,7 @@ import pytest
 from .util import builtin
 
 from onionbalance.hs_v2.util import *
+from onionbalance.hs_v2.descriptor import pad_msg_with_tor_pkcs
 
 
 PEM_PRIVATE_KEY = u'\n'.join([
@@ -71,20 +72,25 @@ PEM_ENCRYPTED = u'\n'.join([
     "-----END RSA PRIVATE KEY-----",
 ])
 
-PRIVATE_KEY = Crypto.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
+PRIVATE_KEY = Cryptodome.PublicKey.RSA.importKey(PEM_PRIVATE_KEY)
 UNIX_TIMESTAMP = 1435229421
 
 
 def test_add_pkcs1_padding():
-    message = unhexlify(b'f42687f4c3c017ce1e14eceb2ff153ff2d0a9e96')
-    padded_message = add_pkcs1_padding(message)
+    hasher = Cryptodome.Hash.SHA1.new(b"got me thinking")
+    padded_message = pad_msg_with_tor_pkcs(hasher, 128)
+
+    """
+    $ echo -n "got me thinking"| sha1sum
+    65a4a767b502df42594acf2de0a0cee109ba338e  -
+    """
 
     assert len(padded_message) == 128
     assert (padded_message == unhexlify(
         b'0001ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
         b'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
         b'ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff'
-        b'ffffffffffffffffffffff00f42687f4c3c017ce1e14eceb2ff153ff2d0a9e96'
+        b'ffffffffffffffffffffff0065a4a767b502df42594acf2de0a0cee109ba338e'
     ))
 
 

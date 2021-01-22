@@ -299,17 +299,6 @@ def test_make_public_key_block():
     assert (hashlib.sha1(public_key_block.encode('utf-8')).hexdigest() ==
             '2cf75da5e1a198ca7cb3db7b0baa6708feaf26e8')
 
-
-def test_sign_digest():
-    """
-    Test signing a SHA1 digest
-    """
-    test_digest = unhexlify('2a447f044d2f8d8127e8133b2d545450bc58760e')
-    signature = descriptor.sign_digest(test_digest, PRIVATE_KEY)
-    assert (hashlib.sha1(signature.encode('utf-8')).hexdigest() ==
-            '27bee071a7e0f0af26a1c176f0c0af00854c05c1')
-
-
 def test_sign_descriptor():
     """
     Test signing a descriptor
