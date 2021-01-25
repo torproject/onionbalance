@@ -74,7 +74,7 @@ class Consensus(object):
         if not self.consensus:
             return False
 
-        REASONABLY_LIVE_TIME = 24*60*60
+        REASONABLY_LIVE_TIME = 24 * 60 * 60
         now = datetime.datetime.utcnow()
 
         return now >= self.consensus.valid_after - datetime.timedelta(seconds=REASONABLY_LIVE_TIME) and \
