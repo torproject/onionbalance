@@ -21,7 +21,7 @@ import sphinx.environment
 from docutils.utils import get_source_line
 
 # Documentation configuration
-__version__ = '0.2.0'
+__version__ = '0.2.1'
 __author__ = "George Kadianakis, Donncha O'Cearbhaill"
 __contact__ = "asn@torproject.org"
 
