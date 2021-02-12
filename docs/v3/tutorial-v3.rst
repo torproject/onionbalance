@@ -148,7 +148,7 @@ to get v3 support, otherwise you can obtain it via git:
 
 .. code-block:: bash
 
-   $ git clone https://gitlab.torproject.org/asn/onionbalance.git
+   $ git clone https://gitlab.torproject.org/tpo/core/onionbalance.git
    $ cd onionbalance
    $ sudo python3 setup.py install
    # Let's create an onionbalance config file.
@@ -300,7 +300,7 @@ logging calmer by using the ``-v warning`` switch.
 You can also setup a :ref:`status_socket` to monitor Onionbalance.
 
 If you find bugs or do any quick bugfixes, please submit them over `Gitlab
-<https://gitlab.torproject.org/asn/onionbalance>`_ or `Github
+<https://gitlab.torproject.org/tpo/core/onionbalance>`_ or `Github
 <https://github.com/asn-d6/onionbalance>`_!
 
 Troubleshooting
