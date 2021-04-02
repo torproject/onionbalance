@@ -50,8 +50,8 @@ setup(
         'future>=0.14.0',
         'setproctitle',
         'cryptography>=2.5',
-        ],
-    tests_require=['tox', 'pytest-mock', 'pytest', 'mock', 'pexpect'],
+    ],
+    tests_require=['pytest-mock', 'pytest', 'mock', 'pexpect', 'pylint', 'flake8', 'coveralls'],
     package_data={'onionbalance.config_generator': ['data/*']},
     include_package_data=True,
     classifiers=[

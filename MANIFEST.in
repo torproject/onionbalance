@@ -1,7 +1,6 @@
 include README.rst
 include COPYING
 include requirements.txt
-include tox.ini
 recursive-include docs *.rst
 recursive-include onionbalance/config_generator/data *
 include versioneer.py
