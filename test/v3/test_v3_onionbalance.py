@@ -18,35 +18,34 @@ class OutdatedConsensus(unittest.TestCase):
         consensus = DummyConsensus()
 
         consensus.consensus = mock.Mock()
-        datetime.datetime = mock.Mock()
+        with mock.patch("datetime.datetime") as mock_datetime:
+            consensus.consensus.valid_after = current_time
+            # valid_until is 3 hours in the future
+            consensus.consensus.valid_until = current_time + datetime.timedelta(seconds=3600 * 3)
 
-        consensus.consensus.valid_after = current_time
-        # valid_until is 3 hours in the future
-        consensus.consensus.valid_until = current_time + datetime.timedelta(seconds=3600*3)
+            # Test some legitimate cases
+            mock_datetime.utcnow.return_value = current_time
+            self.assertTrue(consensus.is_live())
 
-        # Test some legitimate cases
-        datetime.datetime.utcnow.return_value = current_time
-        self.assertTrue(consensus.is_live())
+            mock_datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600 * 11)
+            self.assertTrue(consensus.is_live())
 
-        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*11)
-        self.assertTrue(consensus.is_live())
+            mock_datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600 * 12)
+            self.assertTrue(consensus.is_live())
 
-        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*12)
-        self.assertTrue(consensus.is_live())
+            mock_datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600 * 24)
+            self.assertTrue(consensus.is_live())
 
-        datetime.datetime.utcnow.return_value = current_time + datetime.timedelta(seconds=3600*24)
-        self.assertTrue(consensus.is_live())
+            mock_datetime.utcnow.return_value = current_time - datetime.timedelta(seconds=3600 * 24)
+            self.assertTrue(consensus.is_live())
 
-        datetime.datetime.utcnow.return_value = current_time - datetime.timedelta(seconds=3600*24)
-        self.assertTrue(consensus.is_live())
+            # Now test some bad cases. The is_live() function is lenient up to 24
+            # hours after the valid_until, or 24 hours before the valid_after
+            mock_datetime.utcnow.return_value = consensus.consensus.valid_until + datetime.timedelta(seconds=3600 * 24 + 1)
+            self.assertFalse(consensus.is_live())
 
-        # Now test some bad cases. The is_live() function is lenient up to 24
-        # hours after the valid_until, or 24 hours before the valid_after
-        datetime.datetime.utcnow.return_value = consensus.consensus.valid_until + datetime.timedelta(seconds=3600*24+1)
-        self.assertFalse(consensus.is_live())
-
-        datetime.datetime.utcnow.return_value = consensus.consensus.valid_after - datetime.timedelta(seconds=3600*24+1)
-        self.assertFalse(consensus.is_live())
+            mock_datetime.utcnow.return_value = consensus.consensus.valid_after - datetime.timedelta(seconds=3600 * 24 + 1)
+            self.assertFalse(consensus.is_live())
 
 class TestReloadConfig(unittest.TestCase):
 
