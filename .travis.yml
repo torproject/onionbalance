@@ -4,6 +4,7 @@ dist: bionic
 python: 3.7
 env:
   - TEST=unit
+  - TEST=functional_v3
 before_install:
   # Install tor and chutney if doing functional tests
   - if [[ $TEST == functional* ]]; then ./test/scripts/install-tor.sh; fi
