@@ -5,11 +5,7 @@ python: 3.7
 env:
   - TEST=unit
   - TEST=functional_v3
-before_install:
-  # Install tor and chutney if doing functional tests
-  - if [[ $TEST == functional* ]]; then ./test/scripts/install-tor.sh; fi
-  - if [[ $TEST == 'functional_v2' ]]; then source test/scripts/install-chutney-v2.sh; fi
-  - if [[ $TEST == 'functional_v3' ]]; then source test/scripts/install-chutney-v3.sh; fi
+  - TEST=functional_v2
 install:
   - pip install -r requirements.txt
   - pip install -r test-requirements.txt
