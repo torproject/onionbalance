@@ -5,5 +5,5 @@ set -ex
 version="${BASH_REMATCH[1]}"
 pwd
 pytest --cov-report=term-missing --cov=onionbalance test/functional/$version/
-pylint --disable=R,C,W onionbalance 
+pylint --disable=R,C,W onionbalance
 flake8 onionbalance
