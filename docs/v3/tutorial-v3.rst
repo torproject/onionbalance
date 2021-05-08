@@ -11,7 +11,7 @@ Onionbalance v3 Installation Guide
 .. contents:: Table of Contents
 
 
-This is a step-by-step *recipe* to help you configure OnionBalance for v3 onions.
+This is a step-by-step *recipe* to help you configure Onionbalance for v3 onions.
 
 This is really one of my favorite recipes: While onions can make many meals
 instantly delicious, if the right balance is not found there is danger that
@@ -19,8 +19,8 @@ their strong sulfuric taste can sometimes overpower the rest of the
 ingredients. It's vital to maintain the proper onionbalance to really display
 the apple-like, deliciously savory notes of this vegetable.
 
-OnionBalance implements `round-robin` like load balancing on top of Tor onion
-services. A typical OnionBalance deployment will incorporate one frontend
+Onionbalance implements `round-robin` like load balancing on top of Tor onion
+services. A typical Onionbalance deployment will incorporate one frontend
 servers and multiple backend instances.
 
 Preliminaries
@@ -34,7 +34,7 @@ protocol works. If you already know how onionbalance works, feel free to skip to
 
 .. image:: ./onionbalance_v3.jpg
 
-In this picture you see a setup where OnionBalance is used to load-balance over
+In this picture you see a setup where Onionbalance is used to load-balance over
 three backend instances. The frontend service is on the right side whereas the
 three backend instances are in the middle. On the left side there is a Tor
 client called Alice who visits the load-balanced service using the frontend
@@ -91,7 +91,7 @@ Ingredients
 
 To follow this recipe to completion we will need the following ingredients:
 
-- a host that will run OnionBalance and act as the load balancing frontend
+- a host that will run Onionbalance and act as the load balancing frontend
 - two or more hosts tha will run the backend Tor instances
 
 We will assume you are using a Linux system and that you are familiar with
@@ -142,7 +142,7 @@ purposes of this guide I assume that your control port is at 127.0.0.1:6666.
 Step 2: Configuring the frontend server (setting up onionbalance)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Now, still on the frontend host we need to setup OnionBalance. If you wish to
+Now, still on the frontend host we need to setup Onionbalance. If you wish to
 use the Debian package of onionbalance, you will need version 0.2.0-1 or newer
 to get v3 support, otherwise you can obtain it via git:
 
@@ -190,7 +190,7 @@ OK now with the frontend onion address noted down, let's move to setting up
 your backend instances:
 
 Login to one of your backend instances and let's setup Tor. Similar to the step
-above, you will need to use the latest Tor master for OnionBalance to work
+above, you will need to use the latest Tor master for Onionbalance to work
 (because of `#32709 <https://trac.torproject.org/projects/tor/ticket/32709>`_).
 
 As before:
@@ -207,7 +207,7 @@ know <https://community.torproject.org/onion-services/setup/>`_ how to do
 that. So far so good but here comes the twist:
 
 1) Inside the HiddenService block of your torrc file, you need to add the
-   following line: ``HiddenServiceOnionBalanceInstance 1``. Note that if you
+   following line: ``HiddenServiceOnionbalanceInstance 1``. Note that if you
    do not have an existing v3 onion service and you are trying to create one
    from scratch, you must first start Tor once without this torrc line, otherwise
    it will fail to start. After the onion service was created, add this line to
@@ -234,7 +234,7 @@ the following line:
 
    .. code-block:: console
 
-     [notice] ob_option_parse(): OnionBalance: MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
+     [notice] ob_option_parse(): Onionbalance: MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
 
 If you don't see that, then something went wrong. Please try again from the
 beginning of this section till you make it! This is the hardest part of the

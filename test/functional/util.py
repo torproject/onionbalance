@@ -65,7 +65,7 @@ def create_test_config_file_v2(tmppath, private_key=None, instances=None):
     key_path.write(private_key.exportKey())
     assert key_path.check()
 
-    # Create YAML OnionBalance settings file for these instances
+    # Create YAML Onionbalance settings file for these instances
     service_data = {'key': str(key_path)}
     service_data['instances'] = [{'address': addr[:16]} for addr in instances]
     settings_data = {

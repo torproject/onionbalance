@@ -21,7 +21,7 @@ from onionbalance.hs_v3 import tor_ed25519
 logger = log.get_logger()
 
 
-class OnionBalanceService(object):
+class OnionbalanceService(object):
     """
     Service represents a front-facing hidden service which should
     be load-balanced.

@@ -1,12 +1,12 @@
 .. _in_depth_v2:
 
-OnionBalance In-depth Tutorial (v2)
+Onionbalance In-depth Tutorial (v2)
 ===================================
 
-This is a step-by-step tutorial to help you configure OnionBalance for v2 onions.
+This is a step-by-step tutorial to help you configure Onionbalance for v2 onions.
 
-OnionBalance implements `round-robin` like load balancing on top of Tor
-onion services. A typical OnionBalance deployment will incorporate one management
+Onionbalance implements `round-robin` like load balancing on top of Tor
+onion services. A typical Onionbalance deployment will incorporate one management
 servers and multiple backend application servers.
 
 .. note ::
@@ -21,7 +21,7 @@ Assumptions
 
 You want to run:
 
-- one or more OnionBalance processes, to perform load balancing, on hosts
+- one or more Onionbalance processes, to perform load balancing, on hosts
   named ``obhost1``, ``obhost2``.
 - two or more Tor processes, to run the Onion Services, on hosts named
   ``torhost1``, ``torhost2``.
@@ -44,7 +44,7 @@ Scaling down:
 
 Reliability:
 
-Contrarily to traditional load balancers, the OnionBalance daemon does not
+Contrarily to traditional load balancers, the Onionbalance daemon does not
 receive and forward traffic. As such, ``obhostX`` does not need to be in
 proximity to ``torhostX`` and can be run from any location on the Internet.
 Failure of ``obhostX`` will not affect the service as long as either one
@@ -55,7 +55,7 @@ Other assumptions:
 - the hosts run Debian or Ubuntu
 - there is no previous configuration
 
-Configuring the OnionBalance host
+Configuring the Onionbalance host
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 On ``obhost1``:
@@ -96,7 +96,7 @@ Copy the ``instance_torrc`` and ``private_key`` files from each of the
 directories named ``./config/srv1``, ``./config/srv2``,.. on ``obhost1``
 to ``torhostX`` - the contents of one directory for each ``torhostX``.
 
-Configure and start the services - the onion service on OnionBalance should
+Configure and start the services - the onion service on Onionbalance should
 be ready within 10 minutes.
 
 Monitoring

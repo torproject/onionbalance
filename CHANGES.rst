@@ -33,7 +33,7 @@
 0.1.7
 -----
 
-- Add functionality to reconnect to the Tor control port while OnionBalance is
+- Add functionality to reconnect to the Tor control port while Onionbalance is
   running. Thank you to Ceysun Sucu for the patch. #45
 - Fix bug where instance descriptors were not updated correctly when an
   instance address was listed under multiple master service. #49
@@ -55,7 +55,7 @@
 0.1.5
 -----
 
-- Log error when OnionBalance does not have permission to read a private key. #34
+- Log error when Onionbalance does not have permission to read a private key. #34
 - Fix bug loading descriptors when an address with .onion extension is listed
   in the configuration file. #37
 - Add support for connecting to the Tor control port over a unix domain socket. #3
@@ -65,7 +65,7 @@
 
 - Use setproctitle to set a cleaner process title
 - Replace the python-schedule dependency with a custom scheduler.
-- Add a Unix domain socket which outputs the status of the OnionBalance
+- Add a Unix domain socket which outputs the status of the Onionbalance
   service when a client connects. By default this socket is created at
   `/var/run/onionbalance/control`. Thank you to Federico Ceratto for the
   original socket implementation.
@@ -101,7 +101,7 @@
 -----
 
 - Remove dependency on the schedule package to prepare for packaging
-  OnionBalance in Debian. The schedule code is now included directly in
+  Onionbalance in Debian. The schedule code is now included directly in
   onionbalance/schedule.py.
 - Fix the executable path in the help messages for onionbalance and
   onionbalance-config.

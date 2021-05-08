@@ -55,7 +55,7 @@ class ThreadingSocketServer(ThreadingMixIn, UnixStreamServer):
 
 class StatusSocket(BaseStatusSocket):
     """
-    Create a Unix domain socket which emits a summary of the OnionBalance
+    Create a Unix domain socket which emits a summary of the Onionbalance
     status when a client connects.
     """
 

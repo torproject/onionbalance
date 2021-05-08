@@ -12,7 +12,7 @@ instance.
 Management Server
 ~~~~~~~~~~~~~~~~~
 
-OnionBalance requires that a recent version of Tor (``>= 0.2.7.1-alpha``) is
+Onionbalance requires that a recent version of Tor (``>= 0.2.7.1-alpha``) is
 installed on the management server system. This version might not be available
 in your operating system's repositories yet.
 
@@ -21,7 +21,7 @@ It is recommended that you install Tor from the
 to ensure you stay up to date with the latest Tor releases.
 
 The management server need to have its control port enabled to allow
-the OnionBalance daemon to talk to the Tor process. This can be done by
+the Onionbalance daemon to talk to the Tor process. This can be done by
 uncommenting the ``ControlPort`` option in your ``torrc`` configuration file.
 
 Alternatively you can replace your ``torrc`` file with the following

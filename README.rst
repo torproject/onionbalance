@@ -1,13 +1,13 @@
 .. image:: obv3_logo.jpg
 
-OnionBalance
+Onionbalance
 ============
 
 Introduction
 ------------
 
-OnionBalance allows Tor onion service requests to be distributed across
-multiple backend Tor instances. OnionBalance provides load-balancing while also
+Onionbalance allows Tor onion service requests to be distributed across
+multiple backend Tor instances. Onionbalance provides load-balancing while also
 making onion services more resilient and reliable by eliminating single
 points-of-failure.
 

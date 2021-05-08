@@ -1,7 +1,7 @@
 #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Convenience wrapper for running OnionBalance directly from source tree."""
+"""Convenience wrapper for running Onionbalance directly from source tree."""
 
 import onionbalance.manager
 

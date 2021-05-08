@@ -4,16 +4,16 @@ Contributors
 ============
 
 Thank you to the following contributors and others for their invaluble help
-and advice in developing OnionBalance. Contributions of any kind (code,
+and advice in developing Onionbalance. Contributions of any kind (code,
 documentation, testing) are very welcome.
 
 * `Donncha Ó Cearbhaill <https://github.com/DonnchaC/>`_
 
-  - Original author and maintainer of OnionBalance!!!
+  - Original author and maintainer of Onionbalance!!!
 
 * `Federico Ceratto <https://github.com/FedericoCeratto>`_
 
-  - Tireless assistance with Debian packaging and OnionBalance improvements.
+  - Tireless assistance with Debian packaging and Onionbalance improvements.
   - Replaced and reimplemented the job scheduler.
   - Implemented support for Unix signals and added a status socket to
     retrieve information about the running service.
@@ -24,19 +24,19 @@ documentation, testing) are very welcome.
 
 * `s7r <https://github.com/gits7r>`_
 
-  - Assisted in testing and load testing OnionBalance from an early stage.
+  - Assisted in testing and load testing Onionbalance from an early stage.
   - Many useful suggestions for performance and usability improvements.
 
 * `Ceysun Sucu <https://github.com/csucu>`_
 
-  - Added code to reconnect to the Tor control port while OnionBalance is
+  - Added code to reconnect to the Tor control port while Onionbalance is
     running.
 
 * `Alec Muffett <https://github.com/alecmuffett>`_
 
-  - Extensively tested OnionBalance, found many bugs and made many
+  - Extensively tested Onionbalance, found many bugs and made many
     suggestions to improve the software.
 
 * `duritong <https://github.com/duritong>`_
 
-  - Packaged OnionBalance for Fedora, CentOS, and Redhat 7 (EPEL repository).
+  - Packaged Onionbalance for Fedora, CentOS, and Redhat 7 (EPEL repository).

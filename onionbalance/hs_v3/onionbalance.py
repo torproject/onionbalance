@@ -64,7 +64,7 @@ class Onionbalance(object):
         services = []
         try:
             for service in self.config_data['services']:
-                services.append(ob_service.OnionBalanceService(service, self.config_path))
+                services.append(ob_service.OnionbalanceService(service, self.config_path))
         except ob_service.BadServiceInit:
             sys.exit(1)
 

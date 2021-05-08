@@ -1,6 +1,6 @@
 .. _running_onionbalance:
 
-Running OnionBalance
+Running Onionbalance
 ====================
 
 .. toctree::
@@ -11,7 +11,7 @@ Running OnionBalance
 Description
 -----------
 
-You can start the OnionBalance management server once all of your backend
+You can start the Onionbalance management server once all of your backend
 onion service instances are running.
 
 You will need to create a :ref:`configuration file <configuration_file_format>`
@@ -34,7 +34,7 @@ onionbalance setup.
 
 .. note::
 
-    Multiple OnionBalance management servers can be run simultaneously with
+    Multiple Onionbalance management servers can be run simultaneously with
     the same master private key and configuration file to provide redundancy.
 
 .. _configuration_file_format:
@@ -42,7 +42,7 @@ onionbalance setup.
 Configuration File Format
 -------------------------
 
-The OnionBalance management server is primarily configured using a YAML
+The Onionbalance management server is primarily configured using a YAML
 configuration file.
 
 .. literalinclude:: ../../onionbalance/config_generator/data/config.example.yaml
@@ -51,7 +51,7 @@ configuration file.
 
 
 The ``services`` section of the configuration file contains a list of
-master onion services that OnionBalance is responsible for.
+master onion services that Onionbalance is responsible for.
 
 Each ``key`` option specifies the location of the 1024 bit private RSA key
 for the onion service. This master private key determines the address
@@ -61,7 +61,7 @@ be kept secure.
 The location of the private key is evaluated as an absolute path, or
 relative to the configuration file location.
 
-You can use existing Tor onion service private key with OnionBalance
+You can use existing Tor onion service private key with Onionbalance
 to keep your onion address.
 
 Each backend Tor onion service instance is listed by its unique onion
@@ -85,12 +85,12 @@ you can simply use the generated config file from ``master/config.yaml``.
 Configuration Options
 ~~~~~~~~~~~~~~~~~~~~~
 
-The OnionBalance command line options can also be specified in the
-OnionBalance configuration file. Options specified on the command line
+The Onionbalance command line options can also be specified in the
+Onionbalance configuration file. Options specified on the command line
 take precedence over the related configuration file options:
 
 TOR_CONTROL_SOCKET:
-  The location of the Tor unix domain control socket. OnionBalance will
+  The location of the Tor unix domain control socket. Onionbalance will
   attempt to connect to this control socket first before falling back to
   using a control port connection.
   (default: /var/run/tor/control)
@@ -110,7 +110,7 @@ TOR_CONTROL_PASSWORD:
 Other options:
 
 LOG_LOCATION
-  The path where OnionBalance should write its log file.
+  The path where Onionbalance should write its log file.
 
 LOG_LEVEL
   Specify the minimum verbosity of log messages to output. All log messages
@@ -128,7 +128,7 @@ PUBLISH_CHECK_INTERVAL
   the master onion service (default: 360 seconds).
 
 INITIAL_DELAY
-  How long to wait between starting OnionBalance and publishing the master
+  How long to wait between starting Onionbalance and publishing the master
   descriptor. If you have more than 20 backend instances you may need to wait
   longer for all instance descriptors to download before starting
   (default: 45 seconds).
@@ -139,7 +139,7 @@ DISTINCT_DESCRIPTORS
   standard onion service. (default: True)
 
 STATUS_SOCKET_LOCATION
-  The OnionBalance service creates a Unix domain socket which provides
+  The Onionbalance service creates a Unix domain socket which provides
   real-time information about the currently loaded service and descriptors.
   This option can be used to change the location of this domain socket.
   (default: /var/run/onionbalance/control)
@@ -169,7 +169,7 @@ Environment Variables
 ~~~~~~~~~~~~~~~~~~~~~
 
 ONIONBALANCE_CONFIG
-  Override the location for the OnionBalance configuration file.
+  Override the location for the Onionbalance configuration file.
 
 The loaded configuration file takes precedence over environment variables.
 Configuration file options will override environment variable which have the
@@ -201,5 +201,5 @@ config.yaml
 See Also
 --------
 
-Full documentation for the **OnionBalance** software is available at
+Full documentation for the **Onionbalance** software is available at
 https://onionbalance.readthedocs.org/

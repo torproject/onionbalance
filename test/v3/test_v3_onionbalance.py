@@ -49,12 +49,12 @@ class OutdatedConsensus(unittest.TestCase):
 
 class TestReloadConfig(unittest.TestCase):
 
-    @mock.patch('onionbalance.hs_v3.service.OnionBalanceService')
+    @mock.patch('onionbalance.hs_v3.service.OnionbalanceService')
     @mock.patch('onionbalance.hs_v3.consensus.Consensus')
     @mock.patch('onionbalance.hs_v3.stem_controller.StemController')
     @mock.patch('onionbalance.hs_v3.onionbalance.Onionbalance.load_config_file')
     @mock.patch('onionbalance.hs_v3.manager.init_scheduler')
-    def test_reload_config(self, mock_init_scheduler, mock_load_config_file, mock_StemController, mock_Consensus, mock_OnionBalanceService):
+    def test_reload_config(self, mock_init_scheduler, mock_load_config_file, mock_StemController, mock_Consensus, mock_OnionbalanceService):
         # setup onionbalance instance
         test_onionbalance = Onionbalance()
         test_onionbalance.args = self.create_dummy_args()

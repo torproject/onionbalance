@@ -13,7 +13,7 @@ from test.functional.util import *
 
 def test_master_descriptor_publication(tmpdir):
     """
-    Functional test to run OnionBalance, publish a master descriptor and
+    Functional test to run Onionbalance, publish a master descriptor and
     check that it can be retrieved from the DHT.
     """
 
@@ -29,7 +29,7 @@ def test_master_descriptor_publication(tmpdir):
     )
     assert config_file_path
 
-    # Start an OnionBalance server and monitor for correct output with pexpect
+    # Start an Onionbalance server and monitor for correct output with pexpect
     server = pexpect.spawnu("onionbalance",
                             args=[
                                 '--hs-version', 'v2',
@@ -40,7 +40,7 @@ def test_master_descriptor_publication(tmpdir):
                                 '--is-testnet'
                             ], logfile=sys.stdout, timeout=15)
 
-    # Check for expected output from OnionBalance
+    # Check for expected output from Onionbalance
     server.expect(u"Loaded the config file")
     server.expect(u"introduction point set has changed")
     server.expect(u"Published a descriptor", timeout=60)

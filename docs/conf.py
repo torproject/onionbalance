@@ -74,7 +74,7 @@ source_encoding = 'utf-8-sig'
 master_doc = 'index'
 
 # General information about the project.
-project = 'OnionBalance'
+project = 'Onionbalance'
 
 # Remove copyright notice for man page
 copyright = ''
@@ -149,7 +149,7 @@ if on_rtd:
 #html_title = None
 
 # A shorter title for the navigation bar.  Default is the same as html_title.
-html_short_title = "OnionBalance Docs"
+html_short_title = "Onionbalance Docs"
 
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.

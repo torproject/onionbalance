@@ -8,9 +8,9 @@
 Overview
 ========
 
-OnionBalance is the best way to load balance onion services across multiple
+Onionbalance is the best way to load balance onion services across multiple
 backend Tor instances. This way the load of introduction and rendezvous
-requests get distributed across multiple hosts. OnionBalance provides
+requests get distributed across multiple hosts. Onionbalance provides
 load-balancing while also making onion services more resilient and reliable by
 eliminating single points-of-failure.
 
@@ -18,7 +18,7 @@ eliminating single points-of-failure.
 - Repository: https://gitlab.torproject.org/tpo/core/onionbalance
 - GitHub mirror: https://github.com/asn-d6/onionbalance/
 - Issue tracker: https://github.com/asn-d6/onionbalance/issues
-- PyPI: https://pypi.org/project/OnionBalance/
+- PyPI: https://pypi.org/project/Onionbalance/
 - IRC: #tor-dev @ OFTC
 
 Quickstart

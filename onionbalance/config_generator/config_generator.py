@@ -88,12 +88,12 @@ class ConfigGenerator(object):
             # Generate config files for each service instance
             self.write_v2_instance_files()
 
-            logger.info("Done! Successfully generated an OnionBalance config and %d "
+            logger.info("Done! Successfully generated an Onionbalance config and %d "
                         "instance keys for service %s.onion.",
                         self.num_instances, self.master_onion_address)
 
         if self.hs_version == "v3":
-            logger.info("Done! Successfully generated an OnionBalance config for service %s.onion.",
+            logger.info("Done! Successfully generated an Onionbalance config for service %s.onion.",
                         self.master_onion_address)
             logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
                         self.config_file_path)
@@ -391,7 +391,7 @@ class ConfigGenerator(object):
                 torrc_file.write(u"{}\n".format(self.torrc_port_line))
 
     def create_yaml_config_file(self):
-        # Create YAML OnionBalance settings file for these instances
+        # Create YAML Onionbalance settings file for these instances
         service_data = {'key': '{}.key'.format(self.master_onion_address)}
         service_data['instances'] = [{'address': address,
                                       'name': '{}{}'.format(self.tag, i + 1)} for
@@ -401,7 +401,7 @@ class ConfigGenerator(object):
 
         self.config_file_path = os.path.join(self.master_dir, 'config.yaml')
         with open(self.config_file_path, "w") as config_file:
-            config_file.write(u"# OnionBalance Config File\n")
+            config_file.write(u"# Onionbalance Config File\n")
             config_file.write(config_yaml)
             logger.info("Wrote master service config file '%s'.",
                         os.path.abspath(self.config_file_path))
@@ -422,7 +422,7 @@ def parse_cmd_args():
 
     parser = argparse.ArgumentParser(
         description="onionbalance-config generates config files and keys for "
-        "OnionBalance instances and management servers. Calling without any "
+        "Onionbalance instances and management servers. Calling without any "
         "options will initiate an interactive mode.")
 
     parser.add_argument("--hs-version", type=str,
@@ -485,7 +485,7 @@ def main():
     # Parse initial command line options
     args = parse_cmd_args().parse_args()
 
-    logger.info("Beginning OnionBalance config generation.")
+    logger.info("Beginning Onionbalance config generation.")
 
     # If CLI options have been provided, don't enter interactive mode
     # Crude check to see if any options beside --verbosity are set.

@@ -23,7 +23,7 @@ def read(*names, **kwargs):
     ).read()
 
 setup(
-    name="OnionBalance",
+    name="Onionbalance",
     packages=["onionbalance",
               "onionbalance.hs_v2", "onionbalance.hs_v3", "onionbalance.hs_v3.ext", "onionbalance.common",
               "onionbalance.config_generator"],
@@ -32,7 +32,7 @@ setup(
             'onionbalance = onionbalance.manager:main',
             'onionbalance-config = onionbalance.config_generator.config_generator:main',
         ]},
-    description="OnionBalance provides load-balancing and redundancy for Tor "
+    description="Onionbalance provides load-balancing and redundancy for Tor "
                 "hidden services by distributing requests to multiple backend "
                 "Tor instances.",
     long_description=read('README.rst'),

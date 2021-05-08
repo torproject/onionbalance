@@ -14,7 +14,7 @@ logger = log.get_logger()
 
 class BaseStatusSocket(object):
     """
-    For creating a Unix domain socket which emits a summary of the OnionBalance
+    For creating a Unix domain socket which emits a summary of the Onionbalance
     status when a client connects.
     """
     def __init__(self, unix_socket_filename):

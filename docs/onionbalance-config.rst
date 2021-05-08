@@ -25,7 +25,7 @@ Files
 -----
 
 master/config.yaml
-  This is the configuration file that is used my the OnionBalance management
+  This is the configuration file that is used my the Onionbalance management
   server.
 
 master/<ONION_ADDRESS>.key
@@ -48,5 +48,5 @@ srv/<ONION_ADDRESS>/private_key
 See Also
 --------
 
-Full documentation for the **OnionBalance** software is available at
+Full documentation for the **Onionbalance** software is available at
 https://onionbalance.readthedocs.org/

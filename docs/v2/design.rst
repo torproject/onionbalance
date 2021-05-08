@@ -35,7 +35,7 @@ Master Descriptor
   An onion service descriptor published with the desired onion address
   containing introduction points for each instance.
 Management Server
-  Server running OnionBalance which collates introduction points and
+  Server running Onionbalance which collates introduction points and
   publishes a master descriptor.
 Metadata Channel
   A direct connection from an instance to a management server which can
@@ -44,7 +44,7 @@ Metadata Channel
 Retrieving Introduction Point Data
 ----------------------------------
 
-The core functionality of the OnionBalance service is the collation of
+The core functionality of the Onionbalance service is the collation of
 introduction point data from multiple onion service instances by the
 management server.
 
@@ -107,7 +107,7 @@ Limitations
    introduction points.
 
 -  It is trivial for a HSDir to determine that a onion service is using
-   OnionBalance. OnionBalance will try poll for instance descriptors on a
+   Onionbalance. Onionbalance will try poll for instance descriptors on a
    regular basis. A HSDir which connects to onion services published to it
    would find that a backend instance is serving the same content as the master
    service. This allows a HSDir to trivially determine the onion addresses for
@@ -116,7 +116,7 @@ Limitations
 
 Onionbalance allows for scaling across multiple onion service instances with no
 additional software or Tor modifications necessary on the onion service
-instance. Onionbalance does not hide that a service is using OnionBalance. It
+instance. Onionbalance does not hide that a service is using Onionbalance. It
 also does not significantly protect a service from introduction point denial of
 service or actively malicious HSDirs.
 
@@ -125,7 +125,7 @@ Choice of Introduction Points
 -----------------------------
 
 Tor onion service descriptors can include a maximum of 10 introduction
-points. OnionBalance should select introduction points so as to
+points. Onionbalance should select introduction points so as to
 uniformly distribute load across the available backend instances.
 
 Onionbalance will upload multiple distinct descriptors if you have configured
@@ -142,9 +142,9 @@ more than 10 instances.
 
 Always attempting to choose 3 introduction points per descriptor may make it
 more difficult for a passive observer to confirm that a service is running
-OnionBalance. However behavioral characteristics such as the rate of
+Onionbalance. However behavioral characteristics such as the rate of
 introduction point rotation may still allow a passive observer to distinguish
-an OnionBalance service from a standard Tor onion service.  Selecting a smaller
+an Onionbalance service from a standard Tor onion service.  Selecting a smaller
 set of introduction points may impact on performance or reliability of the
 service.
 

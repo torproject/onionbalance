@@ -9,7 +9,7 @@ from test.functional.util import *
 
 def test_sighup_reload_config(tmpdir):
     """
-    Functional test to run OnionBalance, send SIGHUP then check if config is reloaded
+    Functional test to run Onionbalance, send SIGHUP then check if config is reloaded
     """
 
     chutney_config = parse_chutney_enviroment()
@@ -18,7 +18,7 @@ def test_sighup_reload_config(tmpdir):
     config_file_path = create_test_config_file_v3(tmppath=tmpdir, instance_address=original_instance_address)
     assert config_file_path
 
-    # Start an OnionBalance server and monitor for correct output with pexpect
+    # Start an Onionbalance server and monitor for correct output with pexpect
     server = pexpect.spawnu("onionbalance",
                             args=[
                                 '--hs-version', 'v3',
@@ -30,7 +30,7 @@ def test_sighup_reload_config(tmpdir):
                             ], logfile=sys.stdout, timeout=5)
     time.sleep(1)
 
-    # Check for expected output from OnionBalance
+    # Check for expected output from Onionbalance
     server.expect(u"Loaded the config file")
     server.expect(original_instance_address)
 

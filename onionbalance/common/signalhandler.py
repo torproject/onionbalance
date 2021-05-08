@@ -10,7 +10,7 @@ logger = log.get_logger()
 
 class SignalHandler(object):
     """
-    Handle signals sent to the OnionBalance daemon process
+    Handle signals sent to the Onionbalance daemon process
     """
 
     def __init__(self, version, controller, status_socket=None):

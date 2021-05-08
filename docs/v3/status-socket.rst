@@ -3,11 +3,11 @@
 Status Socket
 =============
 
-Basic information about running OnionBalance can be obtained by querying
+Basic information about running Onionbalance can be obtained by querying
 so called status socket.
 
-Status socket is a Unix socket file created by OnionBalance. It is
-automatically closed by OnionBalance after reading it to the end.
+Status socket is a Unix socket file created by Onionbalance. It is
+automatically closed by Onionbalance after reading it to the end.
 
 Example:
 
@@ -59,7 +59,7 @@ Example config file:
 
 .. code-block::
 
-    # OnionBalance Config File
+    # Onionbalance Config File
     status-socket-location: /home/user/test.sock
     services:
     - instances:

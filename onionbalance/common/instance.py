@@ -35,7 +35,7 @@ def helper_fetch_all_instance_descriptors(controller, instances, control_passwor
     # address. An instance may be configured under multiple master
     # addressed. We do not want to request the same instance descriptor
     # multiple times.
-    # OnionBalance will update all of the matching instances when a
+    # Onionbalance will update all of the matching instances when a
     # descriptor is received.
     for instance in unique_instances:
         while True:

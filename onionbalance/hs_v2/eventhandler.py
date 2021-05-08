@@ -22,7 +22,7 @@ class EventHandler(object):
         """
         # pylint: disable=no-member
         if status_event.action == "CONSENSUS_ARRIVED":
-            # Update the local view of the consensus in OnionBalance
+            # Update the local view of the consensus in Onionbalance
             try:
                 consensus.refresh_consensus()
             except Exception:

@@ -3,14 +3,14 @@
 Installing Onionbalance
 ===========================
 
-OnionBalance requires at least one system that is running the OnionBalance
+Onionbalance requires at least one system that is running the Onionbalance
 management server.
 
-The OnionBalance software does not need to be installed on the
+The Onionbalance software does not need to be installed on the
 backend servers which provide the onion service content (i.e. web site,
 IRC server etc.).
 
-OnionBalance is not yet packaged for most Linux and BSD. The tool can be
+Onionbalance is not yet packaged for most Linux and BSD. The tool can be
 installed from PyPI or directly from the Git repository:
 
 .. code-block:: console
@@ -26,7 +26,7 @@ or
     # python setup.py install
 
 If you are running Debian Jessie (with backports enabled) or later you
-can install OnionBalance with the following command:
+can install Onionbalance with the following command:
 
 .. code-block:: console
 
@@ -56,4 +56,4 @@ All tagged releases on Github or PyPi are signed with my GPG key:
     sub   3072R/0x7D49FC2C759AA659 2013-06-27 [expires: 2016-07-11]
     sub   3072R/0x2C9C6F4ABBFCF7DD 2013-06-27 [expires: 2016-07-11]
 
-Now that OnionBalance is installed, please move to :ref:`installing_tor`.
+Now that Onionbalance is installed, please move to :ref:`installing_tor`.
