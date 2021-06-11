@@ -68,10 +68,6 @@ class Onionbalance(object):
         except ob_service.BadServiceInit:
             sys.exit(1)
 
-        if len(services) > 1:
-            # We don't know how to handle more than a single service right now
-            raise NotImplementedError
-
         return services
 
     def load_config_file(self):
