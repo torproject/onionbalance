@@ -433,7 +433,7 @@ def parse_cmd_args():
                         help="RSA private key for the master onion service.")
 
     parser.add_argument("-p", "--password", type=str, default=None,
-                        help="Optional password which can be used to encrypt"
+                        help="Optional password which can be used to encrypt "
                         "the master service private key.")
 
     parser.add_argument("-n", type=int, default=2, dest="num_instances",
@@ -450,7 +450,7 @@ def parse_cmd_args():
                         "already exist.")
 
     parser.add_argument("--no-interactive", action='store_true',
-                        help="Try to run automatically without prompting for"
+                        help="Try to run automatically without prompting for "
                         "user input.")
 
     parser.add_argument("-v", type=str, default="info", dest='verbosity',
