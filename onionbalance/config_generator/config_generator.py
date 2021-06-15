@@ -29,8 +29,11 @@ class ConfigGenerator(object):
 
         self.hs_version = None
         self.output_path = None
-        self.master_key = None
-        self.master_onion_address = None
+
+        # A dictionary that maps services to their keys and instances:
+        # { <service_onion_address> : (<ed25519_key>, instances) , ... }
+        self.services = {}
+
         self.num_instances = None
         self.tag = None
         self.torrc_port_line = None
@@ -63,38 +66,45 @@ class ConfigGenerator(object):
         else:
             self.master_dir = self.output_path
 
-        # Load the master key
-        self.master_key, self.master_onion_address = self.load_master_key()
+        # Allow the creation of multiple services for v3
+        if self.hs_version == "v3":
+            n_services = self.get_num_services()
+        else:
+            n_services = 1 # for v2
 
-        # Finished loading/generating master key, now try generate keys for
-        # each service instance
-        self.num_instances, self.tag = self.get_num_instances()
+        # Gather information for each service
+        for i, _ in enumerate(range(n_services), start=1):
+            # Load or generate the master key
+            master_key, master_onion_address = self.load_master_key(i)
 
-        # Create HiddenServicePort line for instance torrc file
-        if self.hs_version == 'v2':
-            self.torrc_port_line = self.get_torrc_port_line()
+            # Generate keys for each instance
+            self.num_instances, self.tag = self.get_num_instances(i)
 
-        self.instances = self.create_instances()
+            # v2 only: Create HiddenServicePort line for instance torrc file
+            if self.hs_version == 'v2':
+                self.torrc_port_line = self.get_torrc_port_line()
+
+            instances = self.create_instances()
+            self.services[master_onion_address] = (master_key, instances)
 
     def generate_config(self):
-        self.write_master_key_to_disk()
-
-        assert(self.instances)
+        # Write master key for each service
+        for onion_address, (master_key, _) in self.services.items():
+            self.write_master_key_to_disk(onion_address, master_key)
 
         # Create the onionbalance config file
         self.create_yaml_config_file()
 
         if self.hs_version == 'v2':
-            # Generate config files for each service instance
+            # Generate config files for each instance
             self.write_v2_instance_files()
 
             logger.info("Done! Successfully generated an Onionbalance config and %d "
                         "instance keys for service %s.onion.",
-                        self.num_instances, self.master_onion_address)
+                        self.num_instances, onion_address)
 
         if self.hs_version == "v3":
-            logger.info("Done! Successfully generated an Onionbalance config for service %s.onion.",
-                        self.master_onion_address)
+            logger.info("Done! Successfully generated Onionbalance config.")
             logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
                         self.config_file_path)
 
@@ -150,11 +160,11 @@ class ConfigGenerator(object):
 
         return hs_version
 
-    def load_master_key(self):
+    def load_master_key(self, i):
         """
         Return the key and onion address of the frontend service.
         """
-        self.master_key_path = self.get_master_key_path()
+        self.master_key_path = self.get_master_key_path(i)
 
         # master_key_path is now either None (if no key path is specified) or
         # set to the actual path
@@ -163,14 +173,15 @@ class ConfigGenerator(object):
         else:
             return self.load_v3_master_key(self.master_key_path)
 
-    def get_master_key_path(self):
+    def get_master_key_path(self, i):
         # Load master key if specified
         master_key_path = None
         helper = " (i.e. path to 'hs_ed25519_secret_key')" if self.hs_version == 'v3' else ""
         if self.interactive:
             # Read key path from user
-            master_key_path = input("Enter path to master service private key%s "
-                                    "(Leave empty to generate a key): " % (helper))
+            master_key_path = input("Service #%d: Enter path to master service private key%s "
+                                    "(Leave empty to generate a key): " %
+                                    (i, helper))
         master_key_path = self.args.key or master_key_path
 
         # If a key path was specified make sure it exists
@@ -214,6 +225,7 @@ class ConfigGenerator(object):
 
     def load_v3_master_key(self, master_key_path):
         if master_key_path: # load key from file
+            # here we need to make many of these
             return self._load_v3_master_key_from_file(master_key_path)
         else: # generate new v3 key
             master_private_key = Ed25519PrivateKey.generate()
@@ -247,15 +259,33 @@ class ConfigGenerator(object):
 
         return master_key, master_onion_address
 
-    def get_num_instances(self):
+    def get_num_services(self):
+        """
+        Get the number of services this OnionBalance should support
+        """
+        num_services = None
+        if self.interactive:
+            num_services = input("Number of services (frontends) to create (default: %d): " %
+                                 self.args.num_services)
+            # Cast to int if a number was specified
+            try:
+                num_services = int(num_services)
+            except ValueError:
+                num_services = None
+
+        num_services = num_services or self.args.num_services
+        logger.debug("Creating %d services", num_services)
+        return num_services
+
+    def get_num_instances(self, i):
         """
         Get the number of instances and a tag name for them.
         """
         num_instances = None
         if self.interactive:
             limits = " (min: 1, max: 8)" if self.hs_version == "v3" else ""
-            num_instances = input("Number of instance services to create (default: %d)%s: " %
-                                  (self.args.num_instances, limits))
+            num_instances = input("Service #%d: Number of instance services to create (default: %d)%s: " %
+                                  (i, self.args.num_instances, limits))
             # Cast to int if a number was specified
             try:
                 num_instances = int(num_instances)
@@ -266,8 +296,8 @@ class ConfigGenerator(object):
 
         tag = None
         if self.interactive:
-            tag = input("Provide a tag name to group these instances "
-                        "[{}]: ".format(self.args.tag))
+            tag = input("Service #%d: Provide a tag name to group these instances [%s]:" %
+                        (i, self.args.tag))
         tag = tag or self.args.tag
 
         return num_instances, tag
@@ -333,17 +363,17 @@ class ConfigGenerator(object):
                 "key (Not encrypted if no password is specified): ")
         return master_passphrase or self.args.password
 
-    def write_master_key_to_disk(self):
+    def write_master_key_to_disk(self, onion_address, master_key):
         # Finished reading input, starting to write config files.
         util.try_make_dir(self.master_dir)
         master_key_file = os.path.join(self.master_dir,
-                                       '{}.key'.format(self.master_onion_address))
+                                       '{}.key'.format(onion_address))
         with open(master_key_file, "wb") as key_file:
             os.chmod(master_key_file, 384)  # chmod 0600 in decimal
 
             if self.hs_version == 'v2':
                 master_passphrase = self.get_master_key_passphrase()
-                key_file.write(self.master_key.exportKey(passphrase=master_passphrase))
+                key_file.write(master_key.exportKey(passphrase=master_passphrase))
             elif self.hs_version == 'v3' and self.v3_loaded_key_from_file:
                 # If we loaded a v3 key from a file, copy the file directly
                 # (see loaded_key_from_file comments).
@@ -354,16 +384,17 @@ class ConfigGenerator(object):
                 # If we generated our own v3 master key, write it to file. If
                 # 'master_key' does not exist, it means that we are loading it
                 # from a file, so we dont need to write it to disk.
-                master_key_formatted = self.master_key.private_bytes(encoding=serialization.Encoding.PEM,
-                                                                     format=serialization.PrivateFormat.PKCS8,
-                                                                     encryption_algorithm=serialization.NoEncryption())
+                master_key_formatted = master_key.private_bytes(encoding=serialization.Encoding.PEM,
+                                                                format=serialization.PrivateFormat.PKCS8,
+                                                                encryption_algorithm=serialization.NoEncryption())
                 key_file.write(master_key_formatted)
 
             logger.debug("Successfully wrote master key to file %s.",
                          os.path.abspath(master_key_file))
 
     def write_v2_instance_files(self):
-        for i, (instance_address, instance_key) in enumerate(self.instances):
+        master_key, instances = list(self.services.values())[0]
+        for i, (instance_address, instance_key) in enumerate(instances):
             # Create a numbered directory for instance
             instance_dir = os.path.join(self.output_path, '{}{}'.format(self.tag, i + 1))
             instance_key_dir = os.path.join(instance_dir, instance_address)
@@ -391,12 +422,19 @@ class ConfigGenerator(object):
                 torrc_file.write(u"{}\n".format(self.torrc_port_line))
 
     def create_yaml_config_file(self):
-        # Create YAML Onionbalance settings file for these instances
-        service_data = {'key': '{}.key'.format(self.master_onion_address)}
-        service_data['instances'] = [{'address': address,
-                                      'name': '{}{}'.format(self.tag, i + 1)} for
-                                     i, (address, _) in enumerate(self.instances)]
-        settings_data = {'services': [service_data]}
+        services_data = []
+
+        # Create an entry for each service
+        for onion_address, (_, instances) in self.services.items():
+            # Create YAML Onionbalance settings file for these instances
+            service_data = {'key': '{}.key'.format(onion_address)}
+            service_data['instances'] = [{'address': address,
+                                          'name': '{}{}'.format(self.tag, i + 1)} for
+                                         i, (address, _) in enumerate(instances)]
+            services_data.append(service_data)
+
+        # Yamlify the config
+        settings_data = {'services': services_data}
         config_yaml = yaml.safe_dump(settings_data, default_flow_style=False)
 
         self.config_file_path = os.path.join(self.master_dir, 'config.yaml')
@@ -438,6 +476,10 @@ def parse_cmd_args():
 
     parser.add_argument("-n", type=int, default=2, dest="num_instances",
                         help="Number of instances to generate (default: "
+                        "%(default)s).")
+
+    parser.add_argument("-s", type=int, default=1, dest="num_services",
+                        help="Number of services to generate (default: "
                         "%(default)s).")
 
     parser.add_argument("-t", "--tag", type=str, default='node',
