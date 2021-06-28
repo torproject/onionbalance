@@ -1,3 +1,8 @@
+0.2.2
+-----
+
+- A single OnionBalance can now support multiple onion services.
+
 0.2.1
 -----
 
