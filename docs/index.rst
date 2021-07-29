@@ -42,3 +42,4 @@ Table Of Contents
    use-cases
    contributors
    changelog
+   v3/hacking.rst

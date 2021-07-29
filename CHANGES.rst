@@ -1,6 +1,8 @@
 0.2.2
 -----
 
+- Add an OBv3 hacking guide.
+- Remove tox and simplify build procedure.
 - A single OnionBalance can now support multiple onion services.
 
 0.2.1
