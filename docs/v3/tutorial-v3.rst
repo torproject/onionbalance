@@ -92,7 +92,7 @@ Ingredients
 To follow this recipe to completion we will need the following ingredients:
 
 - a host that will run Onionbalance and act as the load balancing frontend
-- two or more hosts tha will run the backend Tor instances
+- two or more hosts that will run the backend Tor instances
 
 We will assume you are using a Linux system and that you are familiar with
 building C and Python projects and installing their dependencies. We will also
