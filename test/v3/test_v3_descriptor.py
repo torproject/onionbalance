@@ -1,3 +1,5 @@
+import unittest
+
 from onionbalance.hs_v3 import consensus
 
 def test_disaster_srv():

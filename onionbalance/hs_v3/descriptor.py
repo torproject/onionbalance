@@ -149,9 +149,9 @@ class OBDescriptor(V3Descriptor):
 
         # Check max size is within range
         if len(str(v3_desc)) > params.MAX_DESCRIPTOR_SIZE:
-            logger.error("Created descriptor is too big (%d intros). Consider "
+            logger.error("Created descriptor is too big (%d bytes with %d intro points). Consider "
                          "relaxing number of instances or intro points per instance "
-                         "(see N_INTROS_PER_INSTANCE)")
+                         "(see N_INTROS_PER_INSTANCE)", len(str(v3_desc)), len(intro_points))
             raise BadDescriptor
 
         super().__init__(onion_address, v3_desc)
@@ -164,6 +164,9 @@ class OBDescriptor(V3Descriptor):
 
     def set_responsible_hsdirs(self, responsible_hsdirs):
         self.responsible_hsdirs = responsible_hsdirs
+
+    def get_v3_desc(self):
+        return self.v3_desc
 
     def _recertify_intro_point(self, intro_point, descriptor_signing_key):
         """

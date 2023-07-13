@@ -1,5 +1,6 @@
 import datetime
 import os
+import pickle
 
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
@@ -131,6 +132,8 @@ class OnionbalanceService(object):
     def _intro_set_modified(self, is_first_desc):
         """
         Check if the introduction point set has changed since last publish.
+
+        The intro set for all descriptors should be the same so this will also work if we have more than one descriptor.
         """
         if is_first_desc:
             last_upload_ts = self.first_descriptor.last_upload_ts
@@ -166,6 +169,9 @@ class OnionbalanceService(object):
 
         If 'is_first_desc' is set then check the first descriptor of the
         service, otherwise the second.
+
+        Since all descriptors are uploaded at roughly the same time this should still work (although only the descriptor
+        uploaded last is used for calculating the descriptor age).
         """
         if is_first_desc:
             last_upload_ts = self.first_descriptor.last_upload_ts
@@ -187,6 +193,8 @@ class OnionbalanceService(object):
         """
         Return True if the HSDir has changed between the last upload of this
         descriptor and the current state of things
+
+        Since we have the same set of hsdirs for every descriptor this also works in the case of several descriptors.
         """
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
@@ -309,58 +317,198 @@ class OnionbalanceService(object):
         _, time_period_number = hashring.get_srv_and_time_period(is_first_desc)
         blinding_param = my_onionbalance.consensus.get_blinding_param(self._get_identity_pubkey_bytes(),
                                                                       time_period_number)
-
+        # calculate descriptor size without intro points
+        empty_intro_points = []
+        desc = descriptor.OBDescriptor(self.onion_address, self.identity_priv_key, blinding_param,
+                                       empty_intro_points, is_first_desc)
         try:
-            desc = descriptor.OBDescriptor(self.onion_address, self.identity_priv_key,
-                                           blinding_param, intro_points, is_first_desc)
+            empty_desc = desc.get_v3_desc()
+            logger.info("Created empty descriptor.")
         except descriptor.BadDescriptor:
             return
 
-        logger.info("Service %s created %s descriptor (%s intro points) (blinding param: %s) (size: %s bytes). About to publish:",
-                    self.onion_address, "first" if is_first_desc else "second",
-                    len(desc.intro_set), blinding_param.hex(), len(str(desc.v3_desc)))
+        available_space = self._calculate_space(empty_desc)
 
-        # When we do a v3 HSPOST on the control port, Tor decodes the
-        # descriptor and extracts the blinded pubkey to be used when uploading
-        # the descriptor. So let's do the same to compute the responsible
-        # HSDirs:
+        num_descriptors = self._calculate_needed_desc(intro_points, available_space)
+
+        # set Distinct Descriptor Mode if more than one descriptor is needed to fit backend instances resp. intro points
+        if num_descriptors > 1:
+            ddm = True
+            logger.info("Running on Distinct Descriptor Mode.")
+        else:
+            ddm = False
+
+        descriptors = self._create_descriptors(intro_points, num_descriptors, ddm, blinding_param, is_first_desc)
+
+
+        # failsafe means that we can afford to store a single descriptor on multiple HSDirs
+        # this is currently only for logging purposes
+        failsafe = self._load_failsafe_param(num_descriptors)
+
+        # since all our descriptors have the same public key and are uploaded at roughly the same time the responsible
+        # hsdirs are the same for all of them
+        try:
+            responsible_hsdirs = self._get_responsible_hsdirs(descriptors[0], is_first_desc)
+        except descriptor.BadDescriptor:
+            return
+
+        try:
+            self._assign_responsible_hdsirs(descriptors, responsible_hsdirs)
+        except BadServiceInit:
+            return
+
+        i = 0
+        # Upload descriptors
+        for desc in descriptors:
+            self._upload_descriptor(my_onionbalance.controller.controller, desc, is_first_desc, desc.responsible_hsdirs,
+                                    ddm, i)
+
+            # It would be better to set last_upload_ts when an upload succeeds and
+            # not when an upload is just attempted. Unfortunately the HS_DESC #
+            # UPLOADED event does not provide information about the service and
+            # so it can't be used to determine when descriptor upload succeeds
+            desc.set_last_upload_ts(datetime.datetime.utcnow())
+            desc.set_responsible_hsdirs(responsible_hsdirs)
+
+            # Set the descriptor
+            if is_first_desc:
+                self.first_descriptor = desc
+            else:
+                self.second_descriptor = desc
+            i += 1
+
+    def _get_responsible_hsdirs(self, desc, is_first_desc):
+        """
+        return list of responsible HSDirs to upload our descriptor(s) to
+        """
         blinded_key = desc.get_blinded_key()
-
-        # Calculate responsible HSDirs for our service
         try:
             responsible_hsdirs = hashring.get_responsible_hsdirs(blinded_key, is_first_desc)
         except hashring.EmptyHashRing:
             logger.warning("Can't publish desc with no hash ring. Delaying...")
             return
+        logger.info("We got %d responsible HSDirs.", len(responsible_hsdirs))
+        return responsible_hsdirs
 
-        desc.set_last_publish_attempt_ts(datetime.datetime.utcnow())
+    def _calculate_space(self, empty_desc):
+        """
+        calculate available space per descriptor to fit intro points
+        """
+        current_size = len(pickle.dumps(empty_desc))
+        logger.info(
+            "Size of descriptor without intro points is %s bytes.", current_size)
 
-        logger.info("Uploading %s descriptor for %s to %s",
-                    "first" if is_first_desc else "second",
-                    self.onion_address, responsible_hsdirs)
+        available_space = params.MAX_DESCRIPTOR_SIZE - current_size
+        return available_space
 
-        # Upload descriptor
-        self._upload_descriptor(my_onionbalance.controller.controller,
-                                desc, responsible_hsdirs)
+    def _calculate_needed_desc(self, intro_points, available_space):
+        """
+        calculate approximate number of descriptors needed to fit all intro points in consideration of the max. number of
+        intro points allowed in a descriptor and the expected size of a descriptor
+        """
 
-        # It would be better to set last_upload_ts when an upload succeeds and
-        # not when an upload is just attempted. Unfortunately the HS_DESC #
-        # UPLOADED event does not provide information about the service and
-        # so it can't be used to determine when descriptor upload succeeds
-        desc.set_last_upload_ts(datetime.datetime.utcnow())
-        desc.set_responsible_hsdirs(responsible_hsdirs)
+        # space needed to fit all intro points
+        needed_space = len(pickle.dumps(intro_points))
+        logger.info("We need around %s bytes of space for our intro_points (have %d bytes per descriptor and are "
+                    "allowed %d intro points per descriptor.)", needed_space,
+                    available_space, params.N_INTROS_PER_DESCRIPTOR)
 
-        # Set the descriptor
-        if is_first_desc:
-            self.first_descriptor = desc
-        else:
-            self.second_descriptor = desc
+        num_descriptors = 1
 
-    def _upload_descriptor(self, controller, ob_desc, hsdirs):
+        # predicted number of intro points per descriptor
+        num_intro_per_desc = 0
+        temp_space = available_space
+
+        i = 0
+        # calculate how many descriptors are needed by predicting the size of our descriptors with intro points
+        # if next intro point will exceed available space in current descriptor
+        while needed_space > num_descriptors * available_space:
+            while i < len(intro_points):
+                # check if our current descriptors will contain more intro points than allowed or
+                # if next intro point will exceed available space in current descriptor
+                if num_intro_per_desc > params.N_INTROS_PER_DESCRIPTOR or temp_space < len(pickle.dumps(intro_points[i])):
+                    # open new descriptor
+                    num_descriptors += 1
+                    num_intro_per_desc = 0
+                    temp_space = available_space
+                else:
+                    temp_space -= len(pickle.dumps(intro_points[i]))
+                    num_intro_per_desc += 1
+                i += 1
+
+        logger.info("We need %d descriptor(s) to fit all intro points.", num_descriptors)
+        return num_descriptors
+
+    def _create_descriptors(self, intro_points, num_descriptors, ddm, blinding_param, is_first_desc):
+        """
+        assign intro points evenly to all descriptors and create descriptor(s) with assigned intro points
+        """
+        descriptors = []
+        available_intro_points = intro_points.copy()
+
+        # will contain intro points for every descriptor
+        assigned_intro_points = []
+
+        # this step is needed to assign the intro points for our descriptors via index
+        for i in range(num_descriptors):
+            assigned_intro_points.append([0])
+        # list looks like this: [[0], [0], ..., [0]]
+
+        # determine which intro point belongs to which descriptor
+        i = 0
+        while len(available_intro_points) > 0:
+            assigned_intro_points[i].append(available_intro_points[0])
+            available_intro_points.pop(0)
+            # reset index if every descriptor got another intro point
+            if i + 1 == num_descriptors:
+                i = 0
+            else:
+                i += 1
+        logger.info("Assigned all intro points.")
+        # our intro list will look like this: [[0, Intro_1, ...], [0, Intro_2, ...], [...], [0, ..., Intro_n]]
+
+        for i in range(num_descriptors):
+            # remove first element [0] for every descriptor in list
+            assigned_intro_points[i].pop(0)
+            try:
+                # create descriptor with assigned intro points
+                desc = descriptor.OBDescriptor(self.onion_address, self.identity_priv_key, blinding_param,
+                                               assigned_intro_points[i], is_first_desc)
+                descriptors.append(desc)
+            except descriptor.BadDescriptor:
+                return
+
+            if ddm:
+                logger.info(
+                    "Service %s created %s descriptor of subdescriptor %d (%s intro points) (blinding param: %s) "
+                    "(size: %s bytes). About to publish:",
+                    self.onion_address, "first" if is_first_desc else "second", i + 1,
+                    len(desc.intro_set), blinding_param.hex(), len(str(desc.v3_desc)))
+            else:
+                logger.info(
+                    "Service %s created %s descriptor (%s intro points) (blinding param: %s) "
+                    "(size: %s bytes). About to publish:",
+                    self.onion_address, "first" if is_first_desc else "second",
+                    len(desc.intro_set), blinding_param.hex(), len(str(desc.v3_desc)))
+
+        return descriptors
+
+    def _upload_descriptor(self, controller, ob_desc, is_first_desc, hsdirs, ddm, index):
         """
         Convenience method to upload a descriptor
         Handle some error checking and logging inside the Service class
         """
+
+        ob_desc.set_last_publish_attempt_ts(datetime.datetime.utcnow())
+        if ddm:
+            logger.info("Uploading %s descriptor of subdescriptor %d for %s to %s.",
+                        "first" if is_first_desc else "second", index + 1,
+                        self.onion_address, hsdirs)
+        else:
+            logger.info("Uploading %s descriptor for %s to %s.",
+                        "first" if is_first_desc else "second",
+                        self.onion_address, hsdirs)
+
         if hsdirs and not isinstance(hsdirs, list):
             hsdirs = [hsdirs]
 
@@ -372,13 +520,14 @@ class OnionbalanceService(object):
                                                                  v3_onion_address=ob_desc.onion_address)
                 break
             except stem.SocketClosed:
-                logger.error("Error uploading descriptor for service "
+                logger.error("Error uploading descriptor %d for service "
                              "%s.onion. Control port socket is closed.",
-                             self.onion_address)
+                             index + 1, self.onion_address)
                 onionbalance.common.util.reauthenticate(controller, logger)
+
             except stem.ControllerError:
-                logger.exception("Error uploading descriptor for service "
-                                 "%s.onion.", self.onion_address)
+                logger.exception("Error uploading descriptor %d for service "
+                                 "%s.onion.", index + 1, self.onion_address)
                 break
 
     def _get_identity_pubkey_bytes(self):
@@ -386,9 +535,71 @@ class OnionbalanceService(object):
         return identity_pub_key.public_bytes(encoding=serialization.Encoding.Raw,
                                              format=serialization.PublicFormat.Raw)
 
+    def _load_failsafe_param(self, num_descriptors):
+        """
+        determine if we can afford to upload descriptor(s) multiple times
+        depending on the number of needed descriptors and the number of available HSDirs
+        """
+        if params.N_HSDIRS < num_descriptors:
+            logger.error("We have not enough HSDirs configured to fit our %s descriptor(s).", num_descriptors)
+            raise BadServiceInit
+        elif params.N_HSDIRS // params.HSDIR_N_REPLICAS >= num_descriptors:
+            logger.info("We have enough HSDirs configured to fit our %d descriptor(s) multiple times.",
+                        num_descriptors)
+            return True
+        elif params.N_HSDIRS // params.HSDIR_N_REPLICAS < num_descriptors:
+            logger.info("We have enough HSDirs configured to fit our %d descriptor(s) at least once.",
+                        num_descriptors)
+            return False
+        else:
+            logger.error("Something went wrong. Maybe no N_HSDIRS set? Aborting.")
+            raise BadServiceInit
+
+    def _assign_responsible_hdsirs(self, descriptors, responsible_hsdirs):
+        """
+        assign hsdirs to our descriptor(s)
+        """
+        available_hsdirs = responsible_hsdirs.copy()
+        # will contain hsdirs for resp. descriptor
+        assigned_hsdirs = []
+        num_descriptors = len(descriptors)
+
+        # this step is needed to access assigned intro points via index
+        for i in range(num_descriptors):
+            assigned_hsdirs.append([0])
+
+        # determine which hsdir belongs to which descriptor
+        i = 0
+        while len(available_hsdirs) > 0:
+            assigned_hsdirs[i].append(available_hsdirs[0])
+            available_hsdirs.pop(0)
+            logger.info("Assigned hsdir to (sub)descriptor %d.", i + 1)
+            # reset index if every descriptor got another hsdir
+            if i + 1 == num_descriptors:
+                i = 0
+            else:
+                i += 1
+
+        if len(available_hsdirs) == 0:
+            logger.info("Assigned all hsdirs.")
+
+        if len(available_hsdirs) > 0:
+            logger.info("Couldn't assign %d hsdirs (this should never happen). Continue anyway.",
+                        len(available_hsdirs))
+
+        for i in range(num_descriptors):
+            # remove first element [0] for every descriptor in list
+            assigned_hsdirs[i].pop(0)
+            try:
+                # assign hsdirs to resp. descriptor
+                descriptors[i].set_responsible_hsdirs(assigned_hsdirs[i])
+            except BadServiceInit:
+                return
+
 
 class NotEnoughIntros(Exception):
     pass
+
 
 class BadServiceInit(Exception):
     pass

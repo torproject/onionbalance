@@ -17,7 +17,7 @@ def test_master_descriptor_publication(tmpdir):
     check that it can be retrieved from the DHT.
     """
 
-    chutney_config = parse_chutney_enviroment()
+    chutney_config = parse_chutney_environment()
     print(chutney_config)
     private_key = Cryptodome.PublicKey.RSA.generate(1024)
     master_onion_address = onionbalance.hs_v2.util.calc_onion_address(private_key)

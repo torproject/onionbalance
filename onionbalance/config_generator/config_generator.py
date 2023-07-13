@@ -16,7 +16,7 @@ from stem.descriptor.hidden_service import HiddenServiceDescriptorV3
 import onionbalance
 from onionbalance.common import log
 from onionbalance.hs_v2 import util
-from onionbalance.hs_v3 import tor_ed25519
+from onionbalance.hs_v3 import tor_ed25519, params
 
 # Simplify the logging output for the command line tool
 logger = log.get_config_generator_logger()
@@ -283,7 +283,7 @@ class ConfigGenerator(object):
         """
         num_instances = None
         if self.interactive:
-            limits = " (min: 1, max: 8)" if self.hs_version == "v3" else ""
+            limits = " (min: 1, max: {})".format(params.MAX_INSTANCES) if self.hs_version == "v3" else ""
             num_instances = input("Service #%d: Number of instance services to create (default: %d)%s: " %
                                   (i, self.args.num_instances, limits))
             # Cast to int if a number was specified
@@ -292,6 +292,9 @@ class ConfigGenerator(object):
             except ValueError:
                 num_instances = None
         num_instances = num_instances or self.args.num_instances
+        if num_instances > params.MAX_INSTANCES:
+            logger.error("Number of instances is too high (max. %d). Please try again.", params.MAX_INSTANCES)
+            sys.exit(1)
         logger.debug("Creating %d service instances.", num_instances)
 
         tag = None

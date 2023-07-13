@@ -14,12 +14,12 @@ from cryptography.hazmat.primitives._serialization import Encoding, PublicFormat
 from onionbalance.config_generator.config_generator import ConfigGenerator, parse_cmd_args
 
 # Skip functional tests if Chutney environment is not running.
-pytestmark = pytest.mark.skipif(
-    "os.environ.get('CHUTNEY_ONION_ADDRESS') is None",
-    reason="Skipping functional test, no Chutney environment detected")
+#pytestmark = pytest.mark.skipif(
+#   "os.environ.get('CHUTNEY_ONION_ADDRESS') is None",
+#    reason="Skipping functional test, no Chutney environment detected")
 
 
-def parse_chutney_enviroment():
+def parse_chutney_environment():
     """
     Read environment variables and determine chutney instance and
     client addresses.
@@ -81,29 +81,37 @@ def create_test_config_file_v2(tmppath, private_key=None, instances=None):
     return str(config_path)
 
 
-def create_test_config_file_v3(tmppath, instance_address):
-    args = parse_cmd_args().parse_args(['--hs-version', 'v3', '-n', '1', '--output', str(tmppath)])
+def create_test_config_file_v3(tmppath, instance_address, num_instances):
+    args = parse_cmd_args().parse_args(['--hs-version', 'v3', '-n', str(num_instances), '--output', str(tmppath)])
     ConfigGenerator(args, False)
 
     config_path = tmppath.join('config.yaml')
     assert config_path.check()
 
+    print(instance_address)
+
+    i = 0
     with open(config_path) as f:
         config = yaml.safe_load(f)
-    config['services'][0]['instances'][0]['address'] = instance_address
+        for instance in instance_address:
+            config['services'][0]['instances'][i]['address'] = instance
+            i += 1
 
     with open(config_path, "w") as f:
         yaml.dump(config, f)
 
     return str(config_path)
 
-def update_test_config_file_v3(tmppath, instance_address):
+def update_test_config_file_v3(tmppath, instance_address, num_instances):
     config_path = tmppath.join('config.yaml')
     assert config_path.check()
 
+    i = 0
     with open(config_path) as f:
         config = yaml.safe_load(f)
-    config['services'][0]['instances'][0]['address'] = instance_address
+        for instance in instance_address:
+            config['services'][0]['instances'][i]['address'] = instance
+            i += 1
 
     with open(config_path, "w") as f:
         yaml.dump(config, f)

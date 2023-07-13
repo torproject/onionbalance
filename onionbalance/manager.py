@@ -10,7 +10,7 @@ from onionbalance.common import argparser
 from onionbalance.common import log
 from setproctitle import setproctitle  # pylint: disable=no-name-in-module
 
-import onionbalance.hs_v2.manager
+# import onionbalance.hs_v2.manager
 import onionbalance.hs_v3.manager
 
 from onionbalance import __version__
@@ -25,7 +25,7 @@ def main():
 
     logger.warning("Initializing onionbalance (version: %s)...", __version__)
 
-    if args.hs_version == 'v2':
-        onionbalance.hs_v2.manager.main(args)
-    else:
-        onionbalance.hs_v3.manager.main(args)
+#    if args.hs_version == 'v2':
+#        onionbalance.hs_v2.manager.main(args)
+#    else:
+    onionbalance.hs_v3.manager.main(args)

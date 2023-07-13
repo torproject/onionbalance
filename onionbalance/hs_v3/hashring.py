@@ -198,6 +198,8 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
             # Check if we have already added this node to the responsible
             # HSDirs. This can happen in the second replica and we should
             # skip the node
+            # When we have several descriptors we use the replica_num for getting more HSDirs but
+            # it is possible that our descriptors are uploaded a single time only.
             if hsdir_node.get_hex_fingerprint() in responsible_hsdirs:
                 logger.debug("Ignoring already added HSDir!")
                 continue

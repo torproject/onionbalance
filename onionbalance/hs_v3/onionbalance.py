@@ -14,6 +14,7 @@ from onionbalance.hs_v3 import manager
 from onionbalance.hs_v3 import stem_controller
 from onionbalance.hs_v3 import service as ob_service
 from onionbalance.hs_v3 import consensus as ob_consensus
+from onionbalance.hs_v3.params import MAX_INSTANCES
 
 logger = log.get_logger()
 
@@ -103,6 +104,10 @@ class Onionbalance(object):
                 except ValueError:
                     raise ConfigError("Cannot load instance with address: '{}'. If you are trying to run onionbalance "
                                       "for v2 onions, please use the --hs-version=v2 switch".format(instance["address"]))
+
+            if len(service["instances"]) > MAX_INSTANCES:
+                raise ConfigError("Gave to many instances for Onionbalance to handle (max. number of instances: %s)",
+                                  MAX_INSTANCES)
 
         return config_data
 
