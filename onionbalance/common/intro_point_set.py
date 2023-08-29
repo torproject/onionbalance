@@ -1,4 +1,3 @@
-from future.moves.itertools import zip_longest
 import random
 import itertools
 
@@ -53,7 +52,7 @@ class IntroductionPointSet(object):
         """
 
         # Combine intro points from across the backend instances and flatten
-        intro_points = zip_longest(*self.intro_points)
+        intro_points = itertools.zip_longest(*self.intro_points)
         flat_intro_points = itertools.chain.from_iterable(intro_points)
         for intro_point in itertools.cycle(flat_intro_points):
             if intro_point:
