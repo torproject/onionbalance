@@ -47,7 +47,6 @@ setup(
         'stem>=1.8',
         'PyYAML>=4.2b1',
         'pycryptodomex',
-        'future>=0.14.0',
         'setproctitle',
         'cryptography>=2.5',
     ],
