@@ -11,13 +11,13 @@ stages:
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
 
-setup install:
+install:
   stage: setup
   extends: .base
   script:
     - python3 setup.py install
 
-test functional:
+functional_tests:
   stage: test
   extends: .base
   variables:
@@ -25,7 +25,7 @@ test functional:
   script:
     - ./test/scripts/run-functional-tests.sh
 
-test unit:
+unit_tests:
   stage: test
   extends: .base
   variables:
@@ -33,13 +33,13 @@ test unit:
   script:
     - ./test/scripts/run-unit-tests.sh
 
-deploy docs:
+docs:
   stage: deploy
   extends: .base
   script:
     - sphinx-build -W -b html -d ./docs/_build ./docs ./docs/_build/html
 
-deploy pages:
+pages:
   stage: deploy
   script:
     - cp -a docs/_build/html public
