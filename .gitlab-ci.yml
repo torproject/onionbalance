@@ -1,0 +1,45 @@
+---
+image: python:bookworm
+
+stages:
+  - setup
+  - test
+  - deploy
+
+.base:
+  before_script:
+    - pip install -r requirements.txt
+    - pip install -r test-requirements.txt
+
+install:
+  stage: setup
+  extends: .base
+  script:
+    - python3 setup.py install
+
+functional_tests:
+  stage: test
+  extends: .base
+  variables:
+    TEST: functional_
+  script:
+    - ./test/scripts/run-functional-tests.sh
+
+unit_tests:
+  stage: test
+  extends: .base
+  variables:
+    TEST: unit
+  script:
+    - ./test/scripts/run-unit-tests.sh
+
+docs:
+  stage: deploy
+  extends: .base
+  script:
+    - sphinx-build -W -b html -d ./docs/_build ./docs ./docs/_build/html
+
+pages:
+  stage: deploy
+  script:
+    - cp -a docs/_build/html public
