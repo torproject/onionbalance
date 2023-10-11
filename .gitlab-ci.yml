@@ -26,7 +26,7 @@ test functional:
     - ./test/scripts/run-functional-tests.sh
 
 test unit:
-  staget: test
+  stage: test
   extends: .base
   variables:
     TEST: unit
