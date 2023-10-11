@@ -16,7 +16,7 @@ install:
   stage: setup
   extends: .base
   script:
-    - true
+    - /bin/true
 
 functional_tests:
   stage: test
