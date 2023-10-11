@@ -9,7 +9,7 @@ import yaml
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
-from cryptography.hazmat.primitives.serialization.base import Encoding, PublicFormat
+from cryptography.hazmat.primitives._serialization import Encoding, PublicFormat
 
 from onionbalance.config_generator.config_generator import ConfigGenerator, parse_cmd_args
 
