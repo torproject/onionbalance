@@ -10,12 +10,13 @@ stages:
   before_script:
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
+    - python3 setup.py install
 
 install:
   stage: setup
   extends: .base
   script:
-    - python3 setup.py install
+    - /bin/true
 
 functional_tests:
   stage: test
