@@ -42,7 +42,7 @@ style_tests:
   script:
     - flake8 onionbalance
 
-docs:
+pages:
   stage: deploy
   extends: .base
   script:
