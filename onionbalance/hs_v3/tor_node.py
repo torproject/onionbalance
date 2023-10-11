@@ -21,7 +21,7 @@ class Node(object):
     """
 
     def __init__(self, microdescriptor, routerstatus):
-        assert(microdescriptor and routerstatus)
+        assert (microdescriptor and routerstatus)
 
         logger.debug("Initializing node with fpr %s", routerstatus.fingerprint)
 
