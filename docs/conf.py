@@ -22,8 +22,8 @@ from docutils.utils import get_source_line
 
 # Documentation configuration
 __version__ = '0.2.2'
-__author__ = "George Kadianakis, Donncha O'Cearbhaill"
-__contact__ = "asn@torproject.org"
+__author__ = "Silvio Rhatto, George Kadianakis, Donncha O'Cearbhaill"
+__contact__ = "rhatto@torproject.org"
 
 # Ignore the 'dev' version suffix.
 if __version__.endswith('dev'):
@@ -130,7 +130,7 @@ html_theme = 'alabaster'
 # documentation.
 html_theme_options = {
     "description": "Load balancing and redundancy for Tor onion services.",
-    'github_user': 'asn-d6',
+    'github_user': 'torproject',
     'github_repo': 'onionbalance',
     'github_button': False,
     'travis_button': False,
