@@ -72,6 +72,7 @@ def run_command(commands, args, cwd=None, verbose=False, hide_stderr=False,
     """Call the given command(s)."""
     assert isinstance(commands, list)
     p = None
+    dispcmd = ''
     for c in commands:
         try:
             dispcmd = str([c] + args)
