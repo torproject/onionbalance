@@ -178,7 +178,7 @@ class OBDescriptor(V3Descriptor):
         # We have already removed all the intros with legacy keys. Make sure that
         # no legacy intros sneaks up on us, becausey they would result in
         # unparseable descriptors if we don't recertify them (and we won't).
-        assert(not intro_point.legacy_key_cert)
+        assert (not intro_point.legacy_key_cert)
 
         # Get all the certs we need to recertify
         # [we need to use the _replace method of namedtuples because there is no

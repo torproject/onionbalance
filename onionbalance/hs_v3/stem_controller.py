@@ -48,7 +48,7 @@ class StemController(object):
         self.controller = onionbalance.common.util.connect_to_control_port(tor_socket=socket,
                                                                            tor_address=address,
                                                                            tor_port=port)
-        assert(self.controller.is_authenticated())
+        assert (self.controller.is_authenticated())
 
     def mark_tor_as_active(self):
         """
