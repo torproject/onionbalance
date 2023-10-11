@@ -47,8 +47,4 @@ docs:
   extends: .base
   script:
     - sphinx-build -W -b html -d ./docs/_build ./docs ./docs/_build/html
-
-pages:
-  stage: deploy
-  script:
-    - cp -a docs/_build/html public
+    - cp -a ./docs/_build/html ./public
