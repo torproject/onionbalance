@@ -15,9 +15,9 @@ load-balancing while also making onion services more resilient and reliable by
 eliminating single points-of-failure.
 
 - Latest release: |version| (:ref:`changelog`)
-- Repository: https://gitlab.torproject.org/tpo/core/onionbalance
-- GitHub mirror: https://github.com/asn-d6/onionbalance/
-- Issue tracker: https://github.com/asn-d6/onionbalance/issues
+- Repository: https://gitlab.torproject.org/tpo/onion-services/onionbalance
+- GitHub mirror: https://github.com/torproject/onionbalance
+- Issue tracker: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues
 - PyPI: https://pypi.org/project/Onionbalance/
 - IRC: #tor-dev @ OFTC
 
