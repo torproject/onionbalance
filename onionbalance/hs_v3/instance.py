@@ -48,7 +48,7 @@ class InstanceV3(onionbalance.common.instance.Instance):
         """
         logger.info("Found instance %s for this new descriptor!", self.onion_address)
 
-        assert(onion_address == self.onion_address)
+        assert (onion_address == self.onion_address)
 
         # Parse descriptor. If it parsed correctly, we know that this
         # descriptor is truly for this instance (since the onion address
@@ -69,8 +69,8 @@ class InstanceV3(onionbalance.common.instance.Instance):
             self.descriptor = new_descriptor
             return
 
-        assert(self.descriptor)
-        assert(new_descriptor.intro_set)
+        assert (self.descriptor)
+        assert (new_descriptor.intro_set)
 
         # We already have a descriptor but this is a new one. Check the intro points!
         if new_descriptor.intro_set != self.descriptor.intro_set:

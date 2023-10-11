@@ -54,7 +54,7 @@ def get_srv_and_time_period(is_first_descriptor):
     current_tp = my_onionbalance.consensus.get_time_period_num()
     previous_tp = current_tp - 1
     next_tp = current_tp + 1
-    assert(previous_tp > 0)
+    assert (previous_tp > 0)
 
     # Get the right TP/SRV
     if is_first_descriptor:
@@ -149,7 +149,7 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
     from onionbalance.hs_v3.onionbalance import my_onionbalance
 
     # Always use a live consensus when calculating responsible HSDirs
-    assert(my_onionbalance.consensus.is_live())
+    assert (my_onionbalance.consensus.is_live())
 
     responsible_hsdirs = []
 
@@ -211,7 +211,7 @@ def get_responsible_hsdirs(blinded_pubkey, is_first_descriptor):
     # Do a sanity check
     if my_onionbalance.is_testnet:
         # If we are on chutney it's normal to not have enough nodes to populate the hashring
-        assert(len(responsible_hsdirs) <= params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
+        assert (len(responsible_hsdirs) <= params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE)
     else:
         if (len(responsible_hsdirs) != params.HSDIR_N_REPLICAS * params.HSDIR_SPREAD_STORE):
             logger.critical("Got the wrong number of responsible HSDirs: %d. Aborting", len(responsible_hsdirs))

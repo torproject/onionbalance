@@ -56,7 +56,7 @@ class ConfigGenerator(object):
 
     def gather_information(self):
         self.hs_version = self.get_hs_version()
-        assert(self.hs_version in ['v2', 'v3'])
+        assert (self.hs_version in ['v2', 'v3'])
 
         # Check if output directory exists, if not try create it
         self.output_path = self.get_output_path()

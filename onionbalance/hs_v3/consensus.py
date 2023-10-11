@@ -60,7 +60,7 @@ class Consensus(object):
 
         # We should never be asked for routerstatuses with a non-live consensus
         # so make sure this is the case.
-        assert(self.is_live())
+        assert (self.is_live())
 
         return self.consensus.routers
 
@@ -207,7 +207,7 @@ class Consensus(object):
         time_period_length set to default value of 1440 minutes == 1 day
         """
         if not valid_after:
-            assert(self.is_live())
+            assert (self.is_live())
             valid_after = self.consensus.valid_after
             valid_after = stem.util.datetime_to_unix(valid_after)
 
@@ -219,7 +219,7 @@ class Consensus(object):
         # Calculate offset as specified in rend-spec-v3.txt [TIME-PERIODS]
         time_period_rotation_offset = self._get_srv_phase_duration()
 
-        assert(minutes_since_epoch > time_period_rotation_offset)
+        assert (minutes_since_epoch > time_period_rotation_offset)
         minutes_since_epoch -= time_period_rotation_offset
 
         time_period_num = minutes_since_epoch // time_period_length
@@ -236,7 +236,7 @@ class Consensus(object):
         """
         from onionbalance.hs_v3.onionbalance import my_onionbalance
 
-        assert(self.is_live())
+        assert (self.is_live())
 
         beginning_of_current_round = stem.util.datetime_to_unix(self.consensus.valid_after)
 
@@ -269,7 +269,7 @@ class Consensus(object):
         """
         Return the start time of the upcoming time period
         """
-        assert(self.is_live())
+        assert (self.is_live())
 
         # Get start time of next time period
         time_period_length = self.get_time_period_length()
