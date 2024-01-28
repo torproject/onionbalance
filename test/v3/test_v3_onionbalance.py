@@ -66,4 +66,4 @@ class TestReloadConfig(unittest.TestCase):
 
     @staticmethod
     def create_dummy_args():
-        return SimpleNamespace(config='config/config.yaml', hs_version='v3', ip='127.0.0.1', is_testnet=False, port=6666, socket='/var/run/tor/control', verbosity='info')
+        return SimpleNamespace(config='config/config.yaml', ip='127.0.0.1', is_testnet=False, port=6666, socket='/var/run/tor/control', verbosity='info')

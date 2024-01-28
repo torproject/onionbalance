@@ -15,7 +15,6 @@ from stem.descriptor.hidden_service import HiddenServiceDescriptorV3
 
 import onionbalance
 from onionbalance.common import log
-from onionbalance.hs_v2 import util
 from onionbalance.hs_v3 import tor_ed25519
 
 # Simplify the logging output for the command line tool
@@ -27,7 +26,6 @@ class ConfigGenerator(object):
         self.args = args
         self.interactive = interactive
 
-        self.hs_version = None
         self.output_path = None
 
         # A dictionary that maps services to their keys and instances:
@@ -54,23 +52,23 @@ class ConfigGenerator(object):
         # Create config file!
         self.generate_config()
 
-    def gather_information(self):
-        self.hs_version = self.get_hs_version()
-        assert (self.hs_version in ['v2', 'v3'])
+    def try_make_dir(self, path):
+        """
+        Try to create a directory (including any parent directories)
+        """
+        try:
+            os.makedirs(path)
+        except OSError:
+            if not os.path.isdir(path):
+                raise
 
+    def gather_information(self):
         # Check if output directory exists, if not try create it
         self.output_path = self.get_output_path()
-
-        if self.hs_version == "v2":
-            self.master_dir = os.path.join(self.output_path, 'master')
-        else:
-            self.master_dir = self.output_path
+        self.master_dir = self.output_path
 
         # Allow the creation of multiple services for v3
-        if self.hs_version == "v3":
-            n_services = self.get_num_services()
-        else:
-            n_services = 1 # for v2
+        n_services = self.get_num_services()
 
         # Gather information for each service
         for i, _ in enumerate(range(n_services), start=1):
@@ -79,10 +77,6 @@ class ConfigGenerator(object):
 
             # Generate keys for each instance
             self.num_instances, self.tag = self.get_num_instances(i)
-
-            # v2 only: Create HiddenServicePort line for instance torrc file
-            if self.hs_version == 'v2':
-                self.torrc_port_line = self.get_torrc_port_line()
 
             instances = self.create_instances()
             self.services[master_onion_address] = (master_key, instances)
@@ -95,17 +89,8 @@ class ConfigGenerator(object):
         # Create the onionbalance config file
         self.create_yaml_config_file()
 
-        if self.hs_version == 'v2':
-            # Generate config files for each instance
-            self.write_v2_instance_files()
-
-            logger.info("Done! Successfully generated an Onionbalance config and %d "
-                        "instance keys for service %s.onion.",
-                        self.num_instances, onion_address)
-
-        if self.hs_version == "v3":
-            logger.info("Done! Successfully generated Onionbalance config.")
-            logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
+        logger.info("Done! Successfully generated Onionbalance config.")
+        logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
                         self.config_file_path)
 
     def get_output_path(self):
@@ -118,7 +103,7 @@ class ConfigGenerator(object):
                                 "[{}]: ".format(os.path.abspath(self.args.output)))
         output_path = output_path or self.args.output
         try:
-            util.try_make_dir(output_path)
+            self.try_make_dir(output_path)
         except OSError:
             logger.exception("Problem encountered when trying to create the "
                              "output directory %s.", os.path.abspath(output_path))
@@ -127,38 +112,14 @@ class ConfigGenerator(object):
             logger.debug("Created the output directory '%s'.",
                          os.path.abspath(output_path))
 
-        # Do some directory validation
-        if self.hs_version == 'v2' and not util.is_directory_empty(output_path):
-            # The output directory should be empty to avoid having conflict keys
-            # or config files.
-            logger.error("The specified output directory '%s' is not empty. Please "
-                         "delete any files and folders or specify another output "
-                         "directory.", output_path)
+        config_path = os.path.join(output_path, 'config.yaml')
+        if os.path.isfile(config_path):
+            logger.error("The specified output directory '%s' already contains a 'config.yaml' "
+                            "file. Please clean the directory before starting config_generator.",
+                            output_path)
             sys.exit(1)
-        elif self.hs_version == 'v3':
-            config_path = os.path.join(output_path, 'config.yaml')
-            if os.path.isfile(config_path):
-                logger.error("The specified output directory '%s' already contains a 'config.yaml' "
-                             "file. Please clean the directory before starting config_generator.",
-                             output_path)
-                sys.exit(1)
 
         return output_path
-
-    def get_hs_version(self):
-        # Get the HS version
-        hs_version = None
-        if self.interactive:
-            hs_version = input('Enter HS version ("v2" or "v3") (Leave empty for "v3"): ')
-        hs_version = hs_version or self.args.hs_version
-
-        if hs_version not in ["v2", "v3"]:
-            logger.error('Only accepting "v2" and "v3" as HS versions')
-            sys.exit(1)
-
-        logger.info("Rolling with HS %s!", hs_version)
-
-        return hs_version
 
     def load_master_key(self, i):
         """
@@ -168,15 +129,12 @@ class ConfigGenerator(object):
 
         # master_key_path is now either None (if no key path is specified) or
         # set to the actual path
-        if self.hs_version == 'v2':
-            return self.load_v2_master_key(self.master_key_path)
-        else:
-            return self.load_v3_master_key(self.master_key_path)
+        return self.load_v3_master_key(self.master_key_path)
 
     def get_master_key_path(self, i):
         # Load master key if specified
         master_key_path = None
-        helper = " (i.e. path to 'hs_ed25519_secret_key')" if self.hs_version == 'v3' else ""
+        helper = " (i.e. path to 'hs_ed25519_secret_key')"
         if self.interactive:
             # Read key path from user
             master_key_path = input("Service #%d: Enter path to master service private key%s "
@@ -238,27 +196,6 @@ class ConfigGenerator(object):
 
             return master_private_key, master_onion_address
 
-    def load_v2_master_key(self, master_key_path):
-        if master_key_path:
-            # Try load the specified private key file
-            master_key = util.key_decrypt_prompt(master_key_path)
-            if not master_key:
-                logger.error("The specified master private key %s could not "
-                             "be loaded.", os.path.abspath(master_key))
-                sys.exit(1)
-
-            master_onion_address = util.calc_onion_address(master_key)
-            logger.info("Successfully loaded a master key for service "
-                        "%s.onion.", master_onion_address)
-        else:
-            # No key specified, begin generating a new one.
-            master_key = Cryptodome.PublicKey.RSA.generate(1024)
-            master_onion_address = util.calc_onion_address(master_key)
-            logger.debug("Created a new master key for service %s.onion.",
-                         master_onion_address)
-
-        return master_key, master_onion_address
-
     def get_num_services(self):
         """
         Get the number of services this OnionBalance should support
@@ -283,7 +220,7 @@ class ConfigGenerator(object):
         """
         num_instances = None
         if self.interactive:
-            limits = " (min: 1, max: 8)" if self.hs_version == "v3" else ""
+            limits = " (min: 1, max: 8)"
             num_instances = input("Service #%d: Number of instance services to create (default: %d)%s: " %
                                   (i, self.args.num_instances, limits))
             # Cast to int if a number was specified
@@ -328,24 +265,6 @@ class ConfigGenerator(object):
         return torrc_port_line
 
     def create_instances(self):
-        if self.hs_version == 'v2':
-            return self.create_v2_instances()
-        else:
-            return self.create_v3_instances()
-
-    def create_v2_instances(self):
-        instances = []
-
-        for i in range(0, self.num_instances):
-            instance_key = Cryptodome.PublicKey.RSA.generate(1024)
-            instance_address = util.calc_onion_address(instance_key)
-            logger.debug("Created a key for instance %s.onion.",
-                         instance_address)
-            instances.append((instance_address, instance_key))
-
-        return instances
-
-    def create_v3_instances(self):
         instances = []
 
         for i in range(0, self.num_instances):
@@ -365,16 +284,13 @@ class ConfigGenerator(object):
 
     def write_master_key_to_disk(self, onion_address, master_key):
         # Finished reading input, starting to write config files.
-        util.try_make_dir(self.master_dir)
+        self.try_make_dir(self.master_dir)
         master_key_file = os.path.join(self.master_dir,
                                        '{}.key'.format(onion_address))
         with open(master_key_file, "wb") as key_file:
             os.chmod(master_key_file, 384)  # chmod 0600 in decimal
 
-            if self.hs_version == 'v2':
-                master_passphrase = self.get_master_key_passphrase()
-                key_file.write(master_key.exportKey(passphrase=master_passphrase))
-            elif self.hs_version == 'v3' and self.v3_loaded_key_from_file:
+            if self.v3_loaded_key_from_file:
                 # If we loaded a v3 key from a file, copy the file directly
                 # (see loaded_key_from_file comments).
                 shutil.copyfile(self.master_key_path, master_key_file)
@@ -391,35 +307,6 @@ class ConfigGenerator(object):
 
             logger.debug("Successfully wrote master key to file %s.",
                          os.path.abspath(master_key_file))
-
-    def write_v2_instance_files(self):
-        master_key, instances = list(self.services.values())[0]
-        for i, (instance_address, instance_key) in enumerate(instances):
-            # Create a numbered directory for instance
-            instance_dir = os.path.join(self.output_path, '{}{}'.format(self.tag, i + 1))
-            instance_key_dir = os.path.join(instance_dir, instance_address)
-            util.try_make_dir(instance_key_dir)
-            os.chmod(instance_key_dir, 1472)  # chmod 2700 in decimal
-
-            instance_key_file = os.path.join(instance_key_dir, 'private_key')
-            with open(instance_key_file, "wb") as key_file:
-                os.chmod(instance_key_file, 384)  # chmod 0600 in decimal
-                key_file.write(instance_key.exportKey())
-                logger.debug("Successfully wrote key for instance %s.onion to "
-                             "file.", instance_address)
-
-            # Write torrc file for each instance
-            instance_torrc = os.path.join(instance_dir, 'instance_torrc')
-            instance_torrc_template = pkg_resources.resource_string(
-                __name__, 'data/torrc-instance-v2')
-            with open(instance_torrc, "w") as torrc_file:
-                torrc_file.write(instance_torrc_template.decode('utf-8'))
-                # The ./ relative path prevents Tor from raising relative
-                # path warnings. The relative path may need to be edited manual
-                # to work on Windows systems.
-                torrc_file.write(u"HiddenServiceDir {}\n".format(
-                    instance_address))
-                torrc_file.write(u"{}\n".format(self.torrc_port_line))
 
     def create_yaml_config_file(self):
         services_data = []
@@ -444,13 +331,6 @@ class ConfigGenerator(object):
             logger.info("Wrote master service config file '%s'.",
                         os.path.abspath(self.config_file_path))
 
-        if self.hs_version == 'v2':
-            # Write frontend service torrc
-            master_torrc_path = os.path.join(self.master_dir, 'torrc-server')
-            master_torrc_template = pkg_resources.resource_string(__name__,
-                                                                  'data/torrc-server')
-            with open(master_torrc_path, "w") as master_torrc_file:
-                master_torrc_file.write(master_torrc_template.decode('utf-8'))
 
 
 def parse_cmd_args():
@@ -462,10 +342,6 @@ def parse_cmd_args():
         description="onionbalance-config generates config files and keys for "
         "Onionbalance instances and management servers. Calling without any "
         "options will initiate an interactive mode.")
-
-    parser.add_argument("--hs-version", type=str,
-                        default="v3",
-                        help="Onion service version (default: %(default)s).")
 
     parser.add_argument("--key", type=str, default=None,
                         help="RSA private key for the master onion service.")
