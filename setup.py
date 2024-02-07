@@ -25,7 +25,7 @@ def read(*names, **kwargs):
 setup(
     name="Onionbalance",
     packages=["onionbalance",
-              "onionbalance.hs_v2", "onionbalance.hs_v3", "onionbalance.hs_v3.ext", "onionbalance.common",
+              "onionbalance.hs_v3", "onionbalance.hs_v3.ext", "onionbalance.common",
               "onionbalance.config_generator"],
     entry_points={
         "console_scripts": [
