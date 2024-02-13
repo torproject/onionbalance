@@ -5,9 +5,7 @@ import os
 import sys
 import getpass
 import yaml
-import pkg_resources
 
-import Cryptodome.PublicKey.RSA
 from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
 from cryptography.hazmat.primitives import serialization
 
@@ -91,7 +89,7 @@ class ConfigGenerator(object):
 
         logger.info("Done! Successfully generated Onionbalance config.")
         logger.info("Now please edit '%s' with a text editor to add/remove/edit your backend instances.",
-                        self.config_file_path)
+                    self.config_file_path)
 
     def get_output_path(self):
         """
@@ -115,8 +113,8 @@ class ConfigGenerator(object):
         config_path = os.path.join(output_path, 'config.yaml')
         if os.path.isfile(config_path):
             logger.error("The specified output directory '%s' already contains a 'config.yaml' "
-                            "file. Please clean the directory before starting config_generator.",
-                            output_path)
+                         "file. Please clean the directory before starting config_generator.",
+                         output_path)
             sys.exit(1)
 
         return output_path
@@ -330,7 +328,6 @@ class ConfigGenerator(object):
             config_file.write(config_yaml)
             logger.info("Wrote master service config file '%s'.",
                         os.path.abspath(self.config_file_path))
-
 
 
 def parse_cmd_args():
