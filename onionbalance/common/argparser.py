@@ -16,6 +16,10 @@ def get_common_argparser():
         description="onionbalance distributes the requests for a Tor hidden "
         "services across multiple Tor instances.")
 
+    parser.add_argument("--hs-version", type=str, default='v3',
+                        choices=('v3',),
+                        help="Onion service version (only v3 is supported)")
+
     parser.add_argument("-i", "--ip", type=str, default='127.0.0.1',
                         help="Tor controller IP address")
 

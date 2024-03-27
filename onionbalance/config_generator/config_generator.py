@@ -340,6 +340,10 @@ def parse_cmd_args():
         "Onionbalance instances and management servers. Calling without any "
         "options will initiate an interactive mode.")
 
+    parser.add_argument("--hs-version", type=str,
+                        default="v3", choices=("v3", ),
+                        help="Onion service version (only v3 is supported.")
+
     parser.add_argument("--key", type=str, default=None,
                         help="RSA private key for the master onion service.")
 
