@@ -150,7 +150,7 @@ to get v3 support, otherwise you can obtain it via git:
 
    $ git clone https://gitlab.torproject.org/tpo/core/onionbalance.git
    $ cd onionbalance
-   $ sudo python3 setup.py install
+   $ sudo python3 -m pip install . --break-system-packages
    # Let's create an onionbalance config file.
    # -n indicates how many empty backend address slots will be created.
    # These can be easily modified with a text editor at any time.
