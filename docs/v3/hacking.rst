@@ -33,9 +33,8 @@ of the hash ring.
 Codebase structure
 -------------------
 
-Onionbalance supports both v2 and v3 onions (as of version 0.2.1). The codebase
-has been accordingly split to ``onionbalance/hs_v2`` which contains v2-specific
-code, and ``onionbalance/hs_v3`` which contains v3-specific code. There is also
+Onionbalance supports both v3 onions. v2 support has been removed.
+``onionbalance/hs_v3`` which contains v3-specific code. There is also
 some helper functions in ``onionbalance/common``. We only care about v3 code in
 this document.
 
@@ -79,8 +78,7 @@ because OBv3's configuration files are complicated, and we could eventually
 replace it with a more straightforward config file format.
 
 In any case, the ``onionbalance-config`` codebase is in
-``onionbalance/config_generator`` and it's some pretty terrible code that tries
-to wrestle both v2 and v3 configuration file formats while providing a helpful
+``onionbalance/config_generator`` provides a helpful
 wizard for the user to input her preferences.
 
 Is there any cryptography in OBv3?

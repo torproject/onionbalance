@@ -21,7 +21,6 @@ def test_sighup_reload_config(tmpdir):
     # Start an Onionbalance server and monitor for correct output with pexpect
     server = pexpect.spawnu("onionbalance",
                             args=[
-                                '--hs-version', 'v3',
                                 '-i', chutney_config.get('client_ip'),
                                 '-p', str(chutney_config.get('control_port')),
                                 '-c', config_file_path,

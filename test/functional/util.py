@@ -82,7 +82,7 @@ def create_test_config_file_v2(tmppath, private_key=None, instances=None):
 
 
 def create_test_config_file_v3(tmppath, instance_address):
-    args = parse_cmd_args().parse_args(['--hs-version', 'v3', '-n', '1', '--output', str(tmppath)])
+    args = parse_cmd_args().parse_args(['-n', '1', '--output', str(tmppath)])
     ConfigGenerator(args, False)
 
     config_path = tmppath.join('config.yaml')
