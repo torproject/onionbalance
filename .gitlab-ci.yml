@@ -10,7 +10,7 @@ stages:
   before_script:
     - pip install -r requirements.txt
     - pip install -r test-requirements.txt
-    - python3 setup.py install
+    - python3 -m pip install . --break-system-packages
 
 install:
   stage: setup
