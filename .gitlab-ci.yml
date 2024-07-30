@@ -8,8 +8,8 @@ stages:
 
 .base:
   before_script:
-    - pip install -r requirements.txt
-    - pip install -r test-requirements.txt
+    - pip install -r requirements.txt --break-system-packages
+    - pip install -r test-requirements.txt  --break-system-packages
     - python3 -m pip install . --break-system-packages
 
 install:
