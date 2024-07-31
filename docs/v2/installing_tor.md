@@ -1,4 +1,4 @@
-# Installing Tor {#installing_tor}
+# Installing Tor
 
 !!! warning
 

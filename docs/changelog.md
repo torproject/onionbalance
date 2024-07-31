@@ -1,4 +1,4 @@
-# Change Log {#changelog}
+# Change Log
 
 ## 0.2.2
 

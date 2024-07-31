@@ -1,4 +1,4 @@
-# Onionbalance v3 Installation Guide {#tutorial_v3}
+# Onionbalance v3 Installation Guide
 
 This is a step-by-step *recipe* to help you configure Onionbalance for v3
 onions.

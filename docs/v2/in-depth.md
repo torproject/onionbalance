@@ -1,4 +1,4 @@
-# Onionbalance In-depth Tutorial (v2) {#in_depth_v2}
+# Onionbalance In-depth Tutorial (v2)
 
 !!! warning
 

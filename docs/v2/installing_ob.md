@@ -1,4 +1,4 @@
-# Installing Onionbalance {#installing_ob}
+# Installing Onionbalance
 
 !!! warning
 

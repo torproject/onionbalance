@@ -1,4 +1,4 @@
-# Running Onionbalance {#running_onionbalance}
+# Running Onionbalance
 
 !!! warning
 

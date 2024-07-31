@@ -1,4 +1,4 @@
-# Onionbalance v2 Installation Guide {#tutorial_v2}
+# Onionbalance v2 Installation Guide
 
 !!! warning
 

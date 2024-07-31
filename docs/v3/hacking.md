@@ -1,4 +1,4 @@
-# Onionbalance v3 Hacking Guide {#hacking}
+# Onionbalance v3 Hacking Guide
 
 This is a small pocket guide to help with maintaining Onionbalance.
 

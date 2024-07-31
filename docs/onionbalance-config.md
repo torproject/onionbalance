@@ -1,4 +1,4 @@
-# Configuration tool {#onionbalance_config}
+# Configuration tool
 
 ## Description
 
