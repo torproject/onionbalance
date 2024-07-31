@@ -12,3 +12,8 @@ site_name: Onionbalance
 repo_url : https://gitlab.torproject.org/tpo/onion-services/onionbalance
 site_url : https://tpo.pages.torproject.net/onion-services/onionbalance
 edit_uri : ''
+
+markdown_extensions:
+  admonition: {}
+
+  pymdownx.details: {}
