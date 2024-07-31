@@ -1,8 +1,8 @@
 nav:
   - Intro: README.md
   - Use cases: use-cases.md
-  - v3
-  - v2
+  - Version 3: v3
+  - Version 2: v2
   - Configuration: onionbalance-config.md
   - Changelog: changelog.md
   - Contributors: contributors
