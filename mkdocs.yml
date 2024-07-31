@@ -13,6 +13,10 @@ repo_url : https://gitlab.torproject.org/tpo/onion-services/onionbalance
 site_url : https://tpo.pages.torproject.net/onion-services/onionbalance
 edit_uri : ''
 
+plugins:
+  awesome-pages:
+    collapse_single_pages: true
+
 markdown_extensions:
   admonition: {}
 
