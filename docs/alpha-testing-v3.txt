@@ -1,2 +1,0 @@
-Please see https://onionbalance-v3.readthedocs.io/en/latest/v3/tutorial-v3.html
-for an up-to-date guide for v3 onionbalance.
