@@ -56,6 +56,6 @@ $ sudo service tor reload
 ```
 
 Now that Tor is installed and configured, please move to
-[Running Onionbalance](running_onionbalance.md).
+[Running Onionbalance](running-onionbalance.md).
 
 [Example torrc-instance-v2]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/config_generator/data/torrc-instance-v2

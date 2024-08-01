@@ -17,7 +17,7 @@ combines the routing information (the introduction points) for multiple
 backend onion services instances and publishes this information in a
 master descriptor.
 
-![image](assets/architecture.png)
+![image](../assets/architecture.png)
 
 The backend application servers run a standard Tor onion service. When a
 client connects to the public onion service they select one of the
@@ -37,7 +37,7 @@ the user is connected to the corresponding backend instance.
 
 !!! note
 
-    The [onionbalance-config](onionbalance-config.md) tool can be used to
+    The [onionbalance-config](../onionbalance-config.md) tool can be used to
     quickly generate keys and config files for your Onionbalance deployment.
 
 The Onionbalance tool provide two command line tools:

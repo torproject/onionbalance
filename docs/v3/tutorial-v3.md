@@ -21,7 +21,7 @@ rest of this guide we will assume you understand how both onionbalance
 and the onion service protocol works. If you already know how
 onionbalance works, feel free to skip to the [Overview](#overview).
 
-![image](assets/onionbalance_v3.jpg)
+![image](../assets/onionbalance_v3.jpg)
 
 In this picture you see a setup where Onionbalance is used to load-balance over
 three backend instances. The frontend service is on the right side whereas the
@@ -55,7 +55,7 @@ steps actually happen):
 The rest of the onion service protocol carries on as normal between the
 Alice and the backend instance.
 
-## Overview {#overview}
+## Overview
 
 This section will give a short overview of what we are going to do in
 this guide.

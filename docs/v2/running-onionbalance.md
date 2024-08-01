@@ -64,7 +64,7 @@ address in the `instances` list.
     Simply start a new backend onion service under a new key and replace the
     `address` in the config file.
 
-If you have used the [configuration tool](onionbalance-config.md) you can
+If you have used the [configuration tool](../onionbalance-config.md) you can
 simply use the generated config file from `master/config.yaml`.
 
 !!! note
