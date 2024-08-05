@@ -19,7 +19,7 @@ OLD_DOCS="changelog.html contributors.html genindex.html onionbalance-config.htm
 # Iterate over all old URLs
 for old in $OLD_DOCS; do
   folder="`dirname $old`"
-  url="`basename $old .html`/index.html"
+  url="`basename $old .html`/"
 
   mkdir -p $DOCS/$folder
 

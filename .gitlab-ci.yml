@@ -51,4 +51,4 @@ pages:
   after_script:
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-provision-build
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-build
-    - scripts/docs-redirections
+    - scripts/docs-preserve-historic-urls
