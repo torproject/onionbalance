@@ -26,4 +26,4 @@ and reliable by eliminating single points-of-failure.
 
 ## Quickstart
 
-Check the [v3 tutorial](v3/tutorial-v3.md) page for setting up a v3 onionbalance.
+Check the [v3 tutorial](v3/tutorial.md) page for setting up a v3 onionbalance.

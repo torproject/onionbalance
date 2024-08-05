@@ -10,7 +10,7 @@ INHERIT: vendors/onion-mkdocs/onion-mkdocs.yml
 # Site parameters
 site_name: Onionbalance
 repo_url : https://gitlab.torproject.org/tpo/onion-services/onionbalance
-site_url : https://tpo.pages.torproject.net/onion-services/onionbalance
+site_url : https://onionservices.torproject.org/apps/base/onionbalance
 edit_uri : ''
 
 plugins:
@@ -21,3 +21,12 @@ markdown_extensions:
   admonition: {}
 
   pymdownx.details: {}
+
+  redirects:
+    redirect_maps:
+      'use-cases.md'              : 'cases.md'
+      'onionbalance-config.md'    : 'config.md'
+      'v3/status-socket.md'       : 'v3/socket.md'
+      'v3/tutorial-v3.md'         : 'v3/tutorial.md'
+      'v2/tutorial-v2.md'         : 'v2/tutorial.md'
+      'v2/running-onionbalance.md': 'v2/running.md'

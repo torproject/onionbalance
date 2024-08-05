@@ -1,5 +1,5 @@
 nav:
   - Onionbalance v3: README.md
-  - Tutorial: tutorial-v3.md
-  - Status socket: status-socket.md
+  - Tutorial: tutorial.md
+  - Status socket: socket.md
   - Hacking: hacking.md
