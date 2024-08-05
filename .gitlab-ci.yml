@@ -48,3 +48,7 @@ style_tests:
 pages:
   stage: deploy
   extends: .onion-mkdocs-clone
+  after_script:
+    - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-provision-build
+    - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-build
+    - scripts/docs-redirections
