@@ -14,7 +14,7 @@
 
 # Parameters
 DOCS="public"
-OLD_DOCS="changelog.html contributors.html genindex.html onionbalance-config.html search.html use-cases.html v2/design.html v2/in-depth.html v2/installing_ob.html v2/installing_tor.html v2/running-onionbalance.html v2/tutorial-v2.html v3/hacking.html v3/status-socket.html v3/tutorial-v3.html"
+OLD_DOCS="changelog.html contributors.html onionbalance-config.html use-cases.html v2/design.html v2/in-depth.html v2/installing_ob.html v2/installing_tor.html v2/running-onionbalance.html v2/tutorial-v2.html v3/hacking.html v3/status-socket.html v3/tutorial-v3.html"
 
 # Iterate over all old URLs
 for old in $OLD_DOCS; do
