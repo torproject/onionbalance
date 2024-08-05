@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+#
+# Preserve old Sphinx documentation URLs.
+#
+# This script is intented only to deal with old Sphinx URLs:
+# https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/28
+#
+# For recent (post-Onion MkDocs migration) redirections, we rely on
+# mkdocs-redirects at mkdocs.yml:
+# https://github.com/mkdocs/mkdocs-redirects
+#
+# Inspired by
+# https://github.com/mkdocs/mkdocs-redirects/blob/master/mkdocs_redirects/plugin.py
+
+# Parameters
+DOCS="public"
+OLD_DOCS="changelog.html contributors.html onionbalance-config.html use-cases.html v2/design.html v2/in-depth.html v2/installing_ob.html v2/installing_tor.html v2/running-onionbalance.html v2/tutorial-v2.html v3/hacking.html v3/status-socket.html v3/tutorial-v3.html"
+
+# Iterate over all old URLs
+for old in $OLD_DOCS; do
+  folder="`dirname $old`"
+  url="`basename $old .html`/"
+
+  mkdir -p $DOCS/$folder
+
+# Create an index.html file with the redirection
+cat <<EOF > $DOCS/$old
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Redirecting...</title>
+    <link rel="canonical" href="${url}">
+    <meta name="robots" content="noindex">
+    <script>var anchor=window.location.hash.substr(1);location.href="${url}"+(anchor?"#"+anchor:"")</script>
+    <meta http-equiv="refresh" content="0; url=${url}">
+</head>
+<body>
+You're being redirected to a <a href="${url}">new destination</a>.
+</body>
+</html>
+EOF
+done

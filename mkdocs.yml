@@ -1,0 +1,23 @@
+#
+# Onion MkDocs configuration
+#
+
+# Inherit the base config
+# See https://github.com/mkdocs/mkdocs/blob/master/docs/user-guide/configuration.md#configuration-inheritance
+#     https://github.com/mkdocs/mkdocs/blob/master/docs/user-guide/configuration.md#alternate-syntax
+INHERIT: vendors/onion-mkdocs/onion-mkdocs.yml
+
+# Site parameters
+site_name: Onionbalance
+repo_url : https://gitlab.torproject.org/tpo/onion-services/onionbalance
+site_url : https://tpo.pages.torproject.net/onion-services/onionbalance
+edit_uri : ''
+
+plugins:
+  awesome-pages:
+    collapse_single_pages: true
+
+markdown_extensions:
+  admonition: {}
+
+  pymdownx.details: {}

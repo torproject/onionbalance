@@ -1,0 +1,8 @@
+nav:
+  - Onionbalance v2: README.md
+  - Tutorial: tutorial-v2.md
+  - Installing Onionbalance: installing_ob.md
+  - Installing Tor: installing_tor.md
+  - Running: running-onionbalance.md
+  - Design: design.md
+  - In-depth: in-depth.md
