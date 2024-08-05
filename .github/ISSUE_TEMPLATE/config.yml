@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Onionbalance Community Support
+    url: https://forum.torproject.org/c/support/onion-services/16
+    about: Please ask and answer questions here.
+  - name: Onionbalance GitLab project
+    url: https://gitlab.torproject.org/tpo/onion-services/onionbalance/
+    about: Please report issues here.
