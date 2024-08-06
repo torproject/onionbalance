@@ -15,6 +15,7 @@ build:
       - vendors/onion-mkdocs/scripts/onion-mkdocs-provision-build
       - vendors/onion-mkdocs/scripts/onion-mkdocs-build
       - scripts/docs-preserve-historic-urls
+      - PIPENV_PIPFILE=vendors/onion-mkdocs/Pipfile pipenv requirements
 
 mkdocs:
   configuration: mkdocs.yml
