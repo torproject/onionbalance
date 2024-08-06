@@ -12,7 +12,7 @@ points-of-failure.
 # Getting Started
 
 Installation and usage documentation is available at
-https://onionservices.torproject.org/apps/web/onionbalance
+https://onionservices.torproject.org/apps/base/onionbalance
 
 # Contact
 
