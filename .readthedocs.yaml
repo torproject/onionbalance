@@ -1,10 +1,14 @@
 # Read the Docs configuration file for Sphinx projects
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+# Check https://docs.readthedocs.io/en/stable/config-file/v2.html for details
 
 version: 2
 
-# Disable the build process as documentation was migrated:
-# https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/28
+# Disable the build process as documentation was migrated.
+#
+# This will trigger a config validation error, so the build process
+# at Read the Docs don't go further (and hence we save them CPU cycles).
+#
+# Check https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/28
 build:
   os: ubuntu-22.04
   tools:
