@@ -7,6 +7,9 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.12"
+  apt_packages:
+    - mkdocs
+    - pipenv
   jobs:
     pre_install:
       # Vendorize Onion MkDocs
@@ -15,7 +18,8 @@ build:
       - git clone https://gitlab.torproject.org/tpo/web/onion-mkdocs.git vendors/onion-mkdocs
 
       # Install dependencies
-      - vendors/onion-mkdocs/scripts/onion-mkdocs-provision-build
+      #- vendors/onion-mkdocs/scripts/onion-mkdocs-provision-build
+      - PIPENV_PIPFILE=vendors/onion-mkdocs/Pipfile pipenv install
 
       # Convert the Pipfile into requirements.txt, so Read the Docs can install
       # the dependencies
