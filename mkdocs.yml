@@ -17,11 +17,6 @@ plugins:
   awesome-pages:
     collapse_single_pages: true
 
-markdown_extensions:
-  admonition: {}
-
-  pymdownx.details: {}
-
   redirects:
     redirect_maps:
       'use-cases.md'              : 'cases.md'
@@ -30,3 +25,8 @@ markdown_extensions:
       'v3/tutorial-v3.md'         : 'v3/tutorial.md'
       'v2/tutorial-v2.md'         : 'v2/tutorial.md'
       'v2/running-onionbalance.md': 'v2/running.md'
+
+markdown_extensions:
+  admonition: {}
+
+  pymdownx.details: {}
