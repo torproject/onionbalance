@@ -1,0 +1,13 @@
+name: Close Pull Request
+
+on:
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: superbrothers/close-pull-request@v3
+      with:
+        comment: "Please submit pull requests to the Onionbalance issue tracker at https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues"
