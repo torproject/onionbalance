@@ -37,10 +37,13 @@ examples of what is possible.
 
 ## Research
 
-[Ceysun Sucu](https://github.com/csucu) has analysed Onionbalance and
-other approaches to onion service scaling in his masters thesis [Tor:
-Onion Service
-Scaling](https://www.benthamsgaze.org/wp-content/uploads/2015/11/sucu-torscaling.pdf).
-The thesis provides a good overview of current approaches. It is a
-recommended read for those interested in higher performance onion
-services.
+[Ceysun Sucu][] has analysed Onionbalance and other approaches to Onion Service
+scaling in his masters thesis [Tor: Onion Service Scaling][], which is also
+available [this repository][csucu-thesis-repo] along with the [example
+experiment][]. The thesis provides a good overview of current approaches. It is
+a recommended read for those interested in higher performance Onion Services.
+
+[Ceysun Sucu]: https://github.com/csucu
+[Tor: Onion Service Scaling]: https://www.benthamsgaze.org/wp-content/uploads/2015/11/sucu-torscaling.pdf
+[csucu-thesis-repo]: https://github.com/csucu/Tor-Hidden-Service-Scaling
+[example experiment]: https://github.com/csucu/Tor-Hidden-Service-Scaling/tree/master/example%20experiment
