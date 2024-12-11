@@ -1,5 +1,46 @@
 # Onionbalance ChangeLog
 
+## v0.2.3 - 2024-12-11
+
+* Maintenance:
+    * Fix used-before-assignment ([tpo/onion-services/onionbalance!4][]).
+    * Fix import on functional tests ([tpo/onion-services/onionbalance!5][]).
+    * Drop dependency on future (thanks to Lumir Balhar) ([tpo/onion-services/onionbalance!6][]).
+    * The v2 codebase was finally removed (thanks to Federico Ceratto)
+      ([tpo/onion-services/onionbalance#8][]).
+    * Fix coding style issues found by flake8 ([tpo/onion-services/onionbalance!9][]).
+* Workflow:
+    * CI was fixed and updated, and now uses [GitLab CI][].
+    * Added Git tags to all previous releases.
+* Repository:
+    * The Onionbalance repository was moved to
+      [gitlab.torproject.org/tpo/onion-services/onionbalance][onionbalance-repo].
+    * The old repository at [github.com/torproject/onionbalance][old-repository] is
+      configured as a mirror.
+* Documentation:
+    * Onionbalance documentation was migrated to [Onion MkDocs][], then updated and
+      included in the [Onion Services Ecosystem][ecosystem]
+      ([tpo/onion-services/onionbalance#28][]).
+    * New canonical documentation URL is
+      [onionservices.torproject.org/apps/base/onionbalance][onionbalance-docs].
+      The old documentation URLs are kept as redirects
+      (https://onionbalance-v3.readthedocs.io and
+      https://onionbalance.readthedocs.io).
+    * Updated this ChangeLog to include dates for all releases.
+
+[tpo/onion-services/onionbalance!4]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/4
+[tpo/onion-services/onionbalance!5]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/5
+[tpo/onion-services/onionbalance!6]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/6
+[tpo/onion-services/onionbalance!9]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests/9
+[tpo/onion-services/onionbalance#8]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/8
+[GitLab CI]: https://docs.gitlab.com/ee/ci/
+[onionbalance-repo]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/
+[old-repository]: https://github.com/torproject/onionbalance
+[Onion Mkdocs]: https://tpo.pages.torproject.net/web/onion-mkdocs/
+[ecosystem]: https://onionservices.torproject.org
+[onionbalance-docs]: https://onionservices.torproject.org/apps/base/onionbalance/
+[tpo/onion-services/onionbalance#28]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/28
+
 ## v0.2.2 - 2021-07-29
 
 * Add an OBv3 hacking guide.
