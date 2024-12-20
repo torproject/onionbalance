@@ -1,6 +1,7 @@
 nav:
   - Intro: README.md
   - Use cases: cases.md
+  - Security overview: security.md
   - Version 3: v3
   - Version 2: v2
   - Configuration: config.md
