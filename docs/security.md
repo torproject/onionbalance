@@ -125,7 +125,7 @@ Managing multiple backend instances introduces administrative overhead and
 increases the risk of misconfiguration. Examples include:
 
 * Failing to synchronize relay selection or security parameters across
-  backends..
+  backends.
 * Failing to properly update services.
 * Failing to evaluate relevant log files.
 
