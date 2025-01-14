@@ -38,13 +38,13 @@ The Onionbalance instance only connects to the Tor network during descriptor
 uploads, significantly reducing its exposure compared to traditional Onion
 Services. Key points include:
 
-* Short-lived connections: Unlike standard Onion Services that maintain
+* Short-lived connections: unlike standard Onion Services that maintain
   persistent circuits to introduction points and handle client traffic, the
   Onionbalance instance only establishes circuits briefly to upload
   descriptors.
-* Fewer circuits: This minimizes the risk of selecting malicious relays and
+* Fewer circuits: this minimizes the risk of selecting malicious relays and
   reduces opportunities for traffic fingerprinting or correlation attacks.
-* No direct client interaction: Clients never connect to the Onionbalance
+* No direct client interaction: clients never connect to the Onionbalance
   instance, further reducing its attack surface.
 
 ### Enhanced Availability Protection
@@ -104,9 +104,14 @@ structural differences such as:
 Adversaries analyzing descriptors could infer that multiple .onion addresses
 are linked or identify custom configurations unique to a specific deployment.
 
-Mitigation: Standardizing descriptor structures within the Onionbalance
+Mitigation: standardizing descriptor structures within the Onionbalance
 codebase could limit adversaries' ability to distinguish between default and
-customized deployments.
+customized deployments[^descriptor-standardization].
+
+[^descriptor-standardization]: As of 2025-01, this is being handled
+  on ticket [tpo/onion-services/onionbalance#6][].
+
+[tpo/onion-services/onionbalance#6]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/6
 
 ### Synchronization Issues of Backend Instances
 
@@ -171,14 +176,27 @@ this is a general risk for all Onion Services:
 
 ### No Support for Proof-of-Work Protocol
 
-* Proof-of-work protocols enhance resistance against DoS attacks by requiring
+* [Proof-of-Work (PoW) protocols][pow] enhance resistance against DoS attacks by requiring
   clients to perform computational work before accessing descriptors. Lack of
-  support limits protection against high-volume attacks.
+  support limits protection against high-volume attacks[^onionbalance-pow].
 
-### No Client Authorization Support
+[^onionbalance-pow]: As of 2025-01, [PoW][pow] support in Onionbalance is
+  being discussed at [tpo/onion-services/onionbalance#13][].
 
-* Client authorization mechanisms (e.g., pre-shared keys) allow access control
-  for sensitive services but are currently unsupported by Onionbalance.
+[tpo/onion-services/onionbalance#13]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/13
+[pow]: https://onionservices.torproject.org/technology/pow/
+
+### No Restricted Discovery Support
+
+* Restricted Discovery (formely known as [Client authorization][client-auth])
+  mechanisms (e.g., pre-shared keys) allow access control for sensitive
+  services but are currently unsupported by
+  Onionbalance[^restricted-discovery].
+
+[^restricted-discovery]: Handled at [tpo/onion-services/onionbalance#5][].
+
+[client-auth]: https://community.torproject.org/onion-services/advanced/client-auth/
+[tpo/onion-services/onionbalance#5]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/5
 
 ### Suboptimal Load Balancing
 
@@ -194,3 +212,5 @@ limitations in descriptor copying logic. For example:
 This text was written by [Pascal Tippe][].
 
 [Pascal Tippe]: https://www.fernuni-hagen.de/pv/en/team/pascal.tippe.shtml
+
+## Notes
