@@ -18,8 +18,6 @@ plugins:
     default_handler: python
     handlers:
       python:
-        # Somehow docs are not correctly indexed when path is set to
-        # [packages]
         paths: [.]
         options:
           docstring_style: sphinx
