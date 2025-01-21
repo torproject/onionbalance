@@ -37,7 +37,7 @@ the user is connected to the corresponding backend instance.
 
 !!! note
 
-    The [onionbalance-config](../onionbalance-config.md) tool can be used to
+    The [onionbalance-config](../config.md) tool can be used to
     quickly generate keys and config files for your Onionbalance deployment.
 
 The Onionbalance tool provide two command line tools:
