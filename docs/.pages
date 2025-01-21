@@ -4,6 +4,7 @@ nav:
   - Version 3: v3
   - Version 2: v2
   - Configuration: config.md
+  - API: api.md
   - Changelog: changelog.md
   - Contributors: contributors.md
   - Contact and bug reporting: contact.md
