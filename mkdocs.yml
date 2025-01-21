@@ -14,6 +14,17 @@ site_url : https://onionservices.torproject.org/apps/base/onionbalance
 edit_uri : ''
 
 plugins:
+  mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        # Somehow docs are not correctly indexed when path is set to
+        # [packages]
+        paths: [.]
+        options:
+          docstring_style: sphinx
+          show_submodules: true
+
   awesome-pages:
     collapse_single_pages: true
 
