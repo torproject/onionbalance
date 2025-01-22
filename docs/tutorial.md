@@ -138,6 +138,11 @@ $ sudo python3 -m pip install . --break-system-packages
 $ onionbalance-config --hs-version v3 -n 2
 ```
 
+!!! note
+
+    The [onionbalance-config](../config.md) tool can be used to
+    quickly generate keys and config files for your Onionbalance deployment.
+
 After the final command you should have a `./config/config.yaml` file
 with a basic onionbalance configuration. The onion address of your
 frontend service can be found in the bottom of your config file. So if
@@ -281,7 +286,16 @@ service and make sure that it's reachable all the time. Check your logs
 for any errors or bugs and let me know if you see any. If you want you
 can make onionbalance logging calmer by using the `-v warning` switch.
 
+The management server must be left running to publish new descriptors
+for your onion service: within minutes you should have a fully
+functional onionbalance setup.
+
 You can also setup a `status_socket` to monitor Onionbalance.
+
+!!! note
+
+    Multiple Onionbalance management servers can be run simultaneously with the
+    same master private key and configuration file to provide redundancy.
 
 ## Troubleshooting
 

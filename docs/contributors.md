@@ -1,8 +1,15 @@
 # Contributors
 
+Onionbalance (OB) was invented by Donncha during a GSoC many moons ago. Back
+then OB only supported [v2][] Onion Services. When [v3] onions appeared, the Tor
+network team took over to [add v3
+support](https://gitlab.torproject.org/tpo/core/tor/-/issues/26768).
+
+[v3]: https://spec.torproject.org/rend-spec-v3
+[v2]: https://spec.torproject.org/rend-spec-v2
+
 Thank you to the following contributors and others for their invaluble help and
-advice in developing Onionbalance. Contributions of any kind (code,
-documentation, testing) are very welcome.
+advice in developing Onionbalance along all these years:
 
 * [Donncha Ó Cearbhaill](https://github.com/DonnchaC/)
     * Original author and maintainer of Onionbalance!!!
@@ -24,3 +31,5 @@ documentation, testing) are very welcome.
       suggestions to improve the software.
 * [duritong](https://github.com/duritong)
     * Packaged Onionbalance for Fedora, CentOS, and Redhat 7 (EPEL repository).
+
+Contributions of any kind (code, documentation, testing) are very welcome.

@@ -29,11 +29,16 @@ examples of what is possible.
 [^encrypted-services]: As of 2024-08-05, implementing the
     [xxx-encrypted-services][] proposal is not being planned.
 
+<!--
+  Not working as of 2025-01-22.
+-->
+<!--
 ## Known usage
 
 * **SKS Keyserver Pool**: Kristian Fiskerstrand has set up a onion service
   [keyserver pool](https://sks-keyservers.net/overview-of-pools.php#pool_tor)
   which connects users to one of the available onion service key servers.
+-->
 
 ## Research
 

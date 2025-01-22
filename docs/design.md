@@ -6,6 +6,11 @@ availability and reliability. The design involves collating the set of
 introduction points created by one or more independent Tor onion service
 instances into a single "main" (formelly known as "master") descriptor.
 
+Onionbalance implements a `round-robin`-like load balancing on
+top of Tor onion services. A typical Onionbalance deployment will
+incorporate one management servers and multiple backend application
+servers.
+
 ## Overview
 
 The main descriptor is signed by the onion service permanent key and
@@ -28,6 +33,31 @@ protocol defined in rend-spec.txt
 * Metadata Channel: a direct connection from an instance to a management server
   which can be used for instance descriptor upload and transfer of other data.
 
+## Architecture
+
+The management server runs the Onionbalance daemon. Onionbalance
+combines the routing information (the introduction points) for multiple
+backend onion services instances and publishes this information in a
+master descriptor.
+
+![image](assets/architecture.png)
+
+The backend application servers run a standard Tor onion service. When a
+client connects to the public onion service they select one of the
+introduction points at random. When the introduction circuit completes
+the user is connected to the corresponding backend instance.
+
+* **Management Server**: is the machine running the Onionbalance daemon. It
+  needs to have access to the onion service private key corresponding for the
+  desired onion address. This is the public onion address that users will
+  request.
+
+  This machine can be located geographically isolated from the machines hosting
+  the onion service content. It does not need to serve any content.
+
+* **Backend Instance**: each backend application server runs a Tor onion
+  service with a unique onion service key.
+
 ## Retrieving Introduction Point Data
 
 The core functionality of the Onionbalance service is the collation of
@@ -45,9 +75,7 @@ On initial startup the management server will load the previously
 published main descriptor from the DHT if it exists. The main
 descriptor is used to prepopulate the introduction point set. The
 management server regularly polls the HSDir system for a descriptor for
-each of its instances. Currently polling occurs every 10 minutes. This
-polling period can be tuned for onion services with shorter or longer
-lasting introduction points.
+each of its instances.
 
 When the management server receives a new descriptor from the HSDir
 system, it should before a number of checks to ensure that it is valid:
@@ -102,12 +130,18 @@ introduction point denial of service or actively malicious HSDirs.
 
 ## Choice of Introduction Points
 
-Tor onion service descriptors can include a maximum of 10 introduction
-points. Onionbalance should select introduction points so as to
-uniformly distribute load across the available backend instances.
+Tor onion service descriptors can include a maximum of introduction points up
+to the descriptor size limit. Onionbalance should select introduction points so
+as to uniformly distribute load across the available backend instances.
 
+<!--
+  The following was valid for v2, but not for Onionbalance v2 as
+  of 2025-01-22. This may need to be updated once Distinct Descriptor
+  Mode is available: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/7
+-->
+<!--
 Onionbalance will upload multiple distinct descriptors if you have
-configured more than 10 instances.
+configured more instances than what fits in a single descriptor.
 
 * **1 instance** - 3 IPs
 * **2 instance** - 6 IPs (3 IPs from each instance)
@@ -133,6 +167,7 @@ performance or reliability of the service.
 * **3 instances** - 3 IPs (1 IP from each instance)
 * **more than 3 instances** - Select the maximum set of introduction
     points as outlined previously.
+-->
 
 It may be advantageous to select introduction points in a non-random
 manner. The longest-lived introduction points published by a backend
