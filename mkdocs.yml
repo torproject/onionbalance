@@ -34,6 +34,7 @@ plugins:
       'v3/tutorial-v3.md'         : 'v3/tutorial.md'
       'v2/tutorial-v2.md'         : 'v2/tutorial.md'
       'v2/running-onionbalance.md': 'v2/running.md'
+      'v2/design.md'              : 'design.md'
 
 markdown_extensions:
   admonition: {}
