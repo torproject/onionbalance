@@ -28,11 +28,12 @@ descriptors are always present in the right parts of the hash ring.
 Onionbalance supports [v3][] Onion Services ([v2][] support [has been
 removed][v2-removed]) through the [hs_v3 package][onionbalance.hs_v3], which
 contains [v3][]-specific code. There is also some helper functions in
-`onionbalance/common`. We only care about v3 code in this document.
+[onionbalance/common][]. We only care about v3 code in this document.
 
 [v3]: https://spec.torproject.org/rend-spec-v3
 [v2]: https://spec.torproject.org/rend-spec-v2
 [v2-removed]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/commit/084ce8a15c9a1343fc10f0e75090bf551cb35bba
+[onionbalance/common]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/common
 
 Everything starts in [manager.py][]. It initializes the *scheduler* (more
 on that later) and then instantiates an `onionbalance.py:Onionbalance`
