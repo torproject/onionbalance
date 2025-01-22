@@ -1,10 +1,5 @@
 # Design Document
 
-!!! warning
-
-    This section refers to the older v2 codebase.
-    Although outdated, it's still available for historic purposes.
-
 This tool is designed to allow requests to Tor onion service to be
 directed to multiple back-end Tor instances, thereby increasing
 availability and reliability. The design involves collating the set of
@@ -12,12 +7,6 @@ introduction points created by one or more independent Tor onion service
 instances into a single `master` descriptor.
 
 ## Overview
-
-This tool is designed to allow requests to Tor onion service to be
-directed to multiple back-end Tor instances, thereby increasing
-availability and reliability. The design involves collating the set of
-introduction points created by one or more independent Tor onion service
-instances into a single `master` onion service descriptor.
 
 The master descriptor is signed by the onion service permanent key and
 published to the HSDir system as normal.
