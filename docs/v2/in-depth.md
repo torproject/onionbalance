@@ -2,8 +2,10 @@
 
 !!! warning
 
-    This section refers to the older v2 codebase.
-    Although outdated, it's still available for historic purposes.
+    This section refers to the old v2 codebase, which was removed from recent
+    releases.
+    Although outdated, this documentation is still available for historic
+    purposes.
 
 This is a step-by-step tutorial to help you configure Onionbalance for
 v2 onions.

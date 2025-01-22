@@ -2,8 +2,10 @@
 
 !!! warning
 
-    This section refers to the older v2 codebase.
-    Although outdated, it's still available for historic purposes.
+    This section refers to the old v2 codebase, which was removed from recent
+    releases.
+    Although outdated, this documentation is still available for historic
+    purposes.
 
 Onionbalance implements `round-robin` like load balancing on
 top of Tor onion services. A typical Onionbalance deployment will

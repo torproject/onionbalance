@@ -2,5 +2,7 @@
 
 !!! warning
 
-    This section refers to the older v2 codebase.
-    Although outdated, it's still available for historic purposes.
+    This section refers to the old v2 codebase, which was removed from recent
+    releases.
+    Although outdated, this documentation is still available for historic
+    purposes.
