@@ -48,8 +48,8 @@ underlying *backend instances* (which are [InstanceV3][] objects) and to
 check whether a new descriptor should be uploaded and do to the actual
 upload when the time comes.
 
-[OnionbalanceService]: onionbalance.hs_v3.service.Onionbalance.Service
-[InstanceV3]: onionbalance.hs_v3.instance.InstanceV3
+[OnionbalanceService]: ../api.md#onionbalance.hs_v3.service.OnionbalanceService
+[InstanceV3]: ../api.md#onionbalance.hs_v3.instance.InstanceV3
 
 The *scheduler* initialized by [manager.py][] is responsible for
 periodically invoking functions that are essential for Onionbalance's
@@ -57,8 +57,8 @@ functionality. In particular, those functions fetch the descriptors of
 the *backend instances* ([fetch_instance_descriptors][]) and publish
 descriptors for the *frontend services* ([publish_all_descriptors][]).
 
-[fetch_instance_descriptors]: onionbalance.hs_v3.onionbalance.Onionbalance.fetch_instance_descriptors
-[publish_all_descriptors]: onionbalance.hs_v3.onionbalance.Onionbalance.publish_all_descriptors
+[fetch_instance_descriptors]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.fetch_instance_descriptors
+[publish_all_descriptors]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.publish_all_descriptors
 
 Another important part of the codebase, is the [Stem][] controller in
 [stem_controller.py][]. The stem controller
@@ -72,7 +72,7 @@ when a new consensus arrives).
 
 [Stem]: https://stem.torproject.org
 [stem_controller.py]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/hs_v3/stem_controller.py
-[handle_new_status_event()]: onionbalance.hs_v3.onionbalance.Onionbalance.handle_new_status.event
+[handle_new_status_event()]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.handle_new_status.event
 
 Finally, the files [consensus.py][] and [hashring.py][] are responsible for
 maintaining the HSv3 hash ring which is how OBv3 learns the right place
@@ -91,7 +91,7 @@ might be because OBv3's configuration files are complicated, and we
 could eventually replace it with a more straightforward config file
 format.
 
-In any case, the `onionbalance-config` codebase is in
+In any case, the [onionbalance-config][] codebase is in
 [onionbalance/config_generator][onionbalance.config_generator], providing a
 helpful wizard for the user to input her preferences.
 
