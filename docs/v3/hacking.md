@@ -36,12 +36,13 @@ contains [v3][]-specific code. There is also some helper functions in
 [onionbalance/common]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/common
 
 Everything starts in [manager.py][]. It initializes the *scheduler* (more
-on that later) and then instantiates an `onionbalance.py:Onionbalance`
+on that later) and then instantiates an [Onionbalance][onionbalance-object]
 object which is a global singleton that keeps track of all runtime state
 (e.g. frontend services, configuration parameters, controller sockets,
 etc.).
 
 [manager.py]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/hs_v3/manager.py
+[onionbalance-object]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance
 
 Each *frontend service* is represented by an [OnionbalanceService][]
 object. The task of an [OnionbalanceService][] is to keep track of the
