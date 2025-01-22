@@ -4,15 +4,15 @@ This tool is designed to allow requests to Tor onion service to be
 directed to multiple back-end Tor instances, thereby increasing
 availability and reliability. The design involves collating the set of
 introduction points created by one or more independent Tor onion service
-instances into a single `master` descriptor.
+instances into a single "main" (formelly known as "master") descriptor.
 
 ## Overview
 
-The master descriptor is signed by the onion service permanent key and
+The main descriptor is signed by the onion service permanent key and
 published to the HSDir system as normal.
 
 Clients who wish to access the onion service would then retrieve the
-*master* service descriptor and try to connect to introduction points
+main service descriptor and try to connect to introduction points
 from the descriptor in a random order. If a client successfully
 establishes an introduction circuit, they can begin communicating with
 one of the onion services instances with the normal onion service
@@ -21,10 +21,10 @@ protocol defined in rend-spec.txt
 * Instance: a load-balancing node running an individual onion service.
 * Introduction Point: a Tor relay chosen by an onion service instance as a
   medium-term *meeting-place* for initial client connections.
-* Master Descriptor: an onion service descriptor published with the desired
+* Main Descriptor: an onion service descriptor published with the desired
   onion address containing introduction points for each instance.
 * Management Server: server running Onionbalance which collates introduction
-  points and publishes a master descriptor.
+  points and publishes a main descriptor.
 * Metadata Channel: a direct connection from an instance to a management server
   which can be used for instance descriptor upload and transfer of other data.
 
@@ -42,7 +42,7 @@ the DHT at regularly intervals or when its introduction point set
 changes.
 
 On initial startup the management server will load the previously
-published master descriptor from the DHT if it exists. The master
+published main descriptor from the DHT if it exists. The main
 descriptor is used to prepopulate the introduction point set. The
 management server regularly polls the HSDir system for a descriptor for
 each of its instances. Currently polling occurs every 10 minutes. This
@@ -60,7 +60,7 @@ system, it should before a number of checks to ensure that it is valid:
   expired introduction points.
 * Confirm that the descriptor timestamp is not more than 4 hours in the past.
   An older descriptor indicates that the instance may no longer be online and
-  publishing descriptors. The instance should not be included in the master
+  publishing descriptors. The instance should not be included in the main
   descriptor.
 
 It should be possible for two or more independent management servers to
@@ -72,7 +72,7 @@ descriptors should not impact the end user.
 ### Limitations
 
 * A malicious HSDir could replay old instance descriptors in an attempt to
-  include expired introduction points in the master descriptor. When an
+  include expired introduction points in the main descriptor. When an
   attacker does not control all of the responsible HSDirs this attack can be
   mitigated by not accepting descriptors with a timestamp older than the most
   recently retrieved descriptor.
@@ -85,12 +85,12 @@ descriptors should not impact the end user.
   is closed by the onion service when it has received `max_introductions` for
   that circuit. During DoS this circuit rotating may occur faster than the
   management server polls the HSDir system for new descriptors. As a result
-  clients may retrieve master descriptors which contain no currently valid
+  clients may retrieve main descriptors which contain no currently valid
   introduction points.
 * It is trivial for a HSDir to determine that a onion service is using
   Onionbalance. Onionbalance will try poll for instance descriptors on a
   regular basis. A HSDir which connects to onion services published to it would
-  find that a backend instance is serving the same content as the master
+  find that a backend instance is serving the same content as the main
   service. This allows a HSDir to trivially determine the onion addresses for a
   service's backend instances.
 
@@ -142,15 +142,15 @@ introductions across an instances introduction point circuits. Further
 investigation of these options should indicate if there is significant
 advantages to any of these approaches.
 
-## Generation and Publication of Master Descriptor
+## Generation and Publication of Main Descriptor
 
 The management server should generate a onion service descriptor
-containing the selected introduction points. This master descriptor is
-then signed by the actual onion service permanent key. The signed master
+containing the selected introduction points. This main descriptor is
+then signed by the actual onion service permanent key. The signed main
 descriptor should be published to the responsible HSDirs as normal.
 
 Clients who wish to access the onion service would then retrieve the
-`master` service descriptor and begin connect to introduction points
+`main` service descriptor and begin connect to introduction points
 at random from the introduction point list. After successful
 introduction the client will have created an onion service circuit to
 one of the available onion services instances and can then begin
