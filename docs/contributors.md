@@ -13,6 +13,8 @@ advice in developing Onionbalance along all these years:
 
 * [Donncha Ó Cearbhaill](https://github.com/DonnchaC/)
     * Original author and maintainer of Onionbalance!!!
+* [George Kadianakis](https://github.com/asn-d6):
+    * Previous Onionbalance maintainer and developer.
 * [Federico Ceratto](https://github.com/FedericoCeratto)
     * Tireless assistance with Debian packaging and Onionbalance improvements.
     * Replaced and reimplemented the job scheduler.
