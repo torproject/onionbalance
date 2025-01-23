@@ -6,10 +6,12 @@ availability and reliability. The design involves collating the set of
 introduction points created by one or more independent Tor onion service
 instances into a single "main" (formelly known as "master") descriptor.
 
-Onionbalance implements a `round-robin`-like load balancing on
-top of Tor onion services. A typical Onionbalance deployment will
-incorporate one management servers and multiple backend application
-servers.
+Onionbalance implements a [round-robin][]-like load balancing on top of
+[Tor Onion Services][]. A typical Onionbalance deployment will incorporate one
+frontend servers and multiple backend instances.
+
+[round-robin]: https://en.wikipedia.org/wiki/Round-robin_DNS
+[Tor Onion Services]: https://community.torproject.org/onion-services/
 
 ## Overview
 

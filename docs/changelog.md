@@ -6,7 +6,7 @@
     * Updated and moved some of the old v2 docs to the "main" docs.
     * Updated and moved the v3 docs to the "main" docs.
     * Removed the old v2 docs.
-    * Added an [API][api.md] page.
+    * Added an [API](api.md) page.
 
 ## v0.2.3 - 2024-12-11
 

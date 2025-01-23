@@ -1,10 +1,10 @@
 nav:
   - Intro: README.md
   - Tutorial: tutorial.md
-  - Use cases: cases.md
-  - Design: design.md
   - Installation: installation.md
   - Configuration: config.md
+  - Use cases: cases.md
+  - Design: design.md
   - Status socket: socket.md
   - Hacking: hacking.md
   - API: api.md

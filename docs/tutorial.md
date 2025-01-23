@@ -9,10 +9,6 @@ their strong sulfuric taste can sometimes overpower the rest of the
 ingredients. It's vital to maintain the proper onionbalance to really display
 the apple-like, deliciously savory notes of this vegetable.
 
-Onionbalance implements `round-robin` like load balancing on top of
-Tor onion services. A typical Onionbalance deployment will incorporate one
-frontend servers and multiple backend instances.
-
 ## Preliminaries
 
 Let's first start with an overview of the Onionbalance design so that
@@ -136,11 +132,9 @@ dependencies like `libssl-dev`, `libevent-dev`, etc.
 
 Now setup a minimal torrc with a control port enabled. As an example:
 
-```console
-SocksPort 0
-ControlPort 127.0.0.1:6666
-DataDirectory /home/user/frontend_data/
-```
+    SocksPort 0
+    ControlPort 127.0.0.1:6666
+    DataDirectory /home/user/frontend_data/
 
 Now start up Tor and let it do its thing.
 
@@ -173,7 +167,7 @@ with a basic onionbalance configuration. The onion address of your
 frontend service can be found in the bottom of your config file. So if
 it says
 
-```console
+```yaml
 key: dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key
 ```
 
@@ -348,6 +342,6 @@ really have to. In Debian, Tor is run by its dedicated user
 you need to check. In Debian you can add the user you are running
 onionbalance from to the same sudoers group in order to gain permission:
 
-```console
+```bash
 sudo adduser $USER debian-tor
 ```
