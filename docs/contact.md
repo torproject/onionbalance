@@ -23,7 +23,15 @@ as well as on important information.
 ## Reporting bugs and features
 
 Report bugs, request features at the [Onionbalance issue queue][], and submit
-merge requests [here][].
+merge requests [here][merge-requests].
 
 [Onionbalance issue queue]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues
-[here]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests
+[merge-requests]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/merge_requests
+
+!!! note "GitHub mirror"
+
+    A read-only [GitHub mirror][] is available for convenience and historic
+    purposes, but please **don't use it** to report issues and send pull
+    requests.
+
+[GitHub mirror]: https://github.com/torproject/onionbalance
