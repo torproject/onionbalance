@@ -80,10 +80,6 @@ with building C and Python projects and installing their dependencies.
 We will also assume that you are well familiar with configuring and
 running Tor onion services.
 
-### Time needed
-
-30 minutes
-
 ## Recipe
 
 ### Step 0: Installing the frontend server (setting up Tor)
