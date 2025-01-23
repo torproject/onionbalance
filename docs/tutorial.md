@@ -196,7 +196,7 @@ Login to one of your backend instances and setup Tor with the same procedure
 detailed on Step 0, but this time for each backend instance.
 
 <!--
-Similar to the step above, you will need to use the latest Tor master for
+Similar to the step above, you will need to use the latest Tor for
 Onionbalance to work (because of
 [#32709](https://trac.torproject.org/projects/tor/ticket/32709)).
 
@@ -316,7 +316,7 @@ You can also setup a [status_socket](socket.md) to monitor Onionbalance.
 !!! note
 
     Multiple Onionbalance management servers can be run simultaneously with the
-    same master private key and configuration file to provide redundancy.
+    same main private key and configuration file to provide redundancy.
 
 ## Troubleshooting
 

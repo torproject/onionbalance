@@ -40,7 +40,7 @@ protocol defined in rend-spec.txt
 The management server runs the Onionbalance daemon. Onionbalance
 combines the routing information (the introduction points) for multiple
 backend onion services instances and publishes this information in a
-master descriptor.
+main descriptor.
 
 ![image](assets/architecture.png)
 
