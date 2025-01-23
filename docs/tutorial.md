@@ -1,4 +1,4 @@
-# Onionbalance v3 Installation Guide
+# Onionbalance tutorial
 
 This is a step-by-step *recipe* to help you configure Onionbalance for v3
 onions.
@@ -17,9 +17,9 @@ frontend servers and multiple backend instances.
 
 Let's first start with an overview of the Onionbalance design so that
 you better understand what we are gonna do in this guide. Through the
-rest of this guide we will assume you understand how both onionbalance
+rest of this guide we will assume you understand how both Onionbalance
 and the onion service protocol works. If you already know how
-onionbalance works, feel free to skip to the [Overview](#overview).
+Onionbalance works, feel free to skip to the [Overview](#overview).
 
 ![image](../assets/onionbalance_v3.jpg)
 
@@ -76,8 +76,8 @@ Not too hard right? Let's start!
 To follow this recipe to completion we will need the following
 ingredients:
 
-* A host that will run Onionbalance and act as the load balancing frontend
-* Two or more hosts that will run the backend Tor instances
+* A host that will run Onionbalance and act as the load balancing frontend.
+* Two or more hosts that will run the backend Tor instances.
 
 We will assume you are using a Linux system and that you are familiar
 with building C and Python projects and installing their dependencies.
@@ -90,23 +90,49 @@ running Tor onion services.
 
 ## Recipe
 
-### Step 1: Configuring the frontend server (setting up Tor)
+### Step 0: Installing the frontend server (setting up Tor)
 
-Let's start by logging into our frontend server and installing Tor. You
-will want a very recent version of Tor (version 0.4.3.1 or newer is
+Let's start by logging into our frontend server and installing a [Tor
+daemon][].
+
+You can either:
+
+[Tor daemon]: https://gitlab.torproject.org/tpo/core/tor
+
+1. Install a pre-compiled [Tor daemon][] binary.
+2. Build [Tor daemon][] from source.
+
+#### Install a pre-compiled Tor daemon
+
+Depending on your hardware architecture and operating system, a pre-build [Tor
+daemon][] package might be available.
+
+In a [Debian][]-like system, you can proceed with the following command:
+
+    sudo apt install tor
+
+[Debian]: https://www.debian.org
+
+#### Build Tor daemon from source
+
+To build the [Tor daemon][] from source, try the latest official version:
+
+<!-- You will want a recent version of Tor (version 0.4.3.1 or newer is
 sufficient, as long as it includes
-[#31684](https://trac.torproject.org/projects/tor/ticket/31684)). If you
-want to use the latest official Tor master, you can do the following:
+[#31684](https://gitlab.torproject.org/tpo/core/tor/-/issues/31684)). If you
+want to use the latest official Tor, you can do the following:-->
 
 ```bash
-$ git clone https://git.torproject.org/tor.git
-$ cd tor
-$ ./autogen.sh && ./configure && make
+git clone https://git.torproject.org/tor.git
+cd tor
+./autogen.sh && ./configure && make
 ```
 
 by the end of this process you should have a Tor binary at
 `./src/app/tor`. If this is not the case, you might be missing various C
 dependencies like `libssl-dev`, `libevent-dev`, etc.
+
+### Step 1: Configuring the frontend server (configuring Tor)
 
 Now setup a minimal torrc with a control port enabled. As an example:
 
@@ -124,19 +150,18 @@ the purposes of this guide I assume that your control port is at
 
 ### Step 2: Configuring the frontend server (setting up onionbalance)
 
-Now, still on the frontend host we need to setup Onionbalance. If you
-wish to use the Debian package of onionbalance, you will need version
-0.2.0-1 or newer to get v3 support, otherwise you can obtain it via git:
+Now, still on the frontend host we need to setup Onionbalance.
+
+After [installing Onionbalance][installation.md], proceed creating a
+configuration:
 
 ```bash
-$ git clone https://gitlab.torproject.org/tpo/core/onionbalance.git
-$ cd onionbalance
-$ sudo python3 -m pip install . --break-system-packages
-# Let's create an onionbalance config file.
-# -n indicates how many empty backend address slots will be created.
-# These can be easily modified with a text editor at any time.
-$ onionbalance-config --hs-version v3 -n 2
+mkdir -p onionbalance
+onionbalance-config -n 2
 ```
+
+The `-n` flags indicates how many empty backend address slots should be
+created.  These can be easily modified with a text editor at any time.
 
 !!! note
 
@@ -177,26 +202,32 @@ the next step!
 OK now with the frontend onion address noted down, let's move to
 setting up your backend instances:
 
-Login to one of your backend instances and let's setup Tor. Similar to
-the step above, you will need to use the latest Tor master for
+Login to one of your backend instances and setup Tor with the same procedure
+detailed on Step 0, but this time for each backend instance.
+
+<!--
+Similar to the step above, you will need to use the latest Tor master for
 Onionbalance to work (because of
 [#32709](https://trac.torproject.org/projects/tor/ticket/32709)).
 
 As before:
 
 ```bash
-$ git clone https://gitweb.torproject.org/tor.git
-$ cd tor
-$ ./autogen.sh && ./configure && make
+git clone https://gitweb.torproject.org/tor.git
+cd tor
+./autogen.sh && ./configure && make
 ```
+-->
 
-Now you will need a torrc file for your backend instance. Your torrc
-file needs to setup an onion service (and in this case a v3 one) and
-I\'m gonna assume [you
-know](https://community.torproject.org/onion-services/setup/) how to do
-that. So far so good but here comes the twist:
+After you have installed the [Tor daemon][], you will need a torrc file for
+each of your backend instances. Your torrc file needs to setup an onion service
+(and in this case a v3 one) and I'm gonna assume [you
+know][onion-services-setup] how to do that. So far so good but here comes the
+twist:
 
-1. Inside the HiddenService block of your torrc file, you need to add
+[onion-services-setup]: https://community.torproject.org/onion-services/setup/
+
+1. Inside the `HiddenService` block of your torrc file, you need to add
    the following line: `HiddenServiceOnionbalanceInstance 1`. Note that
    if you do not have an existing v3 onion service and you are trying
    to create one from scratch, you must first start Tor once without
@@ -265,7 +296,7 @@ Now let's fire up onionbalance by running the following command
 substitute if different):
 
 ```console
-$ onionbalance -v info -c config/config.yaml -p 6666
+onionbalance -v info -c config/config.yaml -p 6666
 ```
 
 If everything went right, onionbalance should start running and after
@@ -290,7 +321,7 @@ The management server must be left running to publish new descriptors
 for your onion service: within minutes you should have a fully
 functional onionbalance setup.
 
-You can also setup a `status_socket` to monitor Onionbalance.
+You can also setup a [status_socket](socket.md) to monitor Onionbalance.
 
 !!! note
 
@@ -318,5 +349,5 @@ you need to check. In Debian you can add the user you are running
 onionbalance from to the same sudoers group in order to gain permission:
 
 ```console
-$ sudo adduser $USER debian-tor
+sudo adduser $USER debian-tor
 ```

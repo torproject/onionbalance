@@ -3,6 +3,7 @@ nav:
   - Tutorial: tutorial.md
   - Use cases: cases.md
   - Design: design.md
+  - Installation: installation.md
   - Configuration: config.md
   - Status socket: socket.md
   - Hacking: hacking.md
