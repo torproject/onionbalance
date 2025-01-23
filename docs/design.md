@@ -15,6 +15,18 @@ least one frontend servers and multiple backend instances.
 
 Last updated on 2025-01-23.
 
+!!! note "Differences between design and implementation"
+
+    There might be differences between the design and the
+    actual Onionbalance implementation.
+
+    This document may be updated whenever these differences
+    are detected, to make sure both design and code are
+    in sync.
+
+    If you find any discrepancies or innacuracies, please
+    open an issue or send a merge request.
+
 ## Overview
 
 Main descriptors are signed by the onion service permanent key and
@@ -82,13 +94,14 @@ the DHT at regularly intervals or when its introduction point set
 changes.
 
 On initial startup the management server will load the previously
-published main descriptor from the DHT if it exists. The main
+published main descriptor from the DHT if it exists. A main
 descriptor is used to prepopulate the introduction point set. The
 management server regularly polls the HSDir system for a descriptor for
 each of its instances.
 
 When the management server receives a new descriptor from the HSDir
-system, it should before a number of checks to ensure that it is valid:
+system, it should perform a number of checks to ensure that it is valid,
+like:
 
 * Confirm that the descriptor has a valid signature and that the public key
   matches the instance that was requested.
@@ -96,10 +109,9 @@ system, it should before a number of checks to ensure that it is valid:
   received descriptor for that onion service instance. This reduces the ability
   of a HSDir to replay older descriptors for an instance which may contain
   expired introduction points.
-* Confirm that the descriptor timestamp is not more than 4 hours in the past.
-  An older descriptor indicates that the instance may no longer be online and
-  publishing descriptors. The instance should not be included in the main
-  descriptor.
+* Confirm that the descriptor timestamp is not too long in the past. An older
+  descriptor indicates that the instance may no longer be online and publishing
+  descriptors. The instance should not be included in the main descriptor.
 
 It should be possible for two or more independent management servers to
 publish descriptors for a single onion service. The servers would
