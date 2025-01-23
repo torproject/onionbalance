@@ -1,26 +1,28 @@
 # Design Document
 
-Onionbalance is designed to allow requests to [Tor Onion Service][] to be
+Onionbalance is designed to allow requests to [Tor Onion Services][] to be
 directed to multiple back-end Tor instances, thereby increasing
 availability and reliability. The design involves collating the set of
 introduction points created by one or more independent Onion Service
-instances into a single "main" descriptor.
+instances into "main" descriptors.
 
 Onionbalance implements a [round-robin][]-like load balancing on top of
-[Tor Onion Services][]. A typical Onionbalance deployment will incorporate one
-frontend servers and multiple backend instances.
+[Tor Onion Services][]. A typical Onionbalance deployment will incorporate at
+least one frontend servers and multiple backend instances.
 
 [round-robin]: https://en.wikipedia.org/wiki/Round-robin_DNS
 [Tor Onion Services]: https://community.torproject.org/onion-services/
 
+Last updated on 2025-01-23.
+
 ## Overview
 
-The main descriptor is signed by the onion service permanent key and
+Main descriptors are signed by the onion service permanent key and
 [published to the HSDir system as normal][rend-spec-overview].
 
 [rend-spec-overview]: https://spec.torproject.org/rend-spec/overview.html
 
-Clients who wish to access the onion service would then retrieve the
+Clients who wish to access the onion service would then retrieve a
 main service descriptor and try to connect to introduction points
 from the descriptor in a random order. If a client successfully
 establishes an introduction circuit, they can begin communicating with
@@ -44,8 +46,8 @@ protocol defined in the [Onion Services specification][rend-spec].
   the onion service content. It does not need to serve any content.
 * **Main Descriptor** (formerly known as "master" descriptor): an onion service
   descriptor published with the desired onion address containing introduction
-  points for each instance.
-* Introduction Point: a Tor relay chosen by an onion service instance as a
+  points for each backend instance.
+* **Introduction Point**: a Tor relay chosen by an onion service instance as a
   medium-term *meeting-place* for initial client connections.
 <!--
 * **Metadata Channel**: a direct connection from an instance to a management server
@@ -62,8 +64,8 @@ main descriptor.
 ![image](assets/architecture.png)
 
 The backend application servers run a standard Tor onion service. When a
-client connects to the public onion service they select one of the
-introduction points at random. When the introduction circuit completes
+client connects to the public onion service, it selects one of the
+introduction points at random. When the introduction circuit completes,
 the user is connected to the corresponding backend instance.
 
 ## Retrieving Introduction Point Data
