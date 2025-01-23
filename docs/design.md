@@ -1,10 +1,10 @@
 # Design Document
 
-This tool is designed to allow requests to Tor onion service to be
+Onionbalance is designed to allow requests to [Tor Onion Service][] to be
 directed to multiple back-end Tor instances, thereby increasing
 availability and reliability. The design involves collating the set of
-introduction points created by one or more independent Tor onion service
-instances into a single "main" (formelly known as "master") descriptor.
+introduction points created by one or more independent Onion Service
+instances into a single "main" descriptor.
 
 Onionbalance implements a [round-robin][]-like load balancing on top of
 [Tor Onion Services][]. A typical Onionbalance deployment will incorporate one
@@ -16,24 +16,41 @@ frontend servers and multiple backend instances.
 ## Overview
 
 The main descriptor is signed by the onion service permanent key and
-published to the HSDir system as normal.
+[published to the HSDir system as normal][rend-spec-overview].
+
+[rend-spec-overview]: https://spec.torproject.org/rend-spec/overview.html
 
 Clients who wish to access the onion service would then retrieve the
 main service descriptor and try to connect to introduction points
 from the descriptor in a random order. If a client successfully
 establishes an introduction circuit, they can begin communicating with
 one of the onion services instances with the normal onion service
-protocol defined in rend-spec.txt
+protocol defined in the [Onion Services specification][rend-spec].
 
-* Instance: a load-balancing node running an individual onion service.
+[rend-spec]: https://spec.torproject.org/rend-spec
+
+## Components
+
+* **Backend Instance**: a load-balancing node running an individual onion
+  service. Each backend application server runs Tor onion services with unique
+  onion service keys.
+* **Management Server**, also known as the "frontend" or "publisher node": a
+  server running Onionbalance which collates introduction points and publishes
+  a main descriptor. It's the machine running the Onionbalance daemon. It
+  needs to have access to the onion service private key corresponding for the
+  desired onion address. This is the public onion address that users will
+  request.
+  This machine can be located geographically isolated from the machines hosting
+  the onion service content. It does not need to serve any content.
+* **Main Descriptor** (formerly known as "master" descriptor): an onion service
+  descriptor published with the desired onion address containing introduction
+  points for each instance.
 * Introduction Point: a Tor relay chosen by an onion service instance as a
   medium-term *meeting-place* for initial client connections.
-* Main Descriptor: an onion service descriptor published with the desired
-  onion address containing introduction points for each instance.
-* Management Server: server running Onionbalance which collates introduction
-  points and publishes a main descriptor.
-* Metadata Channel: a direct connection from an instance to a management server
+<!--
+* **Metadata Channel**: a direct connection from an instance to a management server
   which can be used for instance descriptor upload and transfer of other data.
+-->
 
 ## Architecture
 
@@ -48,17 +65,6 @@ The backend application servers run a standard Tor onion service. When a
 client connects to the public onion service they select one of the
 introduction points at random. When the introduction circuit completes
 the user is connected to the corresponding backend instance.
-
-* **Management Server**: is the machine running the Onionbalance daemon. It
-  needs to have access to the onion service private key corresponding for the
-  desired onion address. This is the public onion address that users will
-  request.
-
-  This machine can be located geographically isolated from the machines hosting
-  the onion service content. It does not need to serve any content.
-
-* **Backend Instance**: each backend application server runs a Tor onion
-  service with a unique onion service key.
 
 ## Retrieving Introduction Point Data
 

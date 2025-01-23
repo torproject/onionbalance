@@ -6,7 +6,7 @@
 
 [Onionbalance][] is the best way to load balance [Onion Services][] across
 multiple backend Tor instances. This way the load of introduction and
-rendezvous requests get distributed across multiple hosts. Onionbalance
+rendezvous requests gets distributed across multiple hosts. Onionbalance
 provides load-balancing while also making onion services more resilient
 and reliable by eliminating single points-of-failure.
 
