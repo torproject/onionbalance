@@ -209,7 +209,7 @@ limitations in descriptor copying logic. For example:
 
 ## Credits
 
-This text was written by [Pascal Tippe][].
+This text was originally written by [Pascal Tippe][].
 
 [Pascal Tippe]: https://www.fernuni-hagen.de/pv/en/team/pascal.tippe.shtml
 
