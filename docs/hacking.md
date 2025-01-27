@@ -1,14 +1,6 @@
-# Onionbalance v3 Hacking Guide
+# Onionbalance Hacking Guide
 
 This is a small pocket guide to help with maintaining Onionbalance.
-
-## Hacking History
-
-Let's start with some history. Onionbalance (OB) was invented by
-Donncha during a GSoC many moons ago. Back then OB only supported v2
-onion services. When v3 onions appeared, the Tor network team took over
-to [add v3
-support](https://gitlab.torproject.org/tpo/core/tor/-/issues/26768).
 
 ## How Onionbalance works
 
@@ -42,7 +34,7 @@ object which is a global singleton that keeps track of all runtime state
 etc.).
 
 [manager.py]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/hs_v3/manager.py
-[onionbalance-object]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance
+[onionbalance-object]: api.md#onionbalance.hs_v3.onionbalance.Onionbalance
 
 Each *frontend service* is represented by an [OnionbalanceService][]
 object. The task of an [OnionbalanceService][] is to keep track of the
@@ -50,8 +42,8 @@ underlying *backend instances* (which are [InstanceV3][] objects) and to
 check whether a new descriptor should be uploaded and do to the actual
 upload when the time comes.
 
-[OnionbalanceService]: ../api.md#onionbalance.hs_v3.service.OnionbalanceService
-[InstanceV3]: ../api.md#onionbalance.hs_v3.instance.InstanceV3
+[OnionbalanceService]: api.md#onionbalance.hs_v3.service.OnionbalanceService
+[InstanceV3]: api.md#onionbalance.hs_v3.instance.InstanceV3
 
 The *scheduler* initialized by [manager.py][] is responsible for
 periodically invoking functions that are essential for Onionbalance's
@@ -59,8 +51,8 @@ functionality. In particular, those functions fetch the descriptors of
 the *backend instances* ([fetch_instance_descriptors][]) and publish
 descriptors for the *frontend services* ([publish_all_descriptors][]).
 
-[fetch_instance_descriptors]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.fetch_instance_descriptors
-[publish_all_descriptors]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.publish_all_descriptors
+[fetch_instance_descriptors]: api.md#onionbalance.hs_v3.onionbalance.Onionbalance.fetch_instance_descriptors
+[publish_all_descriptors]: api.md#onionbalance.hs_v3.onionbalance.Onionbalance.publish_all_descriptors
 
 Another important part of the codebase, is the [Stem][] controller in
 [stem_controller.py][]. The stem controller
@@ -74,7 +66,7 @@ when a new consensus arrives).
 
 [Stem]: https://stem.torproject.org
 [stem_controller.py]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/blob/main/onionbalance/hs_v3/stem_controller.py
-[handle_new_status_event()]: ../api.md#onionbalance.hs_v3.onionbalance.Onionbalance.handle_new_status.event
+[handle_new_status_event()]: api.md#onionbalance.hs_v3.onionbalance.Onionbalance.handle_new_status.event
 
 Finally, the files [consensus.py][] and [hashring.py][] are responsible for
 maintaining the HSv3 hash ring which is how OBv3 learns the right place

@@ -6,12 +6,12 @@ examples of what is possible.
 
 ## Examples
 
-* A popular onion service with an overloaded web server or Tor process:
-  a service such as Facebook which gets a large number of users would
-  like to distribute client requests across multiple servers as the
-  load is too much for a single Tor instance to handle. They would
-  also like to balance between instances in cases once (and if)
-  an [encrypted services proposal][] is implemented[^encrypted-services].
+* A popular onion service with an overloaded web server or Tor process: a
+  service such which gets a large number of users would like to distribute
+  client requests across multiple servers as the load is too much for a single
+  Tor instance to handle. They would also like to balance between instances in
+  cases once (and if) an [encrypted services proposal][] is
+  implemented[^encrypted-services].
 
 * Redundancy and automatic failover: a political activist would like to keep
   their web service accessible and secure in the event that the secret police
@@ -20,7 +20,7 @@ examples of what is possible.
 
 * Secure Onion Service Key storage: an onion service operator would like to
   compartmentalize their permanent onion key in a secure location separate to
-  their Tor process and other services. With this proposal permanent keys could
+  their Tor process and other services. In this scenario, permanent keys could
   be stored on an independent, isolated system.
 
 [encrypted services proposal]: https://gitlab.torproject.org/tpo/core/tor/-/issues/2555
@@ -29,11 +29,16 @@ examples of what is possible.
 [^encrypted-services]: As of 2024-08-05, implementing the
     [xxx-encrypted-services][] proposal is not being planned.
 
+<!--
+  Not working as of 2025-01-22.
+-->
+<!--
 ## Known usage
 
 * **SKS Keyserver Pool**: Kristian Fiskerstrand has set up a onion service
   [keyserver pool](https://sks-keyservers.net/overview-of-pools.php#pool_tor)
   which connects users to one of the available onion service key servers.
+-->
 
 ## Research
 

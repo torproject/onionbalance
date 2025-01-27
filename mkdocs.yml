@@ -30,10 +30,21 @@ plugins:
     redirect_maps:
       'use-cases.md'              : 'cases.md'
       'onionbalance-config.md'    : 'config.md'
-      'v3/status-socket.md'       : 'v3/socket.md'
-      'v3/tutorial-v3.md'         : 'v3/tutorial.md'
-      'v2/tutorial-v2.md'         : 'v2/tutorial.md'
-      'v2/running-onionbalance.md': 'v2/running.md'
+      'v2/tutorial-v2.md'         : 'tutorial.md'
+      'v2/tutorial.md'            : 'tutorial.md'
+      'v2/installing_ob.md'       : 'tutorial.md'
+      'v2/installing_tor.md'      : 'tutorial.md'
+      'v2/in-depth.md'            : 'tutorial.md'
+      'v2/running.md'             : 'tutorial.md'
+      'v2/running-onionbalance.md': 'tutorial.md'
+      'v2/README.md'              : 'README.md'
+      'v3/README.md'              : 'README.md'
+      'v2/design.md'              : 'design.md'
+      'v3/hacking.md'             : 'hacking.md'
+      'v3/socket.md'              : 'socket.md'
+      'v3/status-socket.md'       : 'socket.md'
+      'v3/tutorial.md'            : 'tutorial.md'
+      'v3/tutorial-v3.md'         : 'tutorial.md'
 
 markdown_extensions:
   admonition: {}
