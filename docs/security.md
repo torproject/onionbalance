@@ -251,6 +251,10 @@ limitations in descriptor copying logic. For example:
 
 [tpo/onion-services/onionbalance#38]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/38
 
+<!--
+  This does not seem to be the case with rend-spec-v3.
+-->
+<!--
 ### HSDir churn
 
 !!! note "Needs confirmation"
@@ -261,6 +265,11 @@ limitations in descriptor copying logic. For example:
   descriptor as a result of churn in the DHT. The management server may attempt
   to fetch the instance descriptor from a different set of HSDirs than the
   instance published to.
+  This seems unlikely to happen, as it would require the management server's
+  Tor daemon to have an outdated copy of the network consensus.
+  And even if that were the case, an old descriptor would probably be already
+  expired.
+-->
 
 ## Credits
 
