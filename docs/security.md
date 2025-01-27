@@ -168,12 +168,6 @@ this is a general risk for all Onion Services:
 
 ## Current Limitations
 
-### No Automatic Reupload Attempts for Failed Descriptors
-
-* If descriptor uploads fail due to network issues or relay unavailability,
-  administrators must manually restart the process. Automating reuploads would
-  improve reliability.
-
 ### No Support for Proof-of-Work Protocol
 
 * [Proof-of-Work (PoW) protocols][pow] enhance resistance against DoS attacks by requiring
@@ -206,6 +200,16 @@ limitations in descriptor copying logic. For example:
 * If six HSDirs are available but only five descriptors are generated, one
   HSDir will receive duplicate descriptors, leading to uneven workload
   distribution among backends.
+
+### No Automatic Reupload Attempts for Failed Descriptors
+
+!!! note "Needs confirmation"
+
+    The following claim still needs to be confirmed.
+
+* If descriptor uploads fail due to network issues or relay unavailability,
+  administrators must manually restart the process. Automating reuploads would
+  improve reliability.
 
 ## Credits
 
