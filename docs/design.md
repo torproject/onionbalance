@@ -105,13 +105,20 @@ like:
 
 * Confirm that the descriptor has a valid signature and that the public key
   matches the instance that was requested.
+* Confirm that the descriptor timestamp is not too long in the past. An older
+  descriptor indicates that the instance may no longer be online and publishing
+  descriptors. The instance should not be included in the main descriptor.
+<!--
+  The following is no longer the case, as rend-spec-v3 has built-in replay
+  attack protections using the revision-counter descriptor field which
+  is indexed by the blinded public key on descriptor caches.
+-->
+<!--
 * Confirm that the descriptor timestamp is equal or newer than the previously
   received descriptor for that onion service instance. This reduces the ability
   of a HSDir to replay older descriptors for an instance which may contain
   expired introduction points.
-* Confirm that the descriptor timestamp is not too long in the past. An older
-  descriptor indicates that the instance may no longer be online and publishing
-  descriptors. The instance should not be included in the main descriptor.
+-->
 
 It should be possible for two or more independent management servers to
 publish descriptors for a single onion service. The servers would
@@ -126,10 +133,12 @@ descriptors should not impact the end user.
   attacker does not control all of the responsible HSDirs this attack can be
   mitigated by not accepting descriptors with a timestamp older than the most
   recently retrieved descriptor.
-* The management server may also retrieve an old instance descriptor as a
-  result of churn in the DHT. The management server may attempt to fetch the
-  instance descriptor from a different set of HSDirs than the instance
-  published to.
+  This attack is very hard to mount, since the set of responsible HSDirs
+  [changes at each time period][hashring].
+* [To be confirmed]: the management server may also retrieve an old instance
+  descriptor as a result of churn in the DHT. The management server may attempt
+  to fetch the instance descriptor from a different set of HSDirs than the
+  instance published to.
 * An onion service instance may rapidly rotate its introduction point circuits
   when subjected to a Denial of Service attack. An introduction point circuit
   is closed by the onion service when it has received `max_introductions` for
@@ -143,6 +152,8 @@ descriptors should not impact the end user.
   find that a backend instance is serving the same content as the main
   service. This allows a HSDir to trivially determine the onion addresses for a
   service's backend instances.
+
+[hashring]: https://spec.torproject.org/rend-spec/deriving-keys.html#HASHRING
 
 Onionbalance allows for scaling across multiple onion service instances
 with no additional software or Tor modifications necessary on the onion
