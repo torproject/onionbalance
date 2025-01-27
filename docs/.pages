@@ -1,10 +1,14 @@
 nav:
   - Intro: README.md
   - Use cases: cases.md
+  - Design: design.md
   - Security overview: security.md
-  - Version 3: v3
-  - Version 2: v2
+  - Tutorial: tutorial.md
+  - Installation: installation.md
   - Configuration: config.md
+  - Status socket: socket.md
+  - Hacking: hacking.md
+  - API: api.md
   - Changelog: changelog.md
   - Contributors: contributors.md
   - Contact and bug reporting: contact.md

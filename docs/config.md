@@ -6,8 +6,8 @@ The `onionbalance-config` tool is the fastest way to generate the
 necessary keys and config files to get your onion service up and
 running.
 
-```console
-$ onionbalance-config
+```bash
+onionbalance-config
 ```
 
 When called without any arguments, the config generator will run in an

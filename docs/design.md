@@ -1,43 +1,84 @@
 # Design Document
 
-!!! warning
-
-    This section refers to the older v2 codebase.
-    Although outdated, it's still available for historic purposes.
-
-This tool is designed to allow requests to Tor onion service to be
+Onionbalance is designed to allow requests to [Tor Onion Services][] to be
 directed to multiple back-end Tor instances, thereby increasing
 availability and reliability. The design involves collating the set of
-introduction points created by one or more independent Tor onion service
-instances into a single `master` descriptor.
+introduction points created by one or more independent Onion Service
+instances into "main" descriptors.
+
+Onionbalance implements a [round-robin][]-like load balancing on top of
+[Tor Onion Services][]. A typical Onionbalance deployment will incorporate at
+least one frontend servers and multiple backend instances.
+
+[round-robin]: https://en.wikipedia.org/wiki/Round-robin_DNS
+[Tor Onion Services]: https://community.torproject.org/onion-services/
+
+Last updated on 2025-01-23.
+
+!!! note "Differences between design and implementation"
+
+    There might be differences between the design and the
+    actual Onionbalance implementation.
+
+    This document may be updated whenever these differences
+    are detected, to make sure both design and code are
+    in sync.
+
+    If you find any discrepancies or innacuracies, please
+    open an issue or send a merge request.
 
 ## Overview
 
-This tool is designed to allow requests to Tor onion service to be
-directed to multiple back-end Tor instances, thereby increasing
-availability and reliability. The design involves collating the set of
-introduction points created by one or more independent Tor onion service
-instances into a single `master` onion service descriptor.
+Main descriptors are signed by the onion service permanent key and
+[published to the HSDir system as normal][rend-spec-overview].
 
-The master descriptor is signed by the onion service permanent key and
-published to the HSDir system as normal.
+[rend-spec-overview]: https://spec.torproject.org/rend-spec/overview.html
 
-Clients who wish to access the onion service would then retrieve the
-*master* service descriptor and try to connect to introduction points
+Clients who wish to access the onion service would then retrieve a
+main service descriptor and try to connect to introduction points
 from the descriptor in a random order. If a client successfully
 establishes an introduction circuit, they can begin communicating with
 one of the onion services instances with the normal onion service
-protocol defined in rend-spec.txt
+protocol defined in the [Onion Services specification][rend-spec].
 
-* Instance: a load-balancing node running an individual onion service.
-* Introduction Point: a Tor relay chosen by an onion service instance as a
+[rend-spec]: https://spec.torproject.org/rend-spec
+
+## Components
+
+* **Backend Instance**: a load-balancing node running an individual onion
+  service. Each backend application server runs Tor onion services with unique
+  onion service keys.
+* **Management Server**, also known as the "frontend" or "publisher node": a
+  server running Onionbalance which collates introduction points and publishes
+  a main descriptor. It's the machine running the Onionbalance daemon. It
+  needs to have access to the onion service private key corresponding for the
+  desired onion address. This is the public onion address that users will
+  request.
+  This machine can be located geographically isolated from the machines hosting
+  the onion service content. It does not need to serve any content.
+* **Main Descriptor** (formerly known as "master" descriptor): an onion service
+  descriptor published with the desired onion address containing introduction
+  points for each backend instance.
+* **Introduction Point**: a Tor relay chosen by an onion service instance as a
   medium-term *meeting-place* for initial client connections.
-* Master Descriptor: an onion service descriptor published with the desired
-  onion address containing introduction points for each instance.
-* Management Server: server running Onionbalance which collates introduction
-  points and publishes a master descriptor.
-* Metadata Channel: a direct connection from an instance to a management server
+<!--
+* **Metadata Channel**: a direct connection from an instance to a management server
   which can be used for instance descriptor upload and transfer of other data.
+-->
+
+## Architecture
+
+The management server runs the Onionbalance daemon. Onionbalance
+combines the routing information (the introduction points) for multiple
+backend onion services instances and publishes this information in a
+main descriptor.
+
+![image](assets/architecture.png)
+
+The backend application servers run a standard Tor onion service. When a
+client connects to the public onion service, it selects one of the
+introduction points at random. When the introduction circuit completes,
+the user is connected to the corresponding backend instance.
 
 ## Retrieving Introduction Point Data
 
@@ -53,26 +94,31 @@ the DHT at regularly intervals or when its introduction point set
 changes.
 
 On initial startup the management server will load the previously
-published master descriptor from the DHT if it exists. The master
+published main descriptor from the DHT if it exists. A main
 descriptor is used to prepopulate the introduction point set. The
 management server regularly polls the HSDir system for a descriptor for
-each of its instances. Currently polling occurs every 10 minutes. This
-polling period can be tuned for onion services with shorter or longer
-lasting introduction points.
+each of its instances.
 
 When the management server receives a new descriptor from the HSDir
-system, it should before a number of checks to ensure that it is valid:
+system, it should perform a number of checks to ensure that it is valid,
+like:
 
 * Confirm that the descriptor has a valid signature and that the public key
   matches the instance that was requested.
+* Confirm that the descriptor timestamp is not too long in the past. An older
+  descriptor indicates that the instance may no longer be online and publishing
+  descriptors. The instance should not be included in the main descriptor.
+<!--
+  The following is no longer the case, as rend-spec-v3 has built-in replay
+  attack protections using the revision-counter descriptor field which
+  is indexed by the blinded public key on descriptor caches.
+-->
+<!--
 * Confirm that the descriptor timestamp is equal or newer than the previously
   received descriptor for that onion service instance. This reduces the ability
   of a HSDir to replay older descriptors for an instance which may contain
   expired introduction points.
-* Confirm that the descriptor timestamp is not more than 4 hours in the past.
-  An older descriptor indicates that the instance may no longer be online and
-  publishing descriptors. The instance should not be included in the master
-  descriptor.
+-->
 
 It should be possible for two or more independent management servers to
 publish descriptors for a single onion service. The servers would
@@ -83,27 +129,31 @@ descriptors should not impact the end user.
 ### Limitations
 
 * A malicious HSDir could replay old instance descriptors in an attempt to
-  include expired introduction points in the master descriptor. When an
+  include expired introduction points in the main descriptor. When an
   attacker does not control all of the responsible HSDirs this attack can be
   mitigated by not accepting descriptors with a timestamp older than the most
   recently retrieved descriptor.
-* The management server may also retrieve an old instance descriptor as a
-  result of churn in the DHT. The management server may attempt to fetch the
-  instance descriptor from a different set of HSDirs than the instance
-  published to.
+  This attack is very hard to mount, since the set of responsible HSDirs
+  [changes at each time period][hashring].
+* [To be confirmed]: the management server may also retrieve an old instance
+  descriptor as a result of churn in the DHT. The management server may attempt
+  to fetch the instance descriptor from a different set of HSDirs than the
+  instance published to.
 * An onion service instance may rapidly rotate its introduction point circuits
   when subjected to a Denial of Service attack. An introduction point circuit
   is closed by the onion service when it has received `max_introductions` for
   that circuit. During DoS this circuit rotating may occur faster than the
   management server polls the HSDir system for new descriptors. As a result
-  clients may retrieve master descriptors which contain no currently valid
+  clients may retrieve main descriptors which contain no currently valid
   introduction points.
 * It is trivial for a HSDir to determine that a onion service is using
   Onionbalance. Onionbalance will try poll for instance descriptors on a
   regular basis. A HSDir which connects to onion services published to it would
-  find that a backend instance is serving the same content as the master
+  find that a backend instance is serving the same content as the main
   service. This allows a HSDir to trivially determine the onion addresses for a
   service's backend instances.
+
+[hashring]: https://spec.torproject.org/rend-spec/deriving-keys.html#HASHRING
 
 Onionbalance allows for scaling across multiple onion service instances
 with no additional software or Tor modifications necessary on the onion
@@ -113,12 +163,18 @@ introduction point denial of service or actively malicious HSDirs.
 
 ## Choice of Introduction Points
 
-Tor onion service descriptors can include a maximum of 10 introduction
-points. Onionbalance should select introduction points so as to
-uniformly distribute load across the available backend instances.
+Tor onion service descriptors can include a maximum of introduction points up
+to the descriptor size limit. Onionbalance should select introduction points so
+as to uniformly distribute load across the available backend instances.
 
+<!--
+  The following was valid for v2, but not for Onionbalance v2 as
+  of 2025-01-22. This may need to be updated once Distinct Descriptor
+  Mode is available: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/7
+-->
+<!--
 Onionbalance will upload multiple distinct descriptors if you have
-configured more than 10 instances.
+configured more instances than what fits in a single descriptor.
 
 * **1 instance** - 3 IPs
 * **2 instance** - 6 IPs (3 IPs from each instance)
@@ -144,6 +200,7 @@ performance or reliability of the service.
 * **3 instances** - 3 IPs (1 IP from each instance)
 * **more than 3 instances** - Select the maximum set of introduction
     points as outlined previously.
+-->
 
 It may be advantageous to select introduction points in a non-random
 manner. The longest-lived introduction points published by a backend
@@ -153,15 +210,15 @@ introductions across an instances introduction point circuits. Further
 investigation of these options should indicate if there is significant
 advantages to any of these approaches.
 
-## Generation and Publication of Master Descriptor
+## Generation and Publication of Main Descriptor
 
 The management server should generate a onion service descriptor
-containing the selected introduction points. This master descriptor is
-then signed by the actual onion service permanent key. The signed master
+containing the selected introduction points. This main descriptor is
+then signed by the actual onion service permanent key. The signed main
 descriptor should be published to the responsible HSDirs as normal.
 
 Clients who wish to access the onion service would then retrieve the
-`master` service descriptor and begin connect to introduction points
+`main` service descriptor and begin connect to introduction points
 at random from the introduction point list. After successful
 introduction the client will have created an onion service circuit to
 one of the available onion services instances and can then begin
