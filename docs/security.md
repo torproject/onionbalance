@@ -244,7 +244,7 @@ limitations in descriptor copying logic. For example:
 
 * If descriptor uploads fail due to network issues or relay unavailability,
   administrators must manually restart the process. Automating reuploads would
-  improve reliability.
+  improve reliability[^automatic-reupload].
 
 [^automatic-reupload]: As of 2025-01, this is being tracked
   at [tpo/onion-services/onionbalance#38][].
