@@ -182,7 +182,7 @@ this is a general risk for all Onion Services:
 
 ### No Restricted Discovery Support
 
-* Restricted Discovery (formely known as [Client authorization][client-auth])
+* Restricted Discovery (formerly known as [Client authorization][client-auth])
   mechanisms (e.g., pre-shared keys) allow access control for sensitive
   services but are currently unsupported by
   Onionbalance[^restricted-discovery].
