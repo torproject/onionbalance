@@ -93,6 +93,10 @@ correlation attempts until they succeed.
 
 ### Descriptor Fingerprinting
 
+Onionbalance does not hide that a service is using
+Onionbalance. It also does not significantly protect a service from
+introduction point denial of service or actively malicious HSDirs.
+
 Service descriptors uploaded by Onionbalance may reveal its usage due to
 structural differences such as:
 
@@ -201,6 +205,41 @@ limitations in descriptor copying logic. For example:
   HSDir will receive duplicate descriptors, leading to uneven workload
   distribution among backends.
 
+### Introduction Point discrepancies
+
+* An Onion Service instance may rapidly rotate its introduction point circuits
+  when subjected to a Denial of Service attack. An introduction point circuit
+  is closed by the onion service when it has received `max_introductions` for
+  that circuit. During DoS this circuit rotating may occur faster than the
+  management server polls the HSDir system for new descriptors. As a result
+  clients may retrieve main descriptors which contain no currently valid
+  introduction points.
+
+### Malicious HSDirs
+
+* A malicious HSDir could replay old instance descriptors in an attempt to
+  include expired introduction points in the main descriptor. When an
+  attacker does not control all of the responsible HSDirs this attack can be
+  mitigated by not accepting descriptors with a timestamp older than the most
+  recently retrieved descriptor.
+  This attack is very hard to mount, since the set of responsible HSDirs
+  [changes at each time period][hashring].
+<!--
+  The following seems not to be valid anymore for v3 Onion Services, since
+  a HSDir cannot know anymore which descriptor belongs to which services,
+  and also cannot decrypt the inner descriptor layer.
+-->
+<!--
+* It is also trivial for a HSDir to determine that an Onion Service is using
+  Onionbalance. Onionbalance will try poll for instance descriptors on a
+  regular basis. A HSDir which connects to Onion Services published to it would
+  find that a backend instance is serving the same content as the main service.
+  This allows a HSDir to trivially determine the onion addresses for a
+  service's backend instances.
+-->
+
+[hashring]: https://spec.torproject.org/rend-spec/deriving-keys.html#HASHRING
+
 ### No Automatic Reupload Attempts for Failed Descriptors
 
 !!! note "Needs confirmation"
@@ -210,6 +249,17 @@ limitations in descriptor copying logic. For example:
 * If descriptor uploads fail due to network issues or relay unavailability,
   administrators must manually restart the process. Automating reuploads would
   improve reliability.
+
+### HSDir churn
+
+!!! note "Needs confirmation"
+
+    The following claim still needs to be confirmed.
+
+* The management server may also retrieve an old instance
+  descriptor as a result of churn in the DHT. The management server may attempt
+  to fetch the instance descriptor from a different set of HSDirs than the
+  instance published to.
 
 ## Credits
 
