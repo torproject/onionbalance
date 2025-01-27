@@ -242,13 +242,14 @@ limitations in descriptor copying logic. For example:
 
 ### No Automatic Reupload Attempts for Failed Descriptors
 
-!!! note "Needs confirmation"
-
-    The following claim still needs to be confirmed.
-
 * If descriptor uploads fail due to network issues or relay unavailability,
   administrators must manually restart the process. Automating reuploads would
   improve reliability.
+
+[^automatic-reupload]: As of 2025-01, this is being tracked
+  at [tpo/onion-services/onionbalance#38][].
+
+[tpo/onion-services/onionbalance#38]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/38
 
 ### HSDir churn
 
