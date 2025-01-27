@@ -3,10 +3,16 @@
 ## v0.2.4 - Unreleased
 
 * Documentation:
-    * Updated and moved some of the old v2 docs to the "main" docs.
-    * Updated and moved the v3 docs to the "main" docs.
-    * Removed the old v2 docs.
-    * Added an [API](api.md) page.
+    * Refactor ([tpo/onion-services/onionbalance#37][]):
+        * Updated and moved some of the old v2 docs to the "main" docs.
+        * Updated and moved the v3 docs to the "main" docs.
+        * Removed the old v2 docs.
+        * Added an [API](api.md) page.
+    * New [Security page](security.md), thanks to Pascal Tippe
+      ([tpo/onion-services/onionbalance#25][]).
+
+[tpo/onion-services/onionbalance#37]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/37
+[tpo/onion-services/onionbalance#25]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/25
 
 ## v0.2.3 - 2024-12-11
 
