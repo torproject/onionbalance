@@ -2,7 +2,7 @@ nav:
   - Intro: README.md
   - Use cases: cases.md
   - Design: design.md
-  - Security overview: security.md
+  - Security: security.md
   - Tutorial: tutorial.md
   - Installation: installation.md
   - Configuration: config.md

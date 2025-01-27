@@ -191,4 +191,4 @@ communicating as normally along that circuit.
 
 ## Limitations
 
-For a list of Onionbalance limitations, check the [Security Overview page](security.md).
+For a list of Onionbalance limitations, check the [Security page](security.md).
