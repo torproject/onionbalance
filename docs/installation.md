@@ -2,9 +2,9 @@
 
 ## Debian package
 
-A package for Onionbalance should be available for [Debian][]-like systems.
+A package for Onionbalance should be available on [Debian][]-like systems.
 
-    sudo apt-get install onionbalance
+    sudo apt install onionbalance
 
 This will also install the [Tor daemon][] and other needed dependencies.
 
@@ -13,18 +13,18 @@ This will also install the [Tor daemon][] and other needed dependencies.
 
 ## Python package
 
-Onionbalance is available as a [Python][] package [through PyPI][] and can be
-installed in a number of ways.
+Onionbalance is available as a [Python][] package [through PyPI][pypi] and can
+be installed in a number of ways.
 
 The [Python][] package installation procedure will handle all the Python
 dependencies, but won't install the [Tor daemon][] package, which should be
 installed separately, preferentially through your operating system package
 manager. Example: in a [Debian][]-like system, run
 
-    sudo apt install tor
+    sudo apt install -y tor
 
 [Python]: https://python.org
-[through PyPI]: https://pypi.org/project/onionbalance
+[pypi]: https://pypi.org/project/onionbalance
 
 Once the [Tor daemon][] is installed, proceed installing the [Python][] package.
 Some options are detailed below.
@@ -76,7 +76,7 @@ without a [virtualenv][], but **this might conflict with system-wide installed
 
     pip install onionbalance --break-system-packages
 
-## Global installation from source
+### Python package installation from source
 
 !!! warning "Conflict with system-wide packages"
 
@@ -84,15 +84,24 @@ without a [virtualenv][], but **this might conflict with system-wide installed
     software installed through the operating system package manager,
     and therefore is not recommended except if you know what you're doing.
 
-To build from source, first get the code:
+To install the [Python][] package from source, first get the code and
+install it using [pip][]:
 
+    sudo apt install -y python3-pip
     git clone https://gitlab.torproject.org/tpo/onion-services/onionbalance
-
-Then switch to the working copy folder and install the needed dependencies:
-
     cd onionbalance
-    sudo apt-get install -y python-is-python3 python3-pip
+    python3 -m pip install . --break-system-packages
+
+The Onionbalance executable will be available usually at your
+`$HOME/.local/bin` folder.
+
+System-wide installation from source is also possible. The simpler way
+is to invoke the last command above with `sudo`.
+
     sudo python3 -m pip install . --break-system-packages
+
+For system-wide installations, the Onionbalance executable should be available in
+a path like `/usr/local/bin/onionbalance`.
 
 ## Local installation from source
 
@@ -102,7 +111,7 @@ if you plan to [hack on it](hacking.md).
 The recommended way is to clone the Onionbalance repository and setup
 a [virtualenv][]:
 
-    sudo apt-get install -y python-is-python3 python3-pip
+    sudo apt install -y python-is-python3 python3-pip
     git clone https://gitlab.torproject.org/tpo/onion-services/onionbalance
     cd onionbalance
     python3 -m venv venv
@@ -110,7 +119,7 @@ a [virtualenv][]:
     pip3 install -r requirements.txt
     pip3 install -r test-requirements.txt
 
-Then Onionbalance can be run directly from the working copy:
+Then Onionbalance can then run directly from the working copy:
 
     ./onionbalance.py
 
