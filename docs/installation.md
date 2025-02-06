@@ -103,7 +103,7 @@ is to invoke the last command above with `sudo`.
 For system-wide installations, the Onionbalance executable should be available in
 a path like `/usr/local/bin/onionbalance`.
 
-## Local installation from source
+## Running from source
 
 It's also possible to run it directly from the [Git repository][], useful
 if you plan to [hack on it](hacking.md).
