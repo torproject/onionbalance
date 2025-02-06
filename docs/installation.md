@@ -106,10 +106,33 @@ a path like `/usr/local/bin/onionbalance`.
 ## Running from source
 
 It's also possible to run it directly from the [Git repository][], useful
-if you plan to [hack on it](hacking.md).
+if you plan to [hack on it](hacking.md):
 
-The recommended way is to clone the Onionbalance repository and setup
-a [virtualenv][]:
+    git clone https://gitlab.torproject.org/tpo/onion-services/onionbalance
+    cd onionbalance
+
+[Git repository]: https://gitlab.torproject.org/tpo/onion-services/onionbalance
+
+There are a number of ways to run from sources after the repository is cloned.
+
+### Local installation from source using Debian packages
+
+When in a [Debian][]-based system, Onionbalance dependencies can be installed
+with:
+
+    sudo apt install -y python3 python-is-python3 python3-cryptography \
+                        python3-future python3-pycryptodome            \
+                        python3-setproctitle python3-stem python3-yaml \
+                        tor
+
+The Onionbalance can then run directly from the working copy:
+
+    ./onionbalance.py
+
+### Local installation from source using Python packages
+
+Onionbalance's [Python][] dependencies can be installed directly from
+[PyPI][pypi], by setting up a [virtualenv][]:
 
     sudo apt install -y python-is-python3 python3-pip
     git clone https://gitlab.torproject.org/tpo/onion-services/onionbalance
@@ -119,7 +142,7 @@ a [virtualenv][]:
     pip3 install -r requirements.txt
     pip3 install -r test-requirements.txt
 
-Then Onionbalance can then run directly from the working copy:
+The Onionbalance can then run directly from the working copy:
 
     ./onionbalance.py
 
