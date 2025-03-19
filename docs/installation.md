@@ -1,4 +1,4 @@
-# Installation
+# Onionbalance installation
 
 ## Debian package
 

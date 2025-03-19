@@ -1,4 +1,4 @@
-# Design Document
+# Onionbalance Design Document
 
 Onionbalance is designed to allow requests to [Tor Onion Services][] to be
 directed to multiple back-end Tor instances, thereby increasing

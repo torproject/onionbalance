@@ -1,4 +1,4 @@
-# Contacts, announcements, requests and bug reporting
+# Onionbalance: contacts, announcements, requests and bug reporting
 
 ## Announcements
 
