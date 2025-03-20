@@ -142,7 +142,7 @@ the purposes of this guide I assume that your control port is at
 
 Now, still on the frontend host we need to setup Onionbalance.
 
-After [installing Onionbalance][installation.md], proceed creating a
+After [installing Onionbalance](installation.md), proceed creating a
 configuration:
 
 ```bash
