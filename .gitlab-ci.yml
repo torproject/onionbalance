@@ -4,6 +4,11 @@ include:
   project: tpo/web/onion-mkdocs
   file: .gitlab-ci-base.yml
 
+variables:
+  # Use full clone so "./onionbalance.py --version" works
+  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
+  GIT_STRATEGY: clone
+
 stages:
   - setup
   - test

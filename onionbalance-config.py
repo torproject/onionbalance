@@ -9,4 +9,3 @@ import onionbalance.config_generator.config_generator
 
 if __name__ == '__main__':
     onionbalance.config_generator.config_generator.main()
-
