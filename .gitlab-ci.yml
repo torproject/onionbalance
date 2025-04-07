@@ -50,6 +50,8 @@ config_tests:
   extends: .base
   script:
     - ./onionbalance-config.py --no-interactive
+    - ls config/*.key
+    - cat config/config.yaml
 
 pages:
   stage: deploy
