@@ -1,5 +1,5 @@
 ---
-image: containers.torproject.org/tpo/tpa/base-images/python:bookworm
+image: containers.torproject.org/tpo/tpa/base-images/python:testing
 include:
   - project: tpo/web/onion-mkdocs
     file: .gitlab-ci-base.yml
