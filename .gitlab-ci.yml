@@ -65,6 +65,7 @@ run_tests:
   stage: test
   extends: .base
   script:
+    # Needs Git installed so "./onionbalance.py --version" works
     - !reference [.apt-init]
     - apt-get install -y git
     - git describe
