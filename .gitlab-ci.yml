@@ -45,6 +45,12 @@ style_tests:
   script:
     - flake8 onionbalance
 
+config_tests:
+  stage: test
+  extends: .base
+  script:
+    - ./onionbalance-config.py --no-interactive
+
 pages:
   stage: deploy
   extends: .onion-mkdocs-clone
