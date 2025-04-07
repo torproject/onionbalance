@@ -53,6 +53,12 @@ config_tests:
     - ls config/*.key
     - cat config/config.yaml
 
+run_tests:
+  stage: test
+  extends: .base
+  script:
+    - ./onionbalance.py --version
+
 pages:
   stage: deploy
   extends: .onion-mkdocs-clone
