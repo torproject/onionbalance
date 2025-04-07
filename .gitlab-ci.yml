@@ -6,11 +6,11 @@ include:
   - project: tpo/tpa/ci-templates
     file: scripts/apt.yml
 
-#variables:
-#  # Use full clone so "./onionbalance.py --version" works
-#  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
-#  GIT_STRATEGY: clone
-#  GIT_DEPTH: 0
+variables:
+  # Use full clone so "./onionbalance.py --version" works
+  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
+  GIT_STRATEGY: clone
+  GIT_DEPTH: 0
 
 stages:
   - setup
