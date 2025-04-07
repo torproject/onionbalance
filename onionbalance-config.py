@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 """
@@ -9,4 +9,3 @@ import onionbalance.config_generator.config_generator
 
 if __name__ == '__main__':
     onionbalance.config_generator.config_generator.main()
-
