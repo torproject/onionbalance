@@ -68,7 +68,7 @@ run_tests:
     # Needs Git installed so "./onionbalance.py --version" works
     - !reference [.apt-init]
     - apt-get install -y git
-    - git describe
+    - git describe --tags --dirty --always --long
     - ./onionbalance.py --version
 
 pages:
