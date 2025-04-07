@@ -1,14 +1,16 @@
 ---
 image: containers.torproject.org/tpo/tpa/base-images/python:bookworm
 include:
-  project: tpo/web/onion-mkdocs
-  file: .gitlab-ci-base.yml
+  - project: tpo/web/onion-mkdocs
+    file: .gitlab-ci-base.yml
+  - project: tpo/tpa/ci-templates
+    file: scripts/apt.yml
 
-variables:
-  # Use full clone so "./onionbalance.py --version" works
-  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
-  GIT_STRATEGY: clone
-  GIT_DEPTH: 0
+#variables:
+#  # Use full clone so "./onionbalance.py --version" works
+#  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
+#  GIT_STRATEGY: clone
+#  GIT_DEPTH: 0
 
 stages:
   - setup
@@ -63,6 +65,9 @@ run_tests:
   stage: test
   extends: .base
   script:
+    - !reference [.apt-init]
+    - apt-get install -y git
+    - git describe
     - ./onionbalance.py --version
 
 pages:
