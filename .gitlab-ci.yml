@@ -1,5 +1,5 @@
 ---
-image: containers.torproject.org/tpo/tpa/base-images/python:testing
+image: containers.torproject.org/tpo/tpa/base-images/python:sid
 include:
   - project: tpo/web/onion-mkdocs
     file: .gitlab-ci-base.yml
