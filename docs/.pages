@@ -10,5 +10,6 @@ nav:
   - Hacking: hacking.md
   - API: api.md
   - Changelog: changelog.md
+  - Development: development.md
   - Contributors: contributors.md
   - Contact and bug reporting: contact.md
