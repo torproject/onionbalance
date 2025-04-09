@@ -58,7 +58,7 @@ Build the Python package:
 Install this package in a fresh virtual machine. Example:
 
     sudo apt-get install -y python3-pip tor
-    pip install --break-system-packages dist/onionbalance-$VERSION-*.whl
+    pip install --break-system-packages dist/onionbalance-$ONIONBALANCE_VERSION-*.whl
 
 Then test it:
 
