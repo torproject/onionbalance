@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "configure" ]; then
+    if ! getent passwd onionbalance >/dev/null; then
+        adduser --quiet --system --group --no-create-home --home /nonexistent onionbalance
+        adduser onionbalance debian-tor
+    fi
+fi
+
+chown onionbalance:adm /var/log/onionbalance
+# rwxr-s---
+chmod 02750 /var/log/onionbalance
+
+#DEBHELPER#
+
+exit 0

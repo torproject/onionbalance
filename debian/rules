@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+export PYBUILD_NAME=onionbalance
+export PYBUILD_INSTALL_ARGS=--install-scripts=/usr/sbin
+
+# Copy unit tests, exclude functional tests which need a running Tor
+export PYBUILD_BEFORE_TEST=cp -r {dir}/test {build_dir}
+export PYBUILD_AFTER_TEST=rm -rf {build_dir}/test
+export PYBUILD_TEST_ARGS=--ignore=test/functional
+
+%:
+	dh $@ --with python3,sphinxdoc --buildsystem=pybuild
+
+override_dh_auto_build:
+	dh_auto_build
+	PYTHONPATH=. http_proxy='http://127.0.0.1:9/' python3 -m sphinx -N -E -bhtml docs docs/_build/html
+	PYTHONPATH=. http_proxy='http://127.0.0.1:9/' python3 -m sphinx -N -E -bman docs docs/_build/man
+	rm -rf ./build/html/.doctrees
+
+override_dh_sphinxdoc:
+ifeq (,$(findstring nodoc,$(DEB_BUILD_OPTIONS)))
+	dh_sphinxdoc -p onionbalance
+endif
+
+override_dh_installchangelogs:
+	dh_installchangelogs CHANGES.rst
+
+override_dh_clean:
+	dh_clean
+	rm -rf docs/_build/ ./.pytest_cache

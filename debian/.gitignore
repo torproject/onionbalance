@@ -1,0 +1,7 @@
+/.debhelper/
+/debhelper-build-stamp
+/files
+/*.debhelper.log
+/*.debhelper
+/*.substvars
+/onionbalance/
