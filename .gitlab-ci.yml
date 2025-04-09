@@ -13,7 +13,7 @@ variables:
   GIT_DEPTH: 0
 
 stages:
-  - setup
+  - build
   - test
   - deploy
 
@@ -24,10 +24,24 @@ stages:
     - python3 -m pip install . --break-system-packages
 
 install:
-  stage: setup
+  stage: build
   extends: .base
   script:
     - /bin/true
+
+python:
+  stage: build
+  before_script:
+    - !reference [.apt-init]
+  script:
+    # Needs Git installed so "./onionbalance.py --version" works
+    - apt-get install -y git
+    - scripts/provision-packaging-python
+    - mkdir -p dist
+    - make build-python-package
+  artifacts:
+    paths:
+      - dist
 
 functional_tests:
   stage: test
