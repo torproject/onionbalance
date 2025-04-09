@@ -34,6 +34,8 @@ python:
   before_script:
     - !reference [.apt-init]
   script:
+    # Needs Git installed so "./onionbalance.py --version" works
+    - apt-get install -y git
     - scripts/provision-packaging-python
     - mkdir -p dist
     - make build-python-package
