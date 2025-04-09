@@ -1,11 +1,19 @@
 ---
-image: python:bookworm
+image: containers.torproject.org/tpo/tpa/base-images/python:sid
 include:
-  project: tpo/web/onion-mkdocs
-  file: .gitlab-ci-base.yml
+  - project: tpo/web/onion-mkdocs
+    file: .gitlab-ci-base.yml
+  - project: tpo/tpa/ci-templates
+    file: scripts/apt.yml
+
+variables:
+  # Use full clone so "./onionbalance.py --version" works
+  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
+  GIT_STRATEGY: clone
+  GIT_DEPTH: 0
 
 stages:
-  - setup
+  - build
   - test
   - deploy
 
@@ -16,10 +24,25 @@ stages:
     - python3 -m pip install . --break-system-packages
 
 install:
-  stage: setup
+  stage: build
   extends: .base
   script:
     - /bin/true
+
+python:
+  stage: build
+  before_script:
+    - !reference [.apt-init]
+  script:
+    # Needs Git installed so "./onionbalance.py --version" works
+    - apt-get install -y git twine
+    - scripts/provision-packaging-python
+    - mkdir -p dist
+    - make build-python-package
+    - twine check dist/*
+  artifacts:
+    paths:
+      - dist
 
 functional_tests:
   stage: test
@@ -45,6 +68,24 @@ style_tests:
   script:
     - flake8 onionbalance
 
+config_tests:
+  stage: test
+  extends: .base
+  script:
+    - ./onionbalance-config.py --no-interactive
+    - ls config/*.key
+    - cat config/config.yaml
+
+run_tests:
+  stage: test
+  extends: .base
+  script:
+    # Needs Git installed so "./onionbalance.py --version" works
+    - !reference [.apt-init]
+    - apt-get install -y git
+    - git describe --tags --dirty --always --long
+    - ./onionbalance.py --version
+
 pages:
   stage: deploy
   extends: .onion-mkdocs-clone
@@ -52,3 +93,15 @@ pages:
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-provision-build
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-build
     - scripts/docs-preserve-historic-urls
+
+release:
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  stage: .post
+  rules:
+    # Run this job when a tag is created
+    - if: $CI_COMMIT_TAG
+  script:
+    - echo "Running release_job..."
+  release:
+    tag_name: '$CI_COMMIT_TAG'
+    description: '$CI_COMMIT_TAG'

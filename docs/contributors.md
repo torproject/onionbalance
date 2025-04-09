@@ -1,4 +1,4 @@
-# Contributors
+# Onionbalance contributors
 
 Onionbalance (OB) was invented by Donncha during a GSoC many moons ago. Back
 then OB only supported [v2][] Onion Services. When [v3] onions appeared, the Tor

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+#
+# Helper script to setup a Python packaging environment
+#
+
+# Parameters
+DIRNAME="`dirname $0`"
+BASEPATH="$DIRNAME/.."
+DEPENDENCIES_PACKAGING_PYTHON="make python3-venv python3-build python3-keyrings.alt twine"
+
+# Check for sudo
+if [ "`whoami`" != "root" ]; then
+  SUDO="sudo"
+fi
+
+# Python packaging
+$SUDO apt-get update
+$SUDO apt-get upgrade -y
+$SUDO apt-get install -y $DEPENDENCIES_PACKAGING_PYTHON

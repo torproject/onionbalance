@@ -1,4 +1,4 @@
-# Status Socket
+# Onionbalance Status Socket
 
 Basic information about running Onionbalance can be obtained by querying
 so called status socket.
