@@ -35,10 +35,11 @@ python:
     - !reference [.apt-init]
   script:
     # Needs Git installed so "./onionbalance.py --version" works
-    - apt-get install -y git
+    - apt-get install -y git twine
     - scripts/provision-packaging-python
     - mkdir -p dist
     - make build-python-package
+    - twine check dist/*
   artifacts:
     paths:
       - dist
