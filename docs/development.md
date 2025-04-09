@@ -58,7 +58,8 @@ Build the Python package:
 Install this package in a fresh virtual machine. Example:
 
     sudo apt-get install -y python3-pip tor
-    pip install --break-system-packages dist/onionbalance-$ONIONBALANCE_VERSION-*.whl
+    pip install --break-system-packages \
+      dist/onionbalance-$ONIONBALANCE_VERSION-*.whl
 
 Then test it:
 
@@ -87,7 +88,8 @@ Finally, install the package one more time, but now fecthing it from [PyPI][],
 and in yet another fresh virtual machine:
 
     sudo apt-get install -y python3-pip tor
-    pip install --break-system-packages onionbalance
+    pip install --break-system-packages \
+      onionbalance==$ONIONBALANCE_VERSION
 
 Do the tests once more, in this new installation.
 
