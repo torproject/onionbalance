@@ -112,20 +112,20 @@ run_test:
 # Debian
 #
 
-#debian_stable:
-#  !reference [.debian-stable]
-#
-#debian_sid:
-#  !reference [.debian-sid]
-#
-#ubuntu_lts:
-#  !reference [.ubuntu-lts]
-#
-#lintian:
-#  !reference [.lintian]
-#
-#piuparts:
-#  !reference [.piuparts]
+debian_stable:
+  !reference [.debian-stable]
+
+debian_sid:
+  !reference [.debian-sid]
+
+ubuntu_lts:
+  !reference [.ubuntu-lts]
+
+lintian:
+  !reference [.lintian]
+
+piuparts:
+  !reference [.piuparts]
 
 #
 # Documentation

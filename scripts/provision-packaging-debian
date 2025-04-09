@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+#
+# Helper script to setup a Debian packaging environment
+#
+
+# Parameters
+DIRNAME="`dirname $0`"
+BASEPATH="$DIRNAME/.."
+DEPENDENCIES_PACKAGING_DEBIAN="git-buildpackage equivs fakeroot"
+
+# Check for sudo
+if [ "`whoami`" != "root" ]; then
+  SUDO="sudo"
+fi
+
+# Ensure a non-interactive package installation
+export DEBIAN_FRONTEND=noninteractive
+
+# Debian packaging
+$SUDO apt-get update
+$SUDO apt-get upgrade -y
+$SUDO apt-get install -y $DEPENDENCIES_PACKAGING_DEBIAN
