@@ -124,4 +124,3 @@ $CHANGELOG
 [tor-announce]: https://lists.torproject.org/cgi-bin/mailman/listinfo/tor-announce
 [Tor Forum]: https://forum.torproject.org
 [onion-services-announce tag]: https://forum.torproject.org/tag/onion-services-announce
-
