@@ -1,14 +1,35 @@
 ---
 #
+# CI configuration for Onionbalance
+#
+
+#
 # General
 #
 
+# CI Templates
 include:
+  # Onion MkDocs
   - project: tpo/web/onion-mkdocs
     file: .gitlab-ci-base.yml
+
+  # APT configuration
   - project: tpo/tpa/ci-templates
     file: scripts/apt.yml
 
+  # Debian packaging
+  - project: tpo/onion-services/ci-templates
+    file: onion-services/debian.yml
+
+  # Python packaging
+  - project: tpo/onion-services/ci-templates
+    file: onion-services/python.yml
+
+  # GitLab releases
+  - project: tpo/onion-services/ci-templates
+    file: onion-services/release.yml
+
+# Default image
 image: containers.torproject.org/tpo/tpa/base-images/python:sid
 
 variables:
@@ -16,11 +37,6 @@ variables:
   # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
   GIT_STRATEGY: clone
   GIT_DEPTH: 0
-
-stages:
-  - build
-  - test
-  - deploy
 
 .base:
   before_script:
@@ -42,20 +58,9 @@ install:
 # Python
 #
 
+# Needs Git installed so "./onionbalance.py --version" works
 python:
-  stage: build
-  before_script:
-    - !reference [.apt-init]
-  script:
-    # Needs Git installed so "./onionbalance.py --version" works
-    - apt-get install -y git twine
-    - scripts/provision-packaging-python
-    - mkdir -p dist
-    - make build-python-package
-    - twine check dist/*
-  artifacts:
-    paths:
-      - dist
+  !reference [.python]
 
 #
 # Tests
@@ -104,6 +109,25 @@ run_test:
     - ./onionbalance.py --version
 
 #
+# Debian
+#
+
+#debian_stable:
+#  !reference [.debian-stable]
+#
+#debian_sid:
+#  !reference [.debian-sid]
+#
+#ubuntu_lts:
+#  !reference [.ubuntu-lts]
+#
+#lintian:
+#  !reference [.lintian]
+#
+#piuparts:
+#  !reference [.piuparts]
+
+#
 # Documentation
 #
 
@@ -114,19 +138,3 @@ pages:
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-provision-build
     - $ONION_MKDOCS_LOCATION/scripts/onion-mkdocs-build
     - scripts/docs-preserve-historic-urls
-
-#
-# Release
-#
-
-release:
-  image: registry.gitlab.com/gitlab-org/release-cli:latest
-  stage: .post
-  rules:
-    # Run this job when a tag is created
-    - if: $CI_COMMIT_TAG
-  script:
-    - echo "Running release_job..."
-  release:
-    tag_name: '$CI_COMMIT_TAG'
-    description: '$CI_COMMIT_TAG'
