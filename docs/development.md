@@ -84,7 +84,7 @@ If the the package works as expected, upload it to PyPI:
 
     make upload-python-package
 
-Finally, install the package one more time, but now fecthing it from [PyPI][],
+Finally, install the package one more time, but now fetching it from [PyPI][],
 and in yet another fresh virtual machine:
 
     sudo apt-get install -y python3-pip tor

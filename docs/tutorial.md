@@ -326,7 +326,7 @@ Here are a few common issues you might encounter during your setup.
 
 In order for this to work, the user you are trying to run onionbalance
 from should have permissions to reach Tor's control port cookie.
-Othwerise, you will see an error like this:
+Otherwise, you will see an error like this:
 
 ```
 [ERROR]: Unable to authenticate on the Tor control connection: Authentication failed: unable to read '/run/tor/control.authcookie' ([Errno 13] Permission denied: '/run/tor/control.authcookie')
