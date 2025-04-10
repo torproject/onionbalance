@@ -7,6 +7,13 @@
 # General
 #
 
+# Variables
+variables:
+  # Use full clone so "./onionbalance.py --version" works
+  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
+  GIT_STRATEGY: clone
+  GIT_DEPTH: 0
+
 # CI Templates
 include:
   # Onion MkDocs
@@ -31,13 +38,6 @@ include:
 
 # Default image
 image: containers.torproject.org/tpo/tpa/base-images/python:sid
-
-# Variables
-variables:
-  # Use full clone so "./onionbalance.py --version" works
-  # https://docs.gitlab.com/ci/runners/configure_runners/#git-strategy
-  GIT_STRATEGY: clone
-  GIT_DEPTH: 0
 
 # Base build procedure
 .base:
