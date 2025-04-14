@@ -61,5 +61,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
     ],
-    version='0.2.4-unreleased',
+    version='0.2.4_unreleased',
 )
