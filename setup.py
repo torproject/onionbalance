@@ -3,7 +3,6 @@
 """setup.py: setuptools control."""
 
 import io
-import versioneer
 import os
 
 from setuptools import setup
@@ -62,6 +61,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
     ],
-    version=versioneer.get_version(),
-    cmdclass=versioneer.get_cmdclass(),
+    version='0.2.4-unreleased',
 )

@@ -12,14 +12,11 @@ Set the version number:
 
     ONIONBALANCE_VERSION=0.2.4
 
-<!-- Not needed, as Onionbalance uses Versioneer -->
-<!--
 Update the version in some files, like:
 
     dch -i # debian/changelog
-    $EDITOR docker-compose.yml
+    $EDITOR onionbalance/__init__.py
     $EDITOR setup.cfg
--->
 
 <!-- Not available -->
 <!--
