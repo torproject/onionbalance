@@ -16,7 +16,6 @@ Update the version in some files, like:
 
     dch -i # debian/changelog
     $EDITOR onionbalance/__init__.py
-    $EDITOR setup.cfg
 
 <!-- Not available -->
 <!--

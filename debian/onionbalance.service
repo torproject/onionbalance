@@ -4,7 +4,7 @@
 Description=OnionBalance - Tor Onion Service load balancer
 Documentation=man:onionbalance
 Documentation=file:///usr/share/doc/onionbalance/html/index.html
-Documentation=https://github.com/DonnchaC/onionbalance
+Documentation=https://onionservices.torproject.org/apps/base/onionbalance/
 After=network.target tor.target
 Wants=network-online.target
 ConditionPathExists=/etc/onionbalance/config.yaml

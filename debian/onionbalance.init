@@ -14,7 +14,7 @@
 # Documentation
 #  man onionbalance
 #  file:///usr/share/doc/onionbalance/html/index.html
-#  https://github.com/DonnchaC/onionbalance
+#  https://onionservices.torproject.org/apps/base/onionbalance/
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh

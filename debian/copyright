@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: onionbalance
-Upstream-Contact: George Kadianakis <desnacked@riseup.net>
-Source: https://github.com/asn-d6/onionbalance
+Upstream-Contact: Silvio Rhatto <rhatto@torproject.org>
+Source: https://gitlab.torproject.org/tpo/onion-services/onionbalance
 
 Files: *
 Copyright: 2015-2017 Donncha O'Cearbhaill
