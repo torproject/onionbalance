@@ -6,6 +6,7 @@ import io
 import os
 
 from setuptools import setup
+from onionbalance import __version__
 
 # Read version and other info from package's __init.py file
 module_info = {}
@@ -61,5 +62,5 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.4',
     ],
-    version='0.2.4',
+    version=__version__,
 )
