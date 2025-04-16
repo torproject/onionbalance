@@ -336,6 +336,7 @@ def parse_cmd_args():
     """
 
     parser = argparse.ArgumentParser(
+        prog="onionbalance-config",
         description="onionbalance-config generates config files and keys for "
         "Onionbalance instances and management servers. Calling without any "
         "options will initiate an interactive mode.")

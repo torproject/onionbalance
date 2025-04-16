@@ -17,12 +17,9 @@ Update the version in some files, like:
     dch -i # debian/changelog
     $EDITOR onionbalance/__init__.py
 
-<!-- Not available -->
-<!--
-### Regenerate the manpage
+### Regenerate the manpages
 
-    make manpage
--->
+    make manpages
 
 ### Register the changes
 

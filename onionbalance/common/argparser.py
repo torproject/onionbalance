@@ -13,8 +13,10 @@ def get_common_argparser():
     """
 
     parser = argparse.ArgumentParser(
+        prog='onionbalance',
         description="onionbalance distributes the requests for a Tor hidden "
-        "services across multiple Tor instances.")
+        "services across multiple Tor instances.",
+        )
 
     parser.add_argument("--hs-version", type=str, default='v3',
                         choices=('v3',),

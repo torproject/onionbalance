@@ -1,0 +1,61 @@
+% ONIONBALANCE-CONFIG(1) Onionbalance User Manual
+% Silvio Rhatto <rhatto@torproject.org>
+% {date}
+
+# NAME
+
+Onionbalance - an Onion Service descriptor publisher that works as a load balancer
+
+# SYNOPSIS
+
+{usage}
+
+# DESCRIPTION
+
+Onionbalance allows load balancing Onion Services across multiple backend Tor
+instances. This way the load of introduction and rendezvous requests gets
+distributed across multiple hosts.
+
+Onionbalance provides load-balancing while also making Onion Services more
+resilient and reliable by eliminating single points-of-failure and by
+protecting the main identity key.
+
+Onionbalance allows for scaling across multiple Onion Service instances with no
+additional software or Tor modifications necessary on the Onion Service
+instance.
+
+# FULL INVOCATION
+
+{invocation}
+
+# CONFIGURATION FILE FORMAT
+
+This is a sample configuration file that can be adapted:
+
+{config}
+
+# EXIT STATUS
+
+Onionbalance is meant to be kept running in the background.
+
+In case of unrecoverable errors, the exit status is 1.
+Otherwise, the exit status is 0.
+
+# LIMITATIONS
+
+Onionbalance currently has the following limitations:
+
+1. Only supports the legacy C Tor implementation.
+
+2. Does not work along Tor's Proof of Work (PoW) defense for Onion Services.
+
+3. For other limitations, check the list of issues  available at the
+   Onionbalance source code repository.
+
+# SEE ALSO
+
+The *docs/* folder distributed with Onionbalance contains the full documentation,
+which should also be available at <https://onionservices.torproject.org/apps/web/onionbalance/>.
+
+The Onionbalance source code and all documentation may be downloaded from
+<https://gitlab.torproject.org/tpo/onion-services/onionbalance>.
