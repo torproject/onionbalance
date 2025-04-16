@@ -149,7 +149,7 @@ run_python:
     - pip install --break-system-packages dist/onionbalance*.whl
     - pip show onionbalance
     - onionbalance-config --no-interactive
-    - onionbalance -v
+    - onionbalance --version
 
 run_sid:
   image: containers.torproject.org/tpo/tpa/base-images/debian:sid
@@ -170,7 +170,7 @@ run_sid:
 
     # Test
     - onionbalance-config --no-interactive
-    - onionbalance -v
+    - onionbalance --version
 
 #
 # Documentation
