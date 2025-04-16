@@ -100,16 +100,6 @@ config_tests:
     - ls config/*.key
     - cat config/config.yaml
 
-run_test:
-  stage: test
-  extends: .base
-  script:
-    # Needs Git installed so "./onionbalance.py --version" works
-    - !reference [.apt-init]
-    - apt-get install -y git
-    - git describe --tags --dirty --always --long
-    - ./onionbalance.py --version
-
 #
 # Debian
 #
@@ -128,6 +118,59 @@ lintian:
 
 piuparts:
   !reference [.piuparts]
+
+#
+# Run tests
+#
+
+run_source:
+  stage: test
+  extends: .base
+  script:
+    # Needs Git installed so "./onionbalance.py --version" works
+    - !reference [.apt-init]
+    - apt-get install -y git
+    - git describe --tags --dirty --always --long
+    - ./onionbalance.py --version
+
+run_python:
+  image: containers.torproject.org/tpo/tpa/base-images/debian:sid
+  stage: test
+  # Retry twice, since onionbalance might fail due to Tor bootrapping/network errors
+  retry: 2
+  needs:
+    - job: python
+      artifacts: true
+  before_script:
+    - !reference [.apt-init]
+  script:
+    - apt-get update
+    - apt-get install -y python3-pip tor
+    - pip install --break-system-packages dist/onionbalance*.whl
+    - pip show onionbalance
+    - onionbalance-config --no-interactive
+    - onionbalance -v
+
+run_sid:
+  image: containers.torproject.org/tpo/tpa/base-images/debian:sid
+  stage: test
+  needs:
+    - job: debian_sid
+      artifacts: true
+  before_script:
+    - !reference [.apt-init]
+  script:
+    # Install dependencies
+    - apt-get update
+    - apt-get install -y onionbalance
+    - apt-get remove onionbalance
+
+    # Install the built package
+    - dpkg -i dist/onionbalance_*.deb
+
+    # Test
+    - onionbalance-config --no-interactive
+    - onionbalance -v
 
 #
 # Documentation
