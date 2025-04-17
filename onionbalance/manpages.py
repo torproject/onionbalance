@@ -28,19 +28,18 @@ from onionbalance.config_generator.config_generator import parse_cmd_args as oni
 
 basepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir) + os.sep
 manpages = {
-        'onionbalance': {
-           'parser': onionbalance_parser(),
-           'template': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt.tmpl'),
-           'output': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt'),
-           'config': os.path.join(
-               basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml')},
+    'onionbalance': {
+        'parser': onionbalance_parser(),
+        'template': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt.tmpl'),
+        'output': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt'),
+        'config': os.path.join(
+        basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml')},
 
-        'onionbalance-config': {
-            'parser': onionbalance_config_parser(),
-            'template': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt.tmpl'),
-            'output': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt'),
-            'config': ''},
-        }
+    'onionbalance-config': {
+        'parser': onionbalance_config_parser(),
+        'template': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt.tmpl'),
+        'output': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt'),
+        'config': ''}}
 
 def remove_usage_prefix(text):
     """
