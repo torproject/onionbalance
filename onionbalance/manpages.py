@@ -29,19 +29,17 @@ from onionbalance.config_generator.config_generator import parse_cmd_args as oni
 basepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), os.pardir) + os.sep
 manpages = {
         'onionbalance': {
-            'parser': onionbalance_parser(),
-            'template': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt.tmpl'),
-            'output': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt'),
-            'config': os.path.join(
-                basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml'),
-            },
+           'parser': onionbalance_parser(),
+           'template': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt.tmpl'),
+           'output': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt'),
+           'config': os.path.join(
+               basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml')},
 
         'onionbalance-config': {
             'parser': onionbalance_config_parser(),
             'template': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt.tmpl'),
             'output': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt'),
-            'config': '',
-            },
+            'config': ''},
         }
 
 def remove_usage_prefix(text):
@@ -69,8 +67,8 @@ def format_as_markdown_verbatim(text):
     """
 
     # Some handy regexps
-    lines      = re.compile('^',    re.MULTILINE)
-    trailing   = re.compile('^ *$', re.MULTILINE)
+    lines = re.compile('^', re.MULTILINE)
+    trailing = re.compile('^ *$', re.MULTILINE)
 
     return trailing.sub('', lines.sub('    ', text))
 
@@ -91,10 +89,10 @@ def generate():
         parser = manpages[man]['parser']
 
         # Compile template variables
-        usage      = remove_usage_prefix(parser.format_usage())
+        usage = remove_usage_prefix(parser.format_usage())
         invocation = remove_usage_prefix(format_as_markdown_verbatim(parser.format_help()))
-        date       = datetime.datetime.now().strftime('%b %d, %Y')
-        config     = ''
+        date = datetime.datetime.now().strftime('%b %d, %Y')
+        config = ''
 
         if manpages[man]['config'] != '':
             with open(manpages[man]['config'], 'r') as config_file:
