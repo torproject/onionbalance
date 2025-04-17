@@ -32,7 +32,7 @@ manpages = {
         'parser': onionbalance_parser(),
         'template': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt.tmpl'),
         'output': os.path.join(basepath, 'docs', 'man', 'onionbalance.1.txt'),
-        'config': os.path.join(basepath, 'onionbalance', 'config_generator', 'data','config.example.yaml')},
+        'config': os.path.join(basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml')},
 
     'onionbalance-config': {
         'parser': onionbalance_config_parser(),
