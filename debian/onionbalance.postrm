@@ -1,0 +1,17 @@
+#!/bin/sh -e
+
+# Remove logs and user account on purge
+
+set -e
+
+if [ "$1" = "purge" ]; then
+    rm -rf /var/log/onionbalance/
+    if getent passwd onionbalance >/dev/null; then
+        deluser --quiet onionbalance debian-tor > /dev/null || true
+        deluser --quiet onionbalance > /dev/null || true
+    fi
+fi
+
+#DEBHELPER#
+
+exit 0

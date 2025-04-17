@@ -1,0 +1,39 @@
+Source: onionbalance
+Maintainer: Federico Ceratto <federico@debian.org>
+Section: net
+Priority: optional
+Build-Depends: debhelper-compat (= 13)
+Build-Depends-Indep:
+ dh-python,
+ python3-all,
+ python3-cryptography,
+ python3-docutils,
+ python3-mock,
+ python3-pycryptodome,
+ python3-pytest,
+ python3-pytest-mock,
+ python3-setproctitle,
+ python3-setuptools,
+ python3-stem (>= 1.8.0),
+ python3-yaml
+X-Python-3-Version: >= 3.5
+Standards-Version: 4.6.0.1
+Homepage: https://onionservices.torproject.org/apps/base/onionbalance/
+Vcs-Git: https://salsa.debian.org/debian/onionbalance.git
+Vcs-Browser: https://salsa.debian.org/debian/onionbalance
+Rules-Requires-Root: no
+
+Package: onionbalance
+Architecture: all
+Pre-Depends: ${misc:Pre-Depends}
+Depends:
+ ${misc:Depends},
+ ${python3:Depends},
+ ${sphinxdoc:Depends},
+ adduser,
+ python3-stem (>= 1.8.0),
+ tor (>= 0.2.7.1)
+Description: Tor hidden service load balancer
+ The onionbalance tool provides load-balancing and redundancy for Tor
+ hidden services by distributing user requests to multiple backend
+ Tor instances.

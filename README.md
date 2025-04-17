@@ -4,10 +4,10 @@
 
 # Introduction
 
-Onionbalance allows Tor onion service requests to be distributed across
+Onionbalance allows Tor Onion Service requests to be distributed across
 multiple backend Tor instances. Onionbalance provides load-balancing while also
-making onion services more resilient and reliable by eliminating single
-points-of-failure.
+making Onion Services more resilient and reliable by eliminating single
+points-of-failure and by protecting the identity key.
 
 # Getting Started
 

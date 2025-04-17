@@ -39,10 +39,16 @@ vendoring:
 
 docs: compile-docs
 
-manpage:
-	@echo Not available
+manpages:
+	@./onionbalance/manpages.py
+	@sed -i -e 's/manpages.py/onionbalance/g' docs/man/onionbalance.1.txt
+	@sed -i -e 's/manpages.py/onionbalance-config/g' docs/man/onionbalance-config.1.txt
+	@sed -e '1i\\# Onionbalance manual page' -e 's|^#|##|g' -e '/^%/d' docs/man/onionbalance.1.txt > docs/man/onionbalance.md
+	@sed -e '1i\\# Onionbalance Config manual page' -e 's|^#|##|g' -e '/^%/d' -e 's/manpages.py/onionbalance-config/g' docs/man/onionbalance-config.1.txt > docs/man/onionbalance-config.md
+	@pandoc -s -f markdown -w man docs/man/onionbalance.1.txt -o docs/man/onionbalance.1
+	@pandoc -s -f markdown -w man docs/man/onionbalance-config.1.txt -o docs/man/onionbalance-config.1
 
-compile-docs: manpage
+compile-docs: manpages
 	@make onion-mkdocs-build
 
 #

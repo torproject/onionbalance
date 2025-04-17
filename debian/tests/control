@@ -1,0 +1,3 @@
+Test-Command: /usr/sbin/onionbalance --version
+Restrictions: superficial, allow-stderr
+Depends: @

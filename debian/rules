@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+export DH_VERBOSE=1
+export PYBUILD_NAME=onionbalance
+export PYBUILD_INSTALL_ARGS=--install-scripts=/usr/sbin
+
+# Copy unit tests, exclude functional tests which need a running Tor
+export PYBUILD_BEFORE_TEST=cp -r {dir}/test {build_dir}
+export PYBUILD_AFTER_TEST=rm -rf {build_dir}/test
+export PYBUILD_TEST_ARGS=--ignore=test/functional
+
+%:
+	dh $@ --with=python3 --buildsystem=pybuild
+
+override_dh_clean:
+	dh_clean
+	rm -rf ./.pytest_cache
