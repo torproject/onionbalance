@@ -1,8 +1,10 @@
 onionbalance (0.2.3) unstable; urgency=medium
 
-  * New upstream release 
+  * New upstream release
   * Updated Debian packaging:
     https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/46
+  * HTML documentation is not shipped anymore, but still available
+    online at https://onionservices.torproject.org/apps/base/onionbalance/
 
  -- Silvio Rhatto <rhatto@riseup.net>  Wed, 16 Apr 2025 11:19:38 -0300
 
