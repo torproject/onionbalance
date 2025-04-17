@@ -131,7 +131,7 @@ master/torrc-server
    running on the management server (v2-only).
 
 srv/torrc-instance
-:  A sample Tor config file which contains the Tor Onion Service options
+:  A sample Tor config file which contains the Tor HiddenService* options
    needed for your backend Tor instance (v2-only).
 
 srv/<ONION_ADDRESS>/private_key
