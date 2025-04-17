@@ -35,3 +35,25 @@ backend servers.
 * `srv/<ONION_ADDRESS>/private_key`: Directory containing the private key for
   your backend onion service instance. This key is less critical as it can be
   rotated if lost or compromised (v2-only).
+
+## Environment variables
+
+* `ONIONBALANCE_CONFIG`: Override the location for the Onionbalance
+  configuration file. The loaded configuration file takes precedence over
+  environment variables. Configuration file options will override environment
+  variable which have the same name.
+
+* `ONIONBALANCE_LOG_LEVEL`: Specify the minimum verbosity of log messages to
+  output. All log messages equal or higher the the specified log level are
+  output. The available log levels are the same as the `--verbosity` command
+  line option.
+
+* `ONIONBALANCE_STATUS_SOCKET_LOCATION`: The Onionbalance service creates a
+  Unix domain socket which provides real-time information about the currently
+  loaded service and descriptors. This option can be used to change the
+  location of this domain socket. (default: `/var/run/onionbalance/control`).
+
+* `ONIONBALANCE_TOR_CONTROL_SOCKET`: The location of the Tor unix domain
+  control socket. Onionbalance will attempt to connect to this control socket
+  first before falling back to using a control port connection. (default:
+  `/var/run/tor/control`).
