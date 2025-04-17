@@ -2,6 +2,10 @@
 
 ## v0.2.4 - Unreleased
 
+* Packaging:
+  * Updated and improved Debian packaging
+    ([tpo/onion-services/onionbalance#46][]).
+
 * Documentation:
     * Refactor ([tpo/onion-services/onionbalance#37][]):
         * Updated and moved some of the old v2 docs to the "main" docs.
@@ -11,6 +15,7 @@
     * New [Security page](security.md), thanks to Pascal Tippe
       ([tpo/onion-services/onionbalance#25][]).
 
+[tpo/onion-services/onionbalance#46]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/46
 [tpo/onion-services/onionbalance#37]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/37
 [tpo/onion-services/onionbalance#25]: https://gitlab.torproject.org/tpo/onion-services/onionbalance/-/issues/25
 
