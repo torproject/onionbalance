@@ -13,7 +13,6 @@
 
 # Documentation
 #  man onionbalance
-#  file:///usr/share/doc/onionbalance/html/index.html
 #  https://onionservices.torproject.org/apps/base/onionbalance/
 
 # Load the VERBOSE setting and other rcS variables
