@@ -60,7 +60,7 @@ this guide.
   onionbalance to it, and then we will run onionbalance so that it generates a
   frontend onion service configuration.
 * We will *then setup the backend instances* by configuring Tor as an onion
-  service and putting it into \"onionbalance instance\" mode.
+  service and putting it into "onionbalance instance" mode.
 * In the end of the guide, we will *setup onionbalance* by informing it about
   the backend instances, and we will *start it up*. After this, we should have
   a working onionbalance configuration.
