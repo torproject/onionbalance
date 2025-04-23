@@ -227,7 +227,7 @@ twist:
 2. In your hidden service directory where the `hostname` and
    `hs_ed25519_public_key` files are living (assuming you moved them
    previously or started Tor as described at previous step to generate
-   them) you need to create a new file with the name \'ob_config\' that
+   them) you need to create a new file with the name `ob_config` that
    has the following line inside:
    `MasterOnionAddress
    dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion`
