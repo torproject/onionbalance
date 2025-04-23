@@ -19,11 +19,25 @@ backend servers.
 
 ## Files
 
+Default configuration file locations when running Onionbalance as a local, user
+service:
+
 * `config/config.yaml`: this is the configuration file that is used by the
   Onionbalance management server.
 
 * `config/ONION_ADDRESS.key`: Each service instance have a private key, which
    will be derived into the public address and identity for the Onion Service.
+   Each private key file is named after the .onion address, so
+   `ONION_ADDRESS.key` will be actually like
+   `dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key`.
+   It is essential that you keep these files secure.
+
+System-wide files, when running Onionbalance as a system service:
+
+* `/etc/onionbalance/config.yaml`: the global configuration file, which
+  contains services entries.
+
+* `/etc/onionbalance/ONION_ADDRESS.key`: service instance private key file.
    Each private key file is named after the .onion address, so
    `ONION_ADDRESS.key` will be actually like
    `dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key`.

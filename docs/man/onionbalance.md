@@ -107,20 +107,32 @@ NOTE:
 
 ## FILES
 
-System-wide files, when running Onionbalance as a system service:
-
-/etc/onionbalance/config.yaml
-: The global configuration file, which contains services entries.
-
-Local configuration files, when running Onionbalance as a local, user service:
+Default configuration file locations when running Onionbalance as a local, user
+service:
 
 config/config.yaml
 :  This is the configuration file that is used by the Onionbalance management
    server.
+   The exact location can be specified by invoking onionbalance with the
+   -c flag.
 
 config/ONION_ADDRESS.key
 :  Each service instance have a private key, which will be derived into the
    public address and identity for the Onion Service.
+   Each private key file is named after the .onion address, so
+   ONION_ADDRESS.key will be actually like
+   dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key.
+   It is essential that you keep these files secure.
+   The actual folder Onionbalance searches for service keys is
+   the one where config.yaml is located.
+
+System-wide files, when running Onionbalance as a system service:
+
+/etc/onionbalance/config.yaml
+:  The global configuration file, which contains services entries.
+
+/etc/onionbalance/ONION_ADDRESS.key
+:  Service instance private key file.
    Each private key file is named after the .onion address, so
    ONION_ADDRESS.key will be actually like
    dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key.
