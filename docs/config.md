@@ -13,35 +13,30 @@ onionbalance-config
 When called without any arguments, the config generator will run in an
 interactive mode and prompt for user input.
 
-The `master` directory should be stored on the management server while
-the other `instance` directories should be transferred to the respective
-backend servers.
+The `config` directory should be stored on the management server.
 
 ## Files
 
-Default configuration file locations when running Onionbalance as a local, user
-service:
+Onionbalance requires the following files:
 
-* `config/config.yaml`: this is the configuration file that is used by the
+* `config.yaml`: this is the configuration file that is used by the
   Onionbalance management server.
 
-* `config/ONION_ADDRESS.key`: Each service instance have a private key, which
+* `ONION_ADDRESS.key`: Each service instance have a private key, which
    will be derived into the public address and identity for the Onion Service.
    Each private key file is named after the .onion address, so
    `ONION_ADDRESS.key` will be actually like
    `dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key`.
    It is essential that you keep these files secure.
 
-System-wide files, when running Onionbalance as a system service:
+By default, onionbalance search for these files in the current directory
+where it was invoked.
 
-* `/etc/onionbalance/config.yaml`: the global configuration file, which
-  contains services entries.
+The actual folder can be explicitly set by invoking `onionbalance-config` with
+the `--output` option.
 
-* `/etc/onionbalance/ONION_ADDRESS.key`: service instance private key file.
-   Each private key file is named after the .onion address, so
-   `ONION_ADDRESS.key` will be actually like
-   `dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key`.
-   It is essential that you keep these files secure.
+When running the system-wide service, this folder is automatically set
+to `/etc/onionbalance`.
 
 ## Environment variables
 
@@ -51,7 +46,7 @@ System-wide files, when running Onionbalance as a system service:
   variable which have the same name.
 
 * `ONIONBALANCE_LOG_LEVEL`: Specify the minimum verbosity of log messages to
-  output. All log messages equal or higher the the specified log level are
+  output. All log messages equal or higher the specified log level are
   output. The available log levels are the same as the `--verbosity` command
   line option.
 
