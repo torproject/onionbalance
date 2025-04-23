@@ -19,22 +19,15 @@ backend servers.
 
 ## Files
 
-* `master/config.yaml`: This is the configuration file that is used my the
+* `config/config.yaml`: this is the configuration file that is used by the
   Onionbalance management server.
 
-* `master/<ONION_ADDRESS>.key`: The private key which will become the public
-  address and identity for your onion service. It is essential that you keep
-  this key secure.
-
-* `master/torrc-server`: A sample Tor configuration file which can be used with
-  the Tor instance running on the management server (v2-only).
-
-* `srv/torrc-instance`: A sample Tor config file which contains the Tor
-  `HiddenService*` options needed for your backend Tor instance (v2-only).
-
-* `srv/<ONION_ADDRESS>/private_key`: Directory containing the private key for
-  your backend onion service instance. This key is less critical as it can be
-  rotated if lost or compromised (v2-only).
+* `config/ONION_ADDRESS.key`: Each service instance have a private key, which
+   will be derived into the public address and identity for the Onion Service.
+   Each private key file is named after the .onion address, so
+   `ONION_ADDRESS.key` will be actually like
+   `dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key`.
+   It is essential that you keep these files secure.
 
 ## Environment variables
 

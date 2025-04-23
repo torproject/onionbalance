@@ -150,7 +150,7 @@ mkdir -p onionbalance
 onionbalance-config -n 2
 ```
 
-The `-n` flags indicates how many empty backend address slots should be
+The `-n` flag indicates how many empty backend address slots should be
 created.  These can be easily modified with a text editor at any time.
 
 !!! note
@@ -168,7 +168,7 @@ key: dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key
 ```
 
 the frontend's onion address is:
-`dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion` .
+`dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion`.
 
 For now, note down the frontend's onion address and let's move on to
 the next step!
