@@ -23,6 +23,11 @@ import os
 import datetime
 import re
 
+# Expand the search path to include the parent folder
+# Useful when invoking this script in local Onionbalance installations
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+
 from onionbalance.common.argparser import get_common_argparser as onionbalance_parser
 from onionbalance.config_generator.config_generator import parse_cmd_args as onionbalance_config_parser
 
