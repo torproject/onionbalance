@@ -32,7 +32,7 @@ and config files to get your onion service up and running.
 
     options:
       -h, --help            show this help message and exit
-      --hs-version {v3}     Onion service version (only v3 is supported.
+      --hs-version {v3}     Onion service version (only v3 is supported).
       --key KEY             RSA private key for the master onion service.
       -p, --password PASSWORD
                             Optional password which can be used to encrypt the
@@ -47,7 +47,7 @@ and config files to get your onion service up and running.
                             input.
       -v VERBOSITY          Minimum verbosity level for logging. Available in
                             ascending order: debug, info, warning, error,
-                            critical). The default is info.
+                            critical) (default: info).
       --service-virtual-port SERVICE_VIRTUAL_PORT
                             Onion service port for external client connections
                             (default: 80).
