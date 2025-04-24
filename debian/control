@@ -29,7 +29,6 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends:
  ${misc:Depends},
  ${python3:Depends},
- ${sphinxdoc:Depends},
  adduser,
  python3-stem (>= 1.8.0),
  tor (>= 0.2.7.1)
