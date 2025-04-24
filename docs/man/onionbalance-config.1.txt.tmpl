@@ -30,13 +30,11 @@ This is a sample configuration file that can be adapted:
 
 # FILES
 
-Onionbalance requires the following files:
+onionbalance-config generates the following files:
 
 config.yaml
 :  This is the configuration file that is used by the Onionbalance management
    server.
-   The exact location can be specified by invoking onionbalance with the
-   -c option.
 
 ONION_ADDRESS.key
 :  Each service instance have a private key, which will be derived into the
@@ -44,15 +42,15 @@ ONION_ADDRESS.key
    Each private key file is named after the .onion address, so
    ONION_ADDRESS.key will be actually like
    dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key.
-   It is essential that you keep these files secure.
+   It is essential that you keep this file secure.
 
 By default, onionbalance-config writes these files in the config/ folder,
 relative to the folder where it was invoked from.
 
 The actual folder can be explicitly set by invoking onionbalance-config with the
---output flag.
+`--output` flag.
 
-To configure the system-wide service, onionbalance-config should set --output
+To configure the system-wide service, onionbalance-config should set `--output`
 to /etc/onionbalance.
 
 # EXIT STATUS
@@ -67,12 +65,12 @@ Otherwise, the exit status is 0.
 
 # AUTHOR
 
-George Kadianakis, Donncha O'Cearbhaill, Silvio Rhatto <rhatto@torproject.org>
+George Kadianakis, Donncha O'Cearbhaill, Silvio Rhatto `<rhatto@torproject.org>`
 
 # SEE ALSO
 
 The *docs/* folder distributed with Onionbalance contains the full documentation,
-which should also be available at <https://onionservices.torproject.org/apps/web/onionbalance/>.
+which should also be available at `<https://onionservices.torproject.org/apps/web/onionbalance/>`.
 
 The Onionbalance source code and all documentation may be downloaded from
-<https://gitlab.torproject.org/tpo/onion-services/onionbalance>.
+`<https://gitlab.torproject.org/tpo/onion-services/onionbalance>`.

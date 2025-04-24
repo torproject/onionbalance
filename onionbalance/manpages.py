@@ -38,7 +38,8 @@ manpages = {
         'parser': onionbalance_config_parser(),
         'template': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt.tmpl'),
         'output': os.path.join(basepath, 'docs', 'man', 'onionbalance-config.1.txt'),
-        'config': ''}}
+        'config': os.path.join(basepath, 'onionbalance', 'config_generator', 'data', 'config.example.yaml')},
+    }
 
 def remove_usage_prefix(text):
     """

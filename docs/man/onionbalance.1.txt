@@ -1,6 +1,6 @@
 % ONIONBALANCE(1) Onionbalance User Manual
 % Silvio Rhatto <rhatto@torproject.org>
-% Apr 23, 2025
+% Apr 24, 2025
 
 # NAME
 
@@ -82,9 +82,9 @@ This is a sample configuration file that can be adapted:
 The services section of the configuration file contains a list of main Onion
 Services that Onionbalance is responsible for.
 
-Each key option specifies the location of the 1024 bit private RSA key for the
-onion service. This main private key determines the address that users will
-use to access your onion service. This private key must be kept secure.
+Each key option specifies the location of the private key for the onion
+service. This main private key determines the address that users will use to
+access your onion service. This private key must be kept secure.
 
 The location of the private key is evaluated as an absolute path, or relative
 to the configuration file location.
@@ -101,7 +101,7 @@ NOTE:
    address in the config file.
 
 If you have used the onionbalance-config tool you can simply use the generated
-config file from master/config.yaml.
+config file from config/config.yaml.
 
 NOTE:
 :  By default onionbalance will search for a config.yaml file in the current
@@ -114,8 +114,6 @@ Onionbalance requires the following files:
 config.yaml
 :  This is the configuration file that is used by the Onionbalance management
    server.
-   The exact location can be specified by invoking onionbalance with the
-   -c option.
 
 ONION_ADDRESS.key
 :  Each service instance have a private key, which will be derived into the
@@ -123,13 +121,13 @@ ONION_ADDRESS.key
    Each private key file is named after the .onion address, so
    ONION_ADDRESS.key will be actually like
    dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.key.
-   It is essential that you keep these files secure.
+   It is essential that you keep this file secure.
 
 By default, onionbalance search for these files in the current directory
 where it was invoked.
 
 The actual folder can be explicitly set by invoking onionbalance with the
--c flag.
+`-c` flag.
 
 When running the system-wide service, this folder is automatically set
 to /etc/onionbalance.
@@ -154,20 +152,24 @@ onionbalance setup.
 
 NOTE:
 :  Multiple Onionbalance management servers can be run simultaneously with
-   the same master private key and configuration file to provide redundancy.
+   the same main private key and configuration file to provide redundancy.
 
 # ENVIRONMENT VARIABLES
 
+<!-- This behavior was not ported to v3 Onion Services -->
+<!--
+The loaded configuration file takes precedence over environment variables.
+Configuration file options will override environment variable which have the
+same name.
+-->
+
 ONIONBALANCE_CONFIG
 :  Override the location for the Onionbalance configuration file.
-   The loaded configuration file takes precedence over environment variables.
-   Configuration file options will override environment variable which have the
-   same name.
 
 ONIONBALANCE_LOG_LEVEL
 :  Specify the minimum verbosity of log messages to output. All log messages
    equal or higher the the specified log level are output. The available log
-   levels are the same as the --verbosity command line option.
+   levels are the same as the `--verbosity` command line option.
 
 ONIONBALANCE_STATUS_SOCKET_LOCATION
 :  The Onionbalance service creates a Unix domain socket which provides
@@ -197,16 +199,16 @@ Onionbalance currently has the following limitations:
    Services.
 
 3. For other limitations, check the list of issues available at the
-   Onionbalance source code repository.
+   Onionbalance source code repository and the online documentation.
 
 # AUTHOR
 
-George Kadianakis, Donncha O'Cearbhaill, Silvio Rhatto <rhatto@torproject.org>
+George Kadianakis, Donncha O'Cearbhaill, Silvio Rhatto `<rhatto@torproject.org>`
 
 # SEE ALSO
 
 The *docs/* folder distributed with Onionbalance contains the full documentation,
-which should also be available at <https://onionservices.torproject.org/apps/web/onionbalance/>.
+which should also be available at `<https://onionservices.torproject.org/apps/web/onionbalance/>`.
 
 The Onionbalance source code and all documentation may be downloaded from
-<https://gitlab.torproject.org/tpo/onion-services/onionbalance>.
+`<https://gitlab.torproject.org/tpo/onion-services/onionbalance>`.
