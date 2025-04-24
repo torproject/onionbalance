@@ -23,7 +23,7 @@ you better understand what we are going to do in this guide. Through the
 rest of this document we will assume you understand how both Onionbalance
 and the [Onion Service][Onion Services] protocol works in overall.
 
-![image](../assets/onionbalance_v3.jpg)
+![image](assets/onionbalance_v3.jpg)
 
 The picture above displays a setup where Onionbalance is used to load-balance
 over three backend instances. The frontend service is on the right side whereas
