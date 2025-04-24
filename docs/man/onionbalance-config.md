@@ -41,8 +41,8 @@ and config files to get your onion service up and running.
       -s NUM_SERVICES       Number of services to generate (default: 1).
       -t, --tag TAG         Prefix name for the service instances (default: node).
       --output OUTPUT       Directory to store generate config files. The
-                            directory will be created if it does not already
-                            exist.
+                            directory will be created if it does not already exist
+                            (default: config/).
       --no-interactive      Try to run automatically without prompting for user
                             input.
       -v VERBOSITY          Minimum verbosity level for logging. Available in

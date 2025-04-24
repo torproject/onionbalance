@@ -367,7 +367,7 @@ def parse_cmd_args():
     parser.add_argument("--output", type=str, default='config/',
                         help="Directory to store generate config files. "
                         "The directory will be created if it does not "
-                        "already exist.")
+                        "already exist (default: %(default)s).")
 
     parser.add_argument("--no-interactive", action='store_true',
                         help="Try to run automatically without prompting for "
