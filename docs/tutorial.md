@@ -3,7 +3,7 @@
 This is a step-by-step *recipe* to help you configure Onionbalance for v3
 [Onion Services][].
 
-This is really one of my favorite recipes: While onions can make many meals
+This is really one of my favorite recipes: while onions can make many meals
 instantly delicious, if the right balance is not found there is danger that
 their strong sulfuric taste can sometimes overpower the rest of the
 ingredients. It's vital to maintain the proper onionbalance to really display
@@ -13,21 +13,21 @@ the apple-like, deliciously savory notes of this vegetable.
 
 ## Preliminaries
 
-!!! tip "Optional Section"
+!!! tip "Optional section"
 
     If you already know how Onionbalance works, feel free to skip to the
     [Overview](#overview).
 
 Let's first start with an overview of the Onionbalance design so that
-you better understand what we are gonna do in this guide. Through the
-rest of this guide we will assume you understand how both Onionbalance
-and the onion service protocol works.
+you better understand what we are going to do in this guide. Through the
+rest of this document we will assume you understand how both Onionbalance
+and the [Onion Service][Onion Services] protocol works in overall.
 
 ![image](../assets/onionbalance_v3.jpg)
 
-In this picture you see a setup where Onionbalance is used to load-balance over
-three backend instances. The frontend service is on the right side whereas the
-three backend instances are in the middle. On the left side there is a Tor
+The picture above displays a setup where Onionbalance is used to load-balance
+over three backend instances. The frontend service is on the right side whereas
+the three backend instances are in the middle. On the left side there is a Tor
 client called Alice who visits the load-balanced service using the frontend
 address `dpkhemrbs3oiv2...onion` (which is actually 56 characters long but here
 we cut it for brevity).
@@ -59,11 +59,10 @@ Alice and the backend instance.
 
 ## Overview
 
-This section will give a short overview of what we are going to do in
-this guide.
+This section gives a short overview of what we are going to do in this guide.
 
 * We will *start by setting up the frontend host*. We will install Tor and
-  onionbalance to it, and then we will run onionbalance so that it generates a
+  Onionbalance to it, and then we will run `onionbalance` so that it generates a
   frontend onion service configuration.
 * We will *then setup the backend instances* by configuring Tor as an onion
   service and putting it into "onionbalance instance" mode.
@@ -81,10 +80,11 @@ ingredients:
 * A host that will run Onionbalance and act as the load balancing frontend.
 * Two or more hosts that will run the backend Tor instances.
 
-We will assume you are using a Linux system and that you are familiar
-with building C and Python projects and installing their dependencies.
+We will assume you are using a GNU/Linux system.
+<!--And that you are familiar with building C and Python projects and
+installing their dependencies.-->
 We will also assume that you are well familiar with configuring and
-running Tor onion services.
+running Tor [Onion Services][].
 
 ## Recipe
 
@@ -132,17 +132,27 @@ dependencies like `libssl-dev`, `libevent-dev`, etc.
 
 ### Step 1: Configuring the frontend server (configuring Tor)
 
-Now setup a minimal torrc with a control port enabled. As an example:
+Now configure a minimal `torrc` file with a control port enabled. As an example:
 
     SocksPort 0
     ControlPort 127.0.0.1:6666
     DataDirectory /home/user/frontend_data/
 
+If you installed the [Tor daemon][] from a package, this file should be located
+on `/etc/tor/torrc`. If you compiled Tor, this file can be anywhere you like.
+
+Now make sure the [Tor daemon][] is running with this configuration:
+
+* When installed via a package, simply reload the `tor` service, usually
+  with a command like `sudo service tor restart`.
+* When compiled locally, `tor` can be started with `./src/app/tor -c torrc`,
+  where `torrc` is the path to the configuration file you created.
+
 Now start up Tor and let it do its thing.
 
-Feel free to tweak your torrc as you feel (also enable logging), but for
-the purposes of this guide I assume that your control port is at
-127.0.0.1:6666.
+Feel free to tweak your `torrc` as you feel (also enable logging), but for
+the purposes of this guide it's assumed that your control port is at
+`127.0.0.1:6666`.
 
 ### Step 2: Configuring the frontend server (setting up onionbalance)
 
@@ -161,7 +171,7 @@ created.  These can be easily modified with a text editor at any time.
 
 !!! note
 
-    The [onionbalance-config](../config.md) tool can be used to
+    The [onionbalance-config](config.md) tool can be used to
     quickly generate keys and config files for your Onionbalance deployment.
 
 After the final command you should have a `./config/config.yaml` file
@@ -201,30 +211,13 @@ setting up your backend instances:
 0. Login to one of your backend instances and setup Tor with the same procedure
    detailed on Step 0, but this time for each backend instance.
 
-<!--
-Similar to the step above, you will need to use the latest Tor for
-Onionbalance to work (because of
-[#32709](https://trac.torproject.org/projects/tor/ticket/32709)).
-
-As before:
-
-```bash
-git clone https://gitweb.torproject.org/tor.git
-cd tor
-./autogen.sh && ./configure && make
-```
--->
-
-
-[onion-services-setup]: https://community.torproject.org/onion-services/setup/
-
 1. Setup the backend Onion Service [as usual][onion-services-setup].
    After you have installed the [Tor daemon][], you will need a `torrc` file for
    each of your backend instances. Your `torrc` file needs to defined an Onion
-   Service and I'm gonna assume [you know][onion-services-setup] how to do that.
+   Service and we'll assume [you know][onion-services-setup] how to do that.
    _Make sure it's working before going to the next step_.
 
-2. Inside the `HiddenService` block of your torrc file, you need to add
+2. Inside the `HiddenService` block of your `torrc` file, you need to add
    the following line: `HiddenServiceOnionbalanceInstance 1`.
 
 3. In your hidden service directory where the `hostname` and
@@ -240,6 +233,8 @@ cd tor
 4. Start (or restart if currently running) the Tor process to apply the
    changes.
 
+[onion-services-setup]: https://community.torproject.org/onion-services/setup/
+
 !!! note "Setup the Onion Service first"
 
     If you do not have an existing Onion Service and you are trying to create
@@ -249,25 +244,25 @@ cd tor
     to your `torrc` file as explained above.
 
 The points 2. and 3. above are **extremely important** and if you
-didn't do them correctly, nothing is gonna work. If you want to ensure
+didn't do them correctly, nothing is going to work. If you want to ensure
 that you did things correctly, start up Tor, and check that your
 *notice* log file includes the following line:
 
     [notice] ob_option_parse(): Onionbalance: MasterOnionAddress dpkhemrbs3oiv2fww5sxs6r2uybczwijzfn2ezy2osaj7iox7kl7nhad.onion registered
 
-If you don't see that, then something went wrong. Please try again from
-the beginning of this section till you make it! This is the hardest part
-of the guide too, so if you can do that you can do anything (fwiw, we
-are at 75% of the whole procedure right now).
+If you don't see that, then something went wrong. Please try again from the
+beginning of this section till you make it! This is the hardest part of the
+guide too, so if you can do that you can do anything (by the way, we are at 75%
+of the whole procedure right now).
 
 After you get that, also make sure that your instances are directly
 reachable (e.g. using Tor browser). If they are not reachable, then
-onionbalance won't be able to see them either and things are not gonna
-work.
+Onionbalance won't be able to see them either and things are not going
+to work.
 
 OK, you are done with this backend instance! Now do the same for the
 other backend instances and note down the onion addresses of your
-backend instances because we are gonna need them for the next and final
+backend instances because we'll need them for the next and final
 step.
 
 ### Step 4: Start onionbalance!
@@ -293,7 +288,7 @@ following the above format. Onionbalance must be restarted after any
 change of the config file.
 
 Now let's fire up onionbalance by running the following command
-(assuming your `ControlPort` torrc setting is 6666,
+(assuming your `ControlPort` `torrc` setting is `6666`,
 substitute if different):
 
 ```console
@@ -319,7 +314,7 @@ for any errors or bugs and let me know if you see any. If you want you
 can make onionbalance logging calmer by using the `-v warning` switch.
 
 The management server must be left running to publish new descriptors
-for your onion service: within minutes you should have a fully
+for your Onion Service: within minutes you should have a fully
 functional onionbalance setup.
 
 You can also setup a [status_socket](socket.md) to monitor Onionbalance.
@@ -335,7 +330,7 @@ Here are a few common issues you might encounter during your setup.
 
 ### Permission issues
 
-In order for this to work, the user you are trying to run onionbalance
+In order for this to work, the user you are trying to run Onionbalance
 from should have permissions to reach Tor's control port cookie.
 Otherwise, you will see an error like this:
 
@@ -345,7 +340,7 @@ Otherwise, you will see an error like this:
 
 As always, we do not recommend running anything as root, when you don't
 really have to. In Debian, Tor is run by its dedicated user
-`debian-tor`, but it's not the same for other Linux distributions, so
+`debian-tor`, but it's not the same for other GNU/Linux distributions, so
 you need to check. In Debian you can add the user you are running
 onionbalance from to the same sudoers group in order to gain permission:
 
