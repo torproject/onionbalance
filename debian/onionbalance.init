@@ -40,90 +40,90 @@ export ONIONBALANCE_LOG_LOCATION=/var/log/onionbalance
 
 case "$1" in
   start)
-	if [ ! -f "$CONF_FNAME" ]; then
-		log_action_msg "Not starting $DESC: $CONF_FNAME is missing."
-		exit 0
-	fi
+  if [ ! -f "$CONF_FNAME" ]; then
+    log_action_msg "Not starting $DESC: $CONF_FNAME is missing."
+    exit 0
+  fi
 
-	log_action_begin_msg "Starting $DESC"
+  log_action_begin_msg "Starting $DESC"
 
-	if start-stop-daemon --stop --signal 0 --quiet --pidfile $PIDFILE --exec $DAEMON; then
-		log_action_end_msg 0 "already running"
-	else
-		if start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DEFAULT_ARGS
-		then
-			log_action_end_msg 0
-		else
-			log_action_end_msg 1
-			exit 1
-		fi
-	fi
-	;;
+  if start-stop-daemon --stop --signal 0 --quiet --pidfile $PIDFILE --exec $DAEMON; then
+    log_action_end_msg 0 "already running"
+  else
+    if start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DEFAULT_ARGS
+    then
+      log_action_end_msg 0
+    else
+      log_action_end_msg 1
+      exit 1
+    fi
+  fi
+  ;;
   stop)
-	log_action_begin_msg "Stopping $DESC"
-	pid=`cat $PIDFILE 2>/dev/null` || true
-	if test ! -f $PIDFILE -o -z "$pid"; then
-		log_action_end_msg 0 "not running - there is no $PIDFILE"
-		exit 0
-	fi
+  log_action_begin_msg "Stopping $DESC"
+  pid=`cat $PIDFILE 2>/dev/null` || true
+  if test ! -f $PIDFILE -o -z "$pid"; then
+    log_action_end_msg 0 "not running - there is no $PIDFILE"
+    exit 0
+  fi
 
-	if start-stop-daemon --stop --signal INT --quiet --pidfile $PIDFILE --exec $DAEMON; then
-		true
-	elif kill -0 $pid 2>/dev/null; then
-		log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
-		exit 1
-	else
-		log_action_end_msg 1 "$DAEMON died: process $pid not running; or permission denied"
-		exit 1
-	fi
-	;;
+  if start-stop-daemon --stop --signal INT --quiet --pidfile $PIDFILE --exec $DAEMON; then
+    true
+  elif kill -0 $pid 2>/dev/null; then
+    log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
+    exit 1
+  else
+    log_action_end_msg 1 "$DAEMON died: process $pid not running; or permission denied"
+    exit 1
+  fi
+  ;;
   reload)
-	echo "Not implemented, see https://github.com/DonnchaC/onionbalance/issues/24"
-	exit 1
-	log_action_begin_msg "Reloading $DESC configuration"
-	pid=`cat $PIDFILE 2>/dev/null` || true
-	if test ! -f $PIDFILE -o -z "$pid"; then
-		log_action_end_msg 1 "not running - there is no $PIDFILE"
-		exit 1
-	fi
+  echo "Not implemented, see https://github.com/DonnchaC/onionbalance/issues/24"
+  exit 1
+  log_action_begin_msg "Reloading $DESC configuration"
+  pid=`cat $PIDFILE 2>/dev/null` || true
+  if test ! -f $PIDFILE -o -z "$pid"; then
+    log_action_end_msg 1 "not running - there is no $PIDFILE"
+    exit 1
+  fi
 
-	if start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --exec $DAEMON
-	then
-		log_action_end_msg 0
-	elif kill -0 $pid 2>/dev/null; then
-		log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
-		exit 1
-	else
-		log_action_end_msg 1 "$DAEMON died: process $pid not running; or permission denied"
-		exit 1
-	fi
-	;;
+  if start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --exec $DAEMON
+  then
+    log_action_end_msg 0
+  elif kill -0 $pid 2>/dev/null; then
+    log_action_end_msg 1 "Is $pid not $NAME?  Is $DAEMON a different binary now?"
+    exit 1
+  else
+    log_action_end_msg 1 "$DAEMON died: process $pid not running; or permission denied"
+    exit 1
+  fi
+  ;;
   restart|force-reload)
-	$0 stop
-	$0 start
-	;;
+  $0 stop
+  $0 start
+  ;;
   status)
-	if test ! -r $(dirname $PIDFILE); then
-		log_failure_msg "cannot read PID file $PIDFILE"
-		exit 4
-	fi
-	pid=`cat $PIDFILE 2>/dev/null` || true
-	if test ! -f $PIDFILE -o -z "$pid"; then
-		log_failure_msg "$NAME is not running"
-		exit 3
-	fi
-	if ps "$pid" >/dev/null 2>&1; then
-		log_success_msg "$NAME is running"
-		exit 0
-	else
-		log_failure_msg "$NAME is not running"
-		exit 1
-	fi
-	;;
+  if test ! -r $(dirname $PIDFILE); then
+    log_failure_msg "cannot read PID file $PIDFILE"
+    exit 4
+  fi
+  pid=`cat $PIDFILE 2>/dev/null` || true
+  if test ! -f $PIDFILE -o -z "$pid"; then
+    log_failure_msg "$NAME is not running"
+    exit 3
+  fi
+  if ps "$pid" >/dev/null 2>&1; then
+    log_success_msg "$NAME is running"
+    exit 0
+  else
+    log_failure_msg "$NAME is not running"
+    exit 1
+  fi
+  ;;
   *)
-	log_action_msg "Usage: $0 {start|stop|restart|force-reload|status}" >&2
-	exit 1
-	;;
+  log_action_msg "Usage: $0 {start|stop|restart|force-reload|status}" >&2
+  exit 1
+  ;;
 esac
 
 exit 0
