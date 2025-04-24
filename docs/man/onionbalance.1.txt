@@ -37,14 +37,15 @@ instance.
     options:
       -h, --help            show this help message and exit
       --hs-version {v3}     Onion service version (only v3 is supported)
-      -i, --ip IP           Tor controller IP address
-      -p, --port PORT       Tor controller port
-      -s, --socket SOCKET   Tor unix domain control socket location
-      -c, --config CONFIG   Config file location
+      -i, --ip IP           Tor controller IP address (default: 127.0.0.1).
+      -p, --port PORT       Tor controller port (default: 9051).
+      -s, --socket SOCKET   Tor unix domain control socket location (default:
+                            /var/run/tor/control).
+      -c, --config CONFIG   Config file location (default: config.yaml).
       -v, --verbosity VERBOSITY
                             Minimum verbosity level for logging. Available in
                             ascending order: debug, info, warning, error,
-                            critical). The default is info.
+                            critical) (default: info).
       --version             show program's version number and exit
       --is-testnet          Is this onionbalance on a test net? (Default: no)
 
