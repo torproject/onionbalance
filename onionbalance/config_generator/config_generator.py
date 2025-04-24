@@ -343,7 +343,7 @@ def parse_cmd_args():
 
     parser.add_argument("--hs-version", type=str,
                         default="v3", choices=("v3", ),
-                        help="Onion service version (only v3 is supported.")
+                        help="Onion service version (only v3 is supported).")
 
     parser.add_argument("--key", type=str, default=None,
                         help="RSA private key for the master onion service.")
@@ -376,7 +376,7 @@ def parse_cmd_args():
     parser.add_argument("-v", type=str, default="info", dest='verbosity',
                         help="Minimum verbosity level for logging. Available "
                         "in ascending order: debug, info, warning, error, "
-                        "critical).  The default is info.")
+                        "critical) (default: %(default)s).")
 
     parser.add_argument("--service-virtual-port", type=str,
                         default="80",
