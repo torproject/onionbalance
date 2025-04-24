@@ -162,7 +162,6 @@ After [installing Onionbalance](installation.md), proceed creating a
 configuration:
 
 ```bash
-mkdir -p onionbalance
 onionbalance-config -n 2
 ```
 
