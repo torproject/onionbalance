@@ -116,7 +116,7 @@ and load balancer for Onion Services.
 
 [This release fixes a security issue. Please upgrade as soon as possible!]
 
-[Onionbalance]: https://onionservices.torproject.org/apps/web/onionbalance
+[Onionbalance]: https://onionservices.torproject.org/apps/base/onionbalance
 
 # ChangeLog
 
