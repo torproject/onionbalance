@@ -5,7 +5,8 @@ Source: https://gitlab.torproject.org/tpo/onion-services/onionbalance
 
 Files: *
 Copyright: 2015-2017 Donncha O'Cearbhaill
-           2020 George Kadianakis <desnacked@riseup.net> and others
+           2020-2021 George Kadianakis <desnacked@riseup.net> and others
+           2022-2025 The Tor Project Inc.
 License: GPL-3+
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
