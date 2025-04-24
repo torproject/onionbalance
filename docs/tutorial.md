@@ -1,7 +1,7 @@
 # Onionbalance tutorial
 
 This is a step-by-step *recipe* to help you configure Onionbalance for v3
-onions.
+[Onion Services][].
 
 This is really one of my favorite recipes: While onions can make many meals
 instantly delicious, if the right balance is not found there is danger that
@@ -9,13 +9,19 @@ their strong sulfuric taste can sometimes overpower the rest of the
 ingredients. It's vital to maintain the proper onionbalance to really display
 the apple-like, deliciously savory notes of this vegetable.
 
+[Onion Services]: https://community.torproject.org/onion-services
+
 ## Preliminaries
+
+!!! tip "Optional Section"
+
+    If you already know how Onionbalance works, feel free to skip to the
+    [Overview](#overview).
 
 Let's first start with an overview of the Onionbalance design so that
 you better understand what we are gonna do in this guide. Through the
 rest of this guide we will assume you understand how both Onionbalance
-and the onion service protocol works. If you already know how
-Onionbalance works, feel free to skip to the [Overview](#overview).
+and the onion service protocol works.
 
 ![image](../assets/onionbalance_v3.jpg)
 
@@ -189,11 +195,11 @@ the next step!
 
 ### Step 3: Configuring the backend instances
 
-OK now with the frontend onion address noted down, let's move to
+OK now with the frontend .onion address noted down, let's move to
 setting up your backend instances:
 
-Login to one of your backend instances and setup Tor with the same procedure
-detailed on Step 0, but this time for each backend instance.
+0. Login to one of your backend instances and setup Tor with the same procedure
+   detailed on Step 0, but this time for each backend instance.
 
 <!--
 Similar to the step above, you will need to use the latest Tor for
@@ -209,24 +215,21 @@ cd tor
 ```
 -->
 
-After you have installed the [Tor daemon][], you will need a torrc file for
-each of your backend instances. Your torrc file needs to setup an onion service
-(and in this case a v3 one) and I'm gonna assume [you
-know][onion-services-setup] how to do that. So far so good but here comes the
-twist:
 
 [onion-services-setup]: https://community.torproject.org/onion-services/setup/
 
-1. Inside the `HiddenService` block of your torrc file, you need to add
-   the following line: `HiddenServiceOnionbalanceInstance 1`. Note that
-   if you do not have an existing v3 onion service and you are trying
-   to create one from scratch, you must first start Tor once without
-   this torrc line, otherwise it will fail to start. After the onion
-   service was created, add this line to your torrc file.
+1. Setup the backend Onion Service [as usual][onion-services-setup].
+   After you have installed the [Tor daemon][], you will need a `torrc` file for
+   each of your backend instances. Your `torrc` file needs to defined an Onion
+   Service and I'm gonna assume [you know][onion-services-setup] how to do that.
+   _Make sure it's working before going to the next step_.
 
-2. In your hidden service directory where the `hostname` and
+2. Inside the `HiddenService` block of your torrc file, you need to add
+   the following line: `HiddenServiceOnionbalanceInstance 1`.
+
+3. In your hidden service directory where the `hostname` and
    `hs_ed25519_public_key` files are living (assuming you moved them
-   previously or started Tor as described at previous step to generate
+   previously or started Tor as described at previous point to generate
    them) you need to create a new file with the name `ob_config` that
    has the following line inside:
    `MasterOnionAddress
@@ -234,10 +237,18 @@ twist:
    but substitute the onion address above with your frontend's onion
    address.
 
-3. Start (or restart if currently running) the Tor process to apply the
+4. Start (or restart if currently running) the Tor process to apply the
    changes.
 
-The points 1. and 2. above are **extremely important** and if you
+!!! note "Setup the Onion Service first"
+
+    If you do not have an existing Onion Service and you are trying to create
+    one from scratch, you must first start Tor once without the
+    `HiddenServiceOnionbalanceInstance` option in the `torrc` file, otherwise
+    it will fail to start. After the Onion Service was created, add this line
+    to your `torrc` file as explained above.
+
+The points 2. and 3. above are **extremely important** and if you
 didn't do them correctly, nothing is gonna work. If you want to ensure
 that you did things correctly, start up Tor, and check that your
 *notice* log file includes the following line:

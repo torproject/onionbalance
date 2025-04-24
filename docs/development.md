@@ -19,7 +19,14 @@ Update the version in some files, like:
 
 ### Regenerate the manpages
 
+Build updated manual pages:
+
     make manpages
+
+Check:
+
+    man -l docs/man/onionbalance.1
+    man -l docs/man/onionbalance-config.1
 
 ### Register the changes
 

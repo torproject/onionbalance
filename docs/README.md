@@ -12,9 +12,9 @@ rendezvous requests gets distributed across multiple hosts.
 more resilient and reliable by eliminating single points-of-failure and by
 protecting the identity key.
 
-[Onionbalance][] allows for scaling across multiple [Onion Service][] instances
-with no additional software or Tor modifications necessary on the Onion Service
-instance.
+[Onionbalance][] allows for scaling across multiple
+[Onion Service][Onion Services] instances with no additional software or Tor
+modifications necessary on the Onion Service instance.
 
 [Onionbalance]: https://gitlab.torproject.org/tpo/onion-services/onionbalance
 [Onion Services]: https://community.torproject.org/onion-services
