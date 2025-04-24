@@ -4,6 +4,7 @@ nav:
   - Tutorial: tutorial.md
   - Installation: installation.md
   - Configuration: config.md
+  - Troubleshooting: troubleshooting.md
   - Manual pages: man
   - Design: design.md
   - Security: security.md
