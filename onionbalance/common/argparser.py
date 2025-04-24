@@ -22,23 +22,23 @@ def get_common_argparser():
                         help="Onion service version (only v3 is supported)")
 
     parser.add_argument("-i", "--ip", type=str, default='127.0.0.1',
-                        help="Tor controller IP address")
+                        help="Tor controller IP address (default: %(default)s).")
 
     parser.add_argument("-p", "--port", type=int, default=9051,
-                        help="Tor controller port")
+                        help="Tor controller port (default: %(default)s).")
 
     parser.add_argument("-s", "--socket", type=str, default=TOR_CONTROL_SOCKET,
-                        help="Tor unix domain control socket location")
+                        help="Tor unix domain control socket location (default: %(default)s).")
 
     parser.add_argument("-c", "--config", type=str,
                         default=os.environ.get('ONIONBALANCE_CONFIG',
                                                "config.yaml"),
-                        help="Config file location")
+                        help="Config file location (default: %(default)s).")
 
-    parser.add_argument("-v", "--verbosity", type=str, default=None,
+    parser.add_argument("-v", "--verbosity", type=str, default='info',
                         help="Minimum verbosity level for logging.  Available "
                              "in ascending order: debug, info, warning, "
-                             "error, critical).  The default is info.")
+                             "error, critical) (default: %(default)s).")
 
     parser.add_argument('--version', action='version',
                         version='onionbalance %s' % onionbalance.__version__)
