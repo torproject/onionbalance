@@ -1,10 +1,10 @@
 # Onionbalance ChangeLog
 
-## v0.2.4 - unreleased
+## v0.2.4 - 2025-04-24
 
 * Packaging:
-  * Updated and improved Debian packaging
-    ([tpo/onion-services/onionbalance#46][]).
+    * Updated and improved Debian packaging
+      ([tpo/onion-services/onionbalance#46][]).
 
 * Documentation:
     * Refactor ([tpo/onion-services/onionbalance#37][]):

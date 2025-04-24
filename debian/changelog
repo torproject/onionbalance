@@ -7,7 +7,7 @@ onionbalance (0.2.4) unstable; urgency=medium
   * HTML documentation is not shipped anymore, but still available
     online at https://onionservices.torproject.org/apps/base/onionbalance/
 
- -- Silvio Rhatto <rhatto@riseup.net>  Wed, 16 Apr 2025 11:19:38 -0300
+ -- Silvio Rhatto <rhatto@riseup.net>  Wed, 16 Apr 2025 18:52:24 -0300
 
 onionbalance (0.2.2-1.2) unstable; urgency=medium
 
