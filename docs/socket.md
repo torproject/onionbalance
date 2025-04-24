@@ -29,11 +29,9 @@ socat - unix-connect:/var/run/onionbalance/control | json_pp -json_opt pretty
 }
 ```
 
-The overall format of the status socket output is clear from the above
-example. Note that ` \"introPointsNum\" : 3, ` and
-`introModified` for an instance is optional,
-`uploaded\*` and `publishAttempt\*` for a
-service may be `null`.
+The overall format of the status socket output is clear from the above example.
+Note that `introPointsNum : 3, ` and `introModified` for an instance is
+optional, `uploaded*` and `publishAttempt*` for a service may be `null`.
 
 Meaning of non-self-explanatory fields:
 
