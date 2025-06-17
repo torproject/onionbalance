@@ -72,6 +72,8 @@ functional_tests:
   stage: test
   extends: .base
   script:
+    - ./test/scripts/install-tor.sh
+    - source test/scripts/install-chutney-v3.sh
     - pytest --cov-report=term-missing --cov=onionbalance test/functional/
 
 unit_tests:
