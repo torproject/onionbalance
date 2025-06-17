@@ -19,7 +19,7 @@ set -ex
 source /etc/os-release
 
 # Configure repository
-cat <<-EOF | sudo tee /etc/apt/sources.list.d/tor.list
+cat <<-EOF | $SUDO tee /etc/apt/sources.list.d/tor.list
 deb     [signed-by=${KEYRING}] https://deb.torproject.org/torproject.org $VERSION_CODENAME main
 deb-src [signed-by=${KEYRING}] https://deb.torproject.org/torproject.org $VERSION_CODENAME main
 EOF
