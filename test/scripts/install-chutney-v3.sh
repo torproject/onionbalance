@@ -33,7 +33,6 @@ CHUTNEY_LAUNCH_PHASE=2 ./chutney start networks/hs-v3-min
 
 # Check the status
 ./chutney status networks/hs-v3-min
-./chutney verify networks/hs-v3-min
 
 # Retry verify until hidden service subsystem is working
 n=0
