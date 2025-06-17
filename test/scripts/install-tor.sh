@@ -7,6 +7,11 @@
 DIRNAME="`dirname $0`"
 KEYRING="/usr/share/keyrings/deb.torproject.org-keyring.gpg"
 
+# Check for sudo
+if [ "`whoami`" != "root" ]; then
+  SUDO="sudo"
+fi
+
 # Error and output handling
 set -ex
 
@@ -20,8 +25,8 @@ deb-src [signed-by=${KEYRING}] https://deb.torproject.org/torproject.org $VERSIO
 EOF
 
 # Get the keyring
-sudo $DIRNAME/get-tor-debian-key $KEYRING
+$SUDO $DIRNAME/get-tor-debian-key $KEYRING
 
 # Install Tor
-sudo apt-get update
-sudo apt-get install -y tor deb.torproject.org-keyring
+$SUDO apt-get update
+$SUDO apt-get install -y tor deb.torproject.org-keyring
