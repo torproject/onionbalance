@@ -4,16 +4,19 @@
 # Service system to be available.
 #
 
-# Ensure chutney codebase is available
-if [ ! -d "chutney" ]; then
-  git clone https://git.torproject.org/chutney.git
-fi
+# Ensure chutney codebase is available, clone version
+#if [ ! -d "chutney" ]; then
+#  git clone https://git.torproject.org/chutney.git
+#fi
+
+# Ensure chutney codebase is available, submodule version
+git submodule update --init --recursive
 
 # Go to chutney folder
 cd chutney
 
 # Ensure chutney is up-to-date
-git pull
+#git pull
 
 # Install dependencies, failing if a virtualenv is not available
 pip3 install --upgrade . || exit 1

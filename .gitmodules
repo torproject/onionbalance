@@ -1,0 +1,3 @@
+[submodule "chutney"]
+	path = chutney
+	url = https://gitlab.torproject.org/tpo/core/chutney.git
