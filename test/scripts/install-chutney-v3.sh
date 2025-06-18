@@ -16,17 +16,17 @@ cd chutney
 git pull
 
 # Stop chutney network if it is already running
-./chutney stop networks/hs-v3-min
+./chutney stop networks/hs-v3-min || exit 1
 
 # Configure a new network
-./chutney configure networks/hs-v3-min
+./chutney configure networks/hs-v3-min || exit 1
 
 # Start the network: first phase
-./chutney start networks/hs-v3-min
+./chutney start networks/hs-v3-min || exit 1
 
 # Start the network: second phase
 # This is when the Onion Service node is started
-CHUTNEY_LAUNCH_PHASE=2 ./chutney start networks/hs-v3-min
+CHUTNEY_LAUNCH_PHASE=2 ./chutney start networks/hs-v3-min || exit 1
 
 # Wait for bootstrap
 ./chutney wait_for_bootstrap networks/hs-v3-min
