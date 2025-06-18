@@ -10,6 +10,7 @@ __pycache__/
 env/
 venv/
 build/
+.pybuild/
 develop-eggs/
 dist/
 downloads/
@@ -60,5 +61,6 @@ target/
 
 # Coverage files
 htmlcov
-chutney
-.pybuild/
+
+# Chutney
+#chutney
