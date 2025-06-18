@@ -16,7 +16,7 @@ cd chutney
 git pull
 
 # Install dependencies, failing if a virtualenv is not available
-pip3 install . || exit 1
+pip3 install --upgrade . || exit 1
 
 # Stop chutney network if it is already running
 ./chutney stop networks/hs-v3-min || exit 1
