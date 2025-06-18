@@ -42,9 +42,15 @@ image: containers.torproject.org/tpo/tpa/base-images/python:sid
 # Base build procedure
 .base:
   before_script:
-    - pip3 install -r requirements.txt --break-system-packages
-    - pip3 install -r test-requirements.txt  --break-system-packages
-    - python3 -m pip install . --break-system-packages
+    - apt-get install
+        python3
+        python3-pip
+        python3-venv
+    - python3 -m venv $HOME/venv
+    - source $HOME/venv/bin/activate
+    - pip3 install -r requirements.txt
+    - pip3 install -r test-requirements.txt
+    - python3 -m pip install .
 
 #
 # Basic build
