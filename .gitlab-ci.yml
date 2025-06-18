@@ -79,7 +79,7 @@ functional_tests:
   extends: .base
   script:
     - apt-get update
-    - apt-get install -y wget gnupg
+    - apt-get install -y wget gnupg git
     - ./test/scripts/install-tor.sh
     - source test/scripts/install-chutney-v3.sh
     - pytest --cov-report=term-missing --cov=onionbalance test/functional/
