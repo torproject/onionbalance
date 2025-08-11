@@ -24,7 +24,7 @@ Last updated on 2025-01-27.
     are detected, to make sure both design and code are
     in sync.
 
-    If you find any discrepancies or innacuracies, please
+    If you find any discrepancies or inaccuracies, please
     open an issue or send a merge request.
 
 ## Overview
