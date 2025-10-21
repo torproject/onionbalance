@@ -151,7 +151,7 @@ class OBDescriptor(V3Descriptor):
         if len(str(v3_desc)) > params.MAX_DESCRIPTOR_SIZE:
             logger.error("Created descriptor is too big (%d intros). Consider "
                          "relaxing number of instances or intro points per instance "
-                         "(see N_INTROS_PER_INSTANCE)")
+                         "(see N_INTROS_PER_INSTANCE)", len(recertified_intro_points))
             raise BadDescriptor
 
         super().__init__(onion_address, v3_desc)
