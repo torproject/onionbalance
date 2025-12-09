@@ -46,6 +46,7 @@ image: containers.torproject.org/tpo/tpa/base-images/python:sid
         python3
         python3-pip
         python3-venv
+        python3-setuptools
     - python3 -m venv $HOME/venv
     - source $HOME/venv/bin/activate
     - pip3 install -r requirements.txt
