@@ -5,5 +5,13 @@
   ],
   "git-submodules": {
     "enabled": true
-  }
+  },
+  "packageRules": [
+    {
+      "description": "Schedule updates on first day of each month",
+      "matchPackageNames": ["*"],
+      "groupName": "all",
+      "schedule": ["* * 1 * *"]
+    }
+  ]
 }
