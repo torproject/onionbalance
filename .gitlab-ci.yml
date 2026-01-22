@@ -177,6 +177,7 @@ run_sid:
     - apt-get remove onionbalance
 
     # Install the built package
+    - apt-get build-dep onionbalance
     - dpkg -i dist/onionbalance_*.deb
 
     # Test
