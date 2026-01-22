@@ -42,10 +42,12 @@ image: containers.torproject.org/tpo/tpa/base-images/python:sid
 # Base build procedure
 .base:
   before_script:
+    - !reference [.apt-init]
     - apt-get install
         python3
         python3-pip
         python3-venv
+        python3-setuptools
     - python3 -m venv $HOME/venv
     - source $HOME/venv/bin/activate
     - pip3 install -r requirements.txt
@@ -138,7 +140,6 @@ run_source:
   extends: .base
   script:
     # Needs Git installed so "./onionbalance.py --version" works
-    - !reference [.apt-init]
     - apt-get install -y git
     - git describe --tags --dirty --always --long
     - ./onionbalance.py --version
@@ -168,6 +169,8 @@ run_sid:
     - job: debian_sid
       artifacts: true
   before_script:
+    # Add sources, so apt-get build-dep works; then initialize APT
+    - echo "deb-src https://deb.debian.org/debian sid main" >> /etc/apt/sources.list
     - !reference [.apt-init]
   script:
     # Install dependencies
@@ -176,6 +179,7 @@ run_sid:
     - apt-get remove onionbalance
 
     # Install the built package
+    - apt-get build-dep onionbalance
     - dpkg -i dist/onionbalance_*.deb
 
     # Test
