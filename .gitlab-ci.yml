@@ -169,6 +169,8 @@ run_sid:
     - job: debian_sid
       artifacts: true
   before_script:
+    # Add sources, so apt-get build-dep works; then initialize APT
+    - echo "deb-src https://deb.debian.org/debian sid main" >> /etc/apt/sources.list
     - !reference [.apt-init]
   script:
     # Install dependencies
