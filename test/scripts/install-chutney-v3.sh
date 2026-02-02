@@ -24,7 +24,8 @@ pip3 install --upgrade . || exit 1
 # Stop chutney network if it is already running
 # This command may fail if there are no running networks, so the script should
 # not exit in this case
-./chutney stop #|| exit 1
+#./chutney stop || exit 1
+./chutney stop || true
 
 # Initialize a new network
 ./chutney init --net hs-v3-min || exit 1
