@@ -22,29 +22,35 @@ cd chutney
 pip3 install --upgrade . || exit 1
 
 # Stop chutney network if it is already running
-./chutney stop networks/hs-v3-min || exit 1
+# This command may fail if there are no running networks, so the script should
+# not exit in this case
+#./chutney stop || exit 1
+./chutney stop || true
 
-# Configure a new network
-./chutney configure networks/hs-v3-min || exit 1
+# Initialize a new network
+./chutney init --net hs-v3-min || exit 1
+
+# Configure the network
+./chutney configure || exit 1
 
 # Start the network: first phase
-./chutney start networks/hs-v3-min || exit 1
+./chutney start || exit 1
 
 # Start the network: second phase
 # This is when the Onion Service node is started
-CHUTNEY_LAUNCH_PHASE=2 ./chutney start networks/hs-v3-min || exit 1
+CHUTNEY_LAUNCH_PHASE=2 ./chutney start || exit 1
 
 # Wait for bootstrap
-./chutney wait_for_bootstrap networks/hs-v3-min
+./chutney wait_for_bootstrap
 
 # Check the status
-./chutney status networks/hs-v3-min
+./chutney status
 
 # Retry verify until hidden service subsystem is working
 n=0
 until [ $n -ge 20 ]; do
   # Get chutney output
-  output=$(./chutney verify networks/hs-v3-min)
+  output=$(./chutney verify)
 
   # Check if chutney output included 'Transmission: Success'.
   if [[ $output == *"Transmission: Success"* ]]; then
